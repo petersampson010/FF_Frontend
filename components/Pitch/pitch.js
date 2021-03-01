@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PlayerGraphic from '../PlayerGraphic/playerGraphic';
-import { View, Text, StyleSheet, Button, TouchableHighlightBase, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Button, TouchableHighlightBase, ScrollView, ImageBackground } from 'react-native';
 import {vw, vh} from 'react-native-expo-viewport-units';
 import { CheckBox } from 'react-native-elements';
 import MyModal from '../Modal/myModal';
 import { connect } from 'react-redux';
 import PitchHead from '../PitchHead/pitchHead';
 import MenuDrawer from 'react-native-side-drawer';
-import { defender, ellipse, ellipse2, ellipse2Stack, forward, goalkeeper, menuDrawerContainer, midfielder, pitch, pitchContainer, fullPitch, penBox, smallPenBox, halfwayLine, rect4Stack, rectStack, slideButton, slideButtonContainer, starters, subs, semiCircle, positionRow, scrollContainer } from './style';
+import { defender, ellipse, ellipse2, ellipse2Stack, forward, goalkeeper, menuDrawerContainer, midfielder, pitch, pitchContainer, fullPitch, penBox, smallPenBox, halfwayLine, rect4Stack, rectStack, slideButton, slideButtonContainer, starters, subs, semiCircle, positionRow, scrollContainer, pitchImage } from './style';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import playersList from '../playersList/playersList';
 import Svg, { Ellipse } from "react-native-svg";
@@ -85,6 +85,7 @@ class Pitch extends Component {
                     </View>
 
     render() { 
+        const pitchImg = require('../../images/kisspng-ball-game-football-pitch-corner-kick-football-stadium-5ac96cf3827065.1735532915231500675343.png');
         return ( 
             <View>
                 <PitchHead
@@ -103,53 +104,28 @@ class Pitch extends Component {
                             opacity={0.7}
                             position="right"
                         >
-                                <View style={fullPitch}>
-                                    <View style={rect4Stack}>
-                                        <View style={halfwayLine}></View>
-                                        <Svg viewBox="0 0 110.09 95.08" style={semiCircle}>
-                                        <Ellipse
-                                            stroke="rgba(230, 230, 230,1)"
-                                            strokeWidth={3}
-                                            cx={55}
-                                            cy={48}
-                                            rx={54}
-                                            ry={46}
-                                        ></Ellipse>
-                                        </Svg>
-                                    </View>
-                                    <View style={ellipse2Stack}>
-                                        <Svg viewBox="0 0 72.56 42.53" style={ellipse2}>
-                                        <Ellipse
-                                            stroke="rgba(230, 230, 230,1)"
-                                            strokeWidth={3}
-                                            cx={36}
-                                            cy={21}
-                                            rx={35}
-                                            ry={20}
-                                        ></Ellipse>
-                                        </Svg>
-                                        <View style={penBox}></View>
-                                    </View>
-                                </View>
-                                <View style={smallPenBox}></View>
-                                <View style={{flex: 1, flexDirection: 'row'}}>
-                                    <View style={pitch} onPress={()=>{console.log('hit');this.setState({...this.state, slideDrawer: false})}}>
-                                        <View style={starters}>
-                                            <View style={positionRow}>
-                                                {this.props.team[4].length>0 ? this.renderPlayers('4', 10) : null}
-                                            </View>
-                                            <View style={positionRow}>
-                                                {this.props.team[3].length>0 ? this.renderPlayers('3', 6) : null}
-                                            </View>
-                                            <View style={positionRow}>
-                                                {this.props.team[2].length>0 ? this.renderPlayers('2', 2) : null}
-                                            </View>
-                                            <View style={positionRow}>
-                                                {this.props.team[1].length>0 ? this.renderPlayers('1', 1) : null}
+                            <View style={pitch}>
+                                <ImageBackground source={pitchImg} imageStyle={{resizeMode: 'stretch'}} style={pitchImage}>
+                                    <View style={{flex: 1, flexDirection: 'row'}}>
+                                        <View style={pitch} onPress={()=>{console.log('hit');this.setState({...this.state, slideDrawer: false})}}>
+                                            <View style={starters}>
+                                                <View style={positionRow}>
+                                                    {this.props.team[4].length>0 ? this.renderPlayers('4', 10) : null}
+                                                </View>
+                                                <View style={positionRow}>
+                                                    {this.props.team[3].length>0 ? this.renderPlayers('3', 6) : null}
+                                                </View>
+                                                <View style={positionRow}>
+                                                    {this.props.team[2].length>0 ? this.renderPlayers('2', 2) : null}
+                                                </View>
+                                                <View style={positionRow}>
+                                                    {this.props.team[1].length>0 ? this.renderPlayers('1', 1) : null}
+                                                </View>
                                             </View>
                                         </View>
-
                                     </View>
+                                </ImageBackground>
+
                                     {/* <MyModal 
                                     visible={this.state.modal.active}
                                     height={vh(30)}

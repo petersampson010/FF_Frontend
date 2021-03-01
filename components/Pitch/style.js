@@ -14,7 +14,7 @@ export const scrollContainer = {
 export const pitchContainer = {
     flex: 1,
     width: vw(100),
-    height: vh(75),
+    height: vh(55),
     backgroundColor: $darkBlue,
     alignItems: "center",
     justifyContent: "center",
@@ -25,7 +25,7 @@ export const pitchContainer = {
 export const pitch = {
     flex: 14,
     flexDirection: 'row',
-    height: vh(70),
+    height: vh(58),
     marginTop: vh(1)
 }
 export const starters = {
@@ -34,7 +34,7 @@ export const starters = {
 export const positionRow = {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-evenly'
+    justifyContent: 'center'
 }
 
 export const subs = {
@@ -64,72 +64,7 @@ export const slideButtonContainer = {
     // alignItems: 'right',
 }
 
-export const fullPitch = {
-    top: 0,
-    left: 0,
-    width: 397,
-    height: 622,
-    position: "absolute",
-    backgroundColor: $pitchGreen,
-    borderWidth: 3,
-    borderColor: "rgba(255,255,255,1)"
-  }
-
-export const halfwayLine = {
-    top: 44,
-    left: 0,
-    width: 393,
-    height: 3,
-    position: "absolute",
-    backgroundColor: "rgba(255,255,255,1)"
-  }
-
-  export const semiCircle = {
-    top: 0,
-    left: 140,
-    width: 110,
-    height: 95,
-    position: "absolute"
-  }
-
-  export const rect4Stack = {
-    width: 337,
-    height: 95,
-    marginTop: 171
-  }
-
-  export const ellipse2 = {
-    top: 0,
-    left: 100,
-    width: 73,
-    height: 43,
-    position: "absolute"
-  } 
-  
-  export const penBox = {
-    top: 24,
-    left: 27,
-    width: 221,
-    height: 95,
-    position: "absolute",
-    borderWidth: 3,
-    borderColor: "rgba(255,255,255,1)",
-    backgroundColor: $pitchGreen
-  }
-  export const ellipse2Stack = {
-    width: 221,
-    height: 122,
-    marginTop: 234,
-    marginLeft: 58
-  }
-  export const smallPenBox = {
-    top: 579,
-    left: 150,
-    width: 96,
-    height: 43,
-    position: "absolute",
-    borderWidth: 3,
-    borderColor: "rgba(255,255,255,1)"
-  }
-
-
+export const pitchImage = {
+  flex: 14,
+  height: vh(50)
+}

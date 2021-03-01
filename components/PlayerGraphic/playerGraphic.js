@@ -50,6 +50,7 @@ class PlayerGraphic extends Component {
           openModal={this.props.openModal}
           captain={this.props.captain}
           vCaptain={this.props.vCaptain}/>
+          <Button onPress={()=>this.props.clickFcn(this.props.player)} title="SUB/TRANSFER"/>
         </View>
       );
     }
