@@ -5,3 +5,8 @@ export const profileContainer = {
   height: vh(10),
   width: vw(10)
 }
+
+export const profileImage = {
+  height: vh(10),
+  width: vw(10)
+}

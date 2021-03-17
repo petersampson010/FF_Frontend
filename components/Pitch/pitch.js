@@ -95,15 +95,6 @@ class Pitch extends Component {
                 />
                 <ScrollView contentContainerStyle={scrollContainer}>
                     <View style={pitchContainer}>
-                        <MenuDrawer
-                            open={this.props.slideDrawerActive}
-                            drawerContent={this.props.drawerContent}
-                            drawerPercentage={100}
-                            animationTime={250}
-                            overlay={true}
-                            opacity={0.7}
-                            position="right"
-                        >
                             <View style={pitch}>
                                 <ImageBackground source={pitchImg} imageStyle={{resizeMode: 'stretch'}} style={pitchImage}>
                                     <View style={{flex: 1, flexDirection: 'row'}}>
@@ -141,7 +132,6 @@ class Pitch extends Component {
                                         </TouchableOpacity>
                                     </View>
                                 </View>
-                        </MenuDrawer>
                     </View>
                     {this.props.subs ? <View style={subs}>
                         {this.renderSubs(12)}
