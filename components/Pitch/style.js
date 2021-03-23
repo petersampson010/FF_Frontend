@@ -8,7 +8,7 @@ export const subHead= {
 }
 
 export const scrollContainer = {
-    height: vh(70)
+    height: vh(55)
 }
 
 export const pitchContainer = {

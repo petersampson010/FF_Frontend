@@ -11,6 +11,7 @@ import { pitchContainer } from './style.js';
 import { screenContainer } from '../../styles/global.js';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { validateTransfers } from '../../functions/validity';
+import pitch from '../../components/Pitch/pitch.js';
 
 
 class TransfersScreen extends Component {
@@ -96,7 +97,6 @@ class TransfersScreen extends Component {
                     allSelectedPlayerIds={allSelectedPlayerIds(this.state.team)}
                     clickFcn={this.transfer}
                     />
-                    
                 </ScrollView>
                 <BottomNav navigate={this.props.navigation.navigate}/>
             </View>

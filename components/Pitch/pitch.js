@@ -90,7 +90,6 @@ class Pitch extends Component {
                 type={this.props.type}
                 update={this.props.update}
                 />
-                <ScrollView contentContainerStyle={scrollContainer}>
                     <View style={pitchContainer}>
                             <View style={pitch}>
                                 <ImageBackground source={pitchImg} imageStyle={{resizeMode: 'stretch'}} style={pitchImage}>
@@ -127,7 +126,6 @@ class Pitch extends Component {
                     {this.props.subs ? <View style={subs}>
                         {this.renderSubs(12)}
                     </View> : null}
-                </ScrollView>
             </View>
          );
     }

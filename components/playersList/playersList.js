@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { connect } from 'react-redux';
-import { positionString } from '../../functions/reusable';
+import { fullName, positionString } from '../../functions/reusable';
 import { Table, Row } from 'react-native-table-component';
 import {vw, vh} from 'react-native-expo-viewport-units';
-import { itemPositionPicker, pickerItem, positionPicker, slidable, tableHead, tableText } from './style';
+import { filter, itemPositionPicker, pickerItem, playersListContainer, positionPicker, slidable, tableElement, tableHead, tableRow, tableText } from './style';
+import { TouchableOpacity } from 'react-native';
+import { labelText, standardText } from '../../styles/textStyle';
 
 
 
@@ -18,64 +20,36 @@ class PlayersList extends Component {
         return this.props.allSelectedPlayerIds.includes(player.player_id);
     };
 
-    playerList = () => {
-
+    table = () => {
         switch(this.state.positionFilter) {
             case '0': 
-                return this.props.clubPlayers.map((player, i) => 
-                <Row 
-                textStyle={tableText}
-                key={i}
-                data={[`${player.first_name} ${player.last_name}`, positionString(player.position), player.price]}
-                onPress={this.playerSelected(player) ? null : ()=>this.props.clickFcn(player)}
-                style={{opacity: (this.playerSelected(player) ? 0.3 : 1)}}
-                />)
+                return this.props.clubPlayers.map((player) => this.tableRow(player))
             case '1': 
-                return this.props.clubPlayers.filter(x=>x.position==='1').map((player, i) => 
-                <Row 
-                textStyle={tableText}
-                key={i}
-                data={[ , `${player.first_name} ${player.last_name}`, positionString(player.position), player.price]}
-                onPress={this.playerSelected(player) ? null : ()=>this.props.clickFcn(player)}
-                style={{opacity: (this.playerSelected(player) ? 0.3 : 1)}}
-                />)
+                return this.props.clubPlayers.filter(x=>x.position==='1').map((player) => this.tableRow(player))
             case '2': 
-                return this.props.clubPlayers.filter(x=>x.position==='2').map((player, i) => 
-                <Row 
-                textStyle={tableText}
-                key={i}
-                data={[`${player.first_name} ${player.last_name}`, positionString(player.position), player.price]}
-                onPress={this.playerSelected(player) ? null : ()=>this.props.clickFcn(player)}
-                style={{opacity: (this.playerSelected(player) ? 0.3 : 1)}}
-                />)
+                return this.props.clubPlayers.filter(x=>x.position==='2').map((player) => this.tableRow(player))
             case '3': 
-                return this.props.clubPlayers.filter(x=>x.position==='3').map((player, i) => 
-                <Row 
-                textStyle={tableText}
-                key={i}
-                data={[`${player.first_name} ${player.last_name}`, positionString(player.position), player.price]}
-                onPress={this.playerSelected(player) ? null : ()=>this.props.clickFcn(player)}
-                style={{opacity: (this.playerSelected(player) ? 0.3 : 1)}}
-                />)
+                return this.props.clubPlayers.filter(x=>x.position==='3').map((player) => this.tableRow(player))
             case '4': 
-                return this.props.clubPlayers.filter(x=>x.position==='4').map((player, i) => 
-                <Row 
-                textStyle={tableText}
-                key={i}
-                data={[`${player.first_name} ${player.last_name}`, positionString(player.position), player.price]}
-                onPress={this.playerSelected(player) ? null : ()=>this.props.clickFcn(player)}
-                style={{opacity: (this.playerSelected(player) ? 0.3 : 1)}}
-                />)   
+                return this.props.clubPlayers.filter(x=>x.position==='4').map((player) => this.tableRow(player));
             default: 
                 break;
         }
     }
 
+    tableRow = (player) => 
+    <TouchableOpacity onPress={this.playerSelected(player) ? null : ()=>this.props.clickFcn(player)}
+    style={{...tableRow, opacity: (this.playerSelected(player) ? 0.3 : 1)}}>
+        <Text style={{...tableElement, ...standardText}}>{fullName(player)}</Text>
+        <Text style={{...tableElement, ...standardText}}>{positionString(player.position)}</Text>
+        <Text style={{...tableElement, ...standardText}}>£{player.price}m</Text>
+    </TouchableOpacity>;
+
     render() { 
         return ( 
-            <View>
-                <View style={styles.filter}>
-                    <Picker style={positionPicker} 
+            <View style={playersListContainer}>
+                <View style={filter}>
+                    <Picker
                     itemStyle={itemPositionPicker}
                     selectedValue={this.state.positionFilter} 
                     onValueChange={value=>this.setState({...this.state, positionFilter: value})}>
@@ -86,13 +60,14 @@ class PlayersList extends Component {
                         <Picker.Item color="white" label="FWD" value='4'/>
                     </Picker>
                 </View>
-                <View style={styles.playersList}>
+                <View >
                     <Table>
-                        <Row 
-                        textStyle={tableHead} 
-                        data={['Name', 'Position', 'Price']}
-                        />
-                        {this.playerList()}
+                        <View style={tableRow}>
+                            <Text style={{...tableElement, ...labelText}}>Name</Text>
+                            <Text style={{...tableElement, ...labelText}}>Position</Text>
+                            <Text style={{...tableElement, ...labelText}}>Price</Text>
+                        </View>
+                        {this.table()}
                     </Table>
                 </View>
             </View>
@@ -107,10 +82,3 @@ const mapStateToProps = state => {
 }
  
 export default connect(mapStateToProps)(PlayersList);
-
-const styles = StyleSheet.create({
-    playersList: {
-        paddingBottom: vh(15),
-        color: 'white'
-    }
-})
