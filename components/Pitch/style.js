@@ -8,7 +8,7 @@ export const subHead= {
 }
 
 export const scrollContainer = {
-    height: vh(150)
+    height: vh(70)
 }
 
 export const pitchContainer = {
@@ -25,11 +25,12 @@ export const pitchContainer = {
 export const pitch = {
     flex: 14,
     flexDirection: 'row',
-    height: vh(58),
+    height: vh(52),
     marginTop: vh(1)
 }
 export const starters = {
-    flex: 1
+    flex: 1,
+    marginTop: vh(3)
 }
 export const positionRow = {
     flex: 1,
@@ -44,24 +45,6 @@ export const subs = {
     flex: 1,
     flexDirection: 'row',
     justifyContent: "space-evenly"
-}
-
-export const slideButton = {
-    height: vh(7),
-    width: vh(2),
-    borderWidth: 1,
-    borderRadius: 20,
-    marginLeft: 20,
-    // backgroundColor: $luminousGreen
-}
-
-export const slideButtonContainer = {
-    flex: 1,
-    justifyContent: 'center',
-    height: vh(60),
-    // width: vw(5),
-    backgroundColor: 'green',
-    // alignItems: 'right',
 }
 
 export const pitchImage = {

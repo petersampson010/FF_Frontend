@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { ScrollView, Text, View, StyleSheet, Button, Picker, Modal, TouchableHighlight } from 'react-native';
 import { getCaptain, getVCaptain, positionString, fullName, playersObjToArray, getPuId } from '../../functions/reusable';
 import { connect } from 'react-redux';
-import Header from '../../components/header/header';
 import { pickTeamUpdate } from '../../actions';
 import {vw, vh} from 'react-native-expo-viewport-units';
 import { validatePickTeam } from '../../functions/validity';
@@ -12,9 +11,6 @@ import { showMessage } from 'react-native-flash-message';
 import Pitch from '../../components/Pitch/pitch';
 import BottomNav from '../../components/bottomNav/bottomNav';
 import { screenContainer } from '../../styles/global';
-import PlayerProfile from '../../components/profile/playerProile';
-import { pitchContainer, playersMenu, quickView, menuDrawerContainer, leftDrawerComp, rightDrawerComp, closeDrawer } from './style.js';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 
 
@@ -29,18 +25,6 @@ class PickTeamScreen extends Component {
         subs: this.props.subs,
         captain: getCaptain(this.props.starters, this.props.puJoiners),
         vCaptain: getVCaptain(this.props.starters, this.props.puJoiners),
-        slideDrawer: {
-            active: false,
-            player: {
-                player_id: 1,
-                first_name: "Steve",
-                last_name: "Dunno",
-                position: "1",
-                price: 80,
-                availability: "a",
-                admin_user_id: 1
-            }
-        }
     }
 
     transfer = player => {
@@ -151,27 +135,6 @@ class PickTeamScreen extends Component {
         ) ?
         false : true;
 
-    toggleSlideDrawer = () => {
-        this.setState({
-            ...this.state,
-            slideDrawer: {
-                ...this.state.slideDrawer,
-                active: !this.state.slideDrawer.active
-            }
-        })
-    }
-
-    drawerContent = () => 
-        <View style={menuDrawerContainer}>
-            <View style={leftDrawerComp}>
-                <TouchableWithoutFeedback onPress={this.toggleSlideDrawer}>
-                    <View style={closeDrawer}></View>
-                </TouchableWithoutFeedback>
-            </View>
-            <View style={rightDrawerComp}>
-                <PlayerProfile />
-            </View>
-        </View>
         
     render() { 
         return ( 
@@ -187,9 +150,6 @@ class PickTeamScreen extends Component {
                         vCaptain={this.state.vCaptain}
                         setCaptain={this.setCaptain}
                         setVCaptain={this.setVCaptain}
-                        drawerContent={this.drawerContent()}
-                        slideDrawerActive={this.state.slideDrawer.active}
-                        toggleSlideDrawer={this.toggleSlideDrawer}
                         />
                 <BottomNav navigate={this.props.navigation.navigate}/>
             </View>

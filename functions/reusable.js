@@ -92,3 +92,16 @@ export const displayDate = date => {
     let options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
     return new Intl.DateTimeFormat('en-us', options).format(Date.parse(date));
 }
+
+export const subOrTransfer = type => {
+    switch(type) {
+        case 'transfers':
+            return 'TRANSFER';
+        case 'points':
+            return '';
+        case 'pickTeam':
+            return 'SUB';
+        default: 
+            return '';
+    }
+}

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Image, Text, StyleSheet, View, Button, Modal, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
-import { isCaptain, isVCaptain, fullName } from '../../functions/reusable';
+import { isCaptain, isVCaptain, fullName, subOrTransfer } from '../../functions/reusable';
 import Svg, { Ellipse } from "react-native-svg";
 import Shirt from '../Shirt/shirt';
-import { container } from './style';
+import { box, container, playerImage, playerName, subContainer, subImage, subTransferBtn } from './style';
 import { TouchableHighlightBase } from 'react-native';
+import { ImageBackground } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 
 class PlayerGraphic extends Component {
@@ -43,15 +45,23 @@ class PlayerGraphic extends Component {
     }
 
     render() {
+        const playerImg = require('../../images/profile.jpg');
+        const subImg = require('../../images/subIcon.png');
+        const { player, openModal, type, clickFcn } = this.props;
       return ( 
-        <View style={container}>
-          <Shirt
-          player={this.props.player}
-          openModal={this.props.openModal}
-          captain={this.props.captain}
-          vCaptain={this.props.vCaptain}/>
-          <Button onPress={()=>this.props.clickFcn(this.props.player)} title="SUB/TRANSFER"/>
-        </View>
+            <View style={container}>
+                <View style={subContainer}>
+                    <TouchableOpacity onPress={()=>openModal(player)}>
+                        <Image source={playerImg} imageStyle={{resizeMode: 'cover'}} style={playerImage}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>clickFcn(player)}>
+                        <Image source={subImg} imageStyle={{resizeMode: 'cover'}} style={subImage}/>
+                    </TouchableOpacity>
+                </View>
+                <TouchableOpacity onPress={()=>openModal(player)}>
+                    <Text style={playerName}>{fullName(player)}</Text>
+                </TouchableOpacity>
+            </View>
       );
     }
 }

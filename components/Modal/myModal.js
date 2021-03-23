@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Modal, TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import {vw, vh} from 'react-native-expo-viewport-units';
+import { labelText, standardText } from '../../styles/textStyle';
+import { button, buttons, closeModalContainer, modal, modalText } from './style';
 
 
 class MyModal extends Component {
@@ -8,8 +10,8 @@ class MyModal extends Component {
 
     renderButtons = () => {
         return this.props.buttonOptions.map((x,i)=>{
-        return <TouchableOpacity key={i} onPress={x.fcn} style={styles.button}>
-            <Text style={{textAlign: 'center'}}>{x.text}</Text>
+        return <TouchableOpacity key={i} onPress={x.fcn} style={button}>
+            <Text style={{...labelText, textAlign: 'center'}}>{x.text}</Text>
         </TouchableOpacity>})
     }
     // componentDidMount() {
@@ -19,14 +21,16 @@ class MyModal extends Component {
         return ( 
             <Modal visible={this.props.visible} 
             transparent={true}>
-                <View style={{...styles.modal, height:this.props.height, width:this.props.width, left:(vw(100)-(this.props.width))/2}}>
-                    <Text onPress={this.props.closeModalFcn}>Close Modal</Text>
-                    <View>
-                        {this.props.jsx}
-                    </View>
-                    <View style={styles.buttons}>
-                        {this.renderButtons()}
-                    </View>
+                <View style={{...modal, height:this.props.height, width:this.props.width, left:(vw(100)-(this.props.width))/2}}>
+                <View>
+                    {this.props.jsx}
+                </View>
+                <View style={buttons}>
+                    {this.renderButtons()}
+                </View>
+                <TouchableOpacity style={closeModalContainer} onPress={this.props.closeModalFcn}>
+                    <Text style={standardText}>Close Modal</Text>
+                </TouchableOpacity>
                 </View>
             </Modal>
          );
@@ -35,22 +39,6 @@ class MyModal extends Component {
  
 export default MyModal;
 
-const styles = StyleSheet.create({
-    modal: {
-        position: "absolute",
-        top: vh(20),
-        backgroundColor: 'red'
-    },
-    buttons: {
-        flex: 1,
-        flexDirection: 'row', 
-        
-    },
-    button: {
-        width: vw(30),
-
-    }
-})
 
 // props we need: 
 // visible

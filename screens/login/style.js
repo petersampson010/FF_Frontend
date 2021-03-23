@@ -1,5 +1,6 @@
 import { vh, vw } from "react-native-expo-viewport-units"
 import { $arylideYellow, $inputBlue, $luminousGreen, $skobeloff } from "../../styles/global"
+import { headers, labelText, standardText } from "../../styles/textStyle"
 
 export const inputField = {
     borderWidth: 1,
@@ -19,33 +20,23 @@ export const inputFieldsContainer = {
 }
 
 export const loginHead = {
-    color: $arylideYellow,
-    fontSize: 20,
+    ...headers,
     marginBottom: vh(7),
-    fontFamily: 'Avenir Next',
-
 }
 
 export const switchText = {
-    fontFamily: 'Avenir Next',
-    color: 'white',
+    ...standardText,
     paddingBottom: vh(3),
-
 }
 
 export const textLabel = {
-    fontFamily: 'Avenir Next',
+    ...labelText,
     width: vw(70),
-    color: 'white',
-    fontSize: 18,
     textAlign: 'left',
-
 }
 
 export const input = {
-    fontFamily: 'Avenir Next',
-    color: 'white',
+    ...standardText,
     height: vh(6),
-    fontSize: 16,
     marginLeft: vw(2)
 }

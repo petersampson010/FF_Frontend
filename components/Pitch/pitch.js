@@ -6,12 +6,10 @@ import { CheckBox } from 'react-native-elements';
 import MyModal from '../Modal/myModal';
 import { connect } from 'react-redux';
 import PitchHead from '../PitchHead/pitchHead';
-import MenuDrawer from 'react-native-side-drawer';
-import { defender, ellipse, ellipse2, ellipse2Stack, forward, goalkeeper, menuDrawerContainer, midfielder, pitch, pitchContainer, fullPitch, penBox, smallPenBox, halfwayLine, rect4Stack, rectStack, slideButton, slideButtonContainer, starters, subs, semiCircle, positionRow, scrollContainer, pitchImage } from './style';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import playersList from '../playersList/playersList';
-import Svg, { Ellipse } from "react-native-svg";
+import { pitch, pitchContainer, starters, subs, positionRow, scrollContainer, pitchImage } from './style';
 import { fullName, positionString } from '../../functions/reusable';
+import { modalTextContainer } from '../Modal/style';
+import { standardText } from '../../styles/textStyle';
 
 
 
@@ -42,7 +40,6 @@ class Pitch extends Component {
         vCaptain={this.props.vCaptain===player}
         playerPG={this.playerPG(player.player_id)}
         type={this.props.type}
-        toggleSlideDrawer={this.props.toggleSlideDrawer}
         />)
     }
 
@@ -67,22 +64,22 @@ class Pitch extends Component {
     }
 
     modalJSX = () => 
-    <View>
-                        <Text>{fullName(this.state.modal.player)}</Text>
-                        <Text>{positionString(this.state.modal.player.position)}</Text>
-                        <Text>£{this.state.modal.player.price}m</Text>
-                        <Text>MAYBE SOME STATS AT SOME POINT</Text>
-                        {this.props.type==="pickTeam" ? <CheckBox
-                        checked={this.props.captain===this.state.modal.player}
-                        title="Captain"
-                        onPress={()=>this.props.setCaptain(this.state.modal.player)} 
-                        /> : null}
-                        {this.props.type==="pickTeam" ? <CheckBox
-                        checked={this.props.vCaptain===this.state.modal.player}
-                        title="Vice - Captain"
-                        onPress={()=>this.props.setVCaptain(this.state.modal.player)} 
-                        /> : null}
-                    </View>
+    <View style={modalTextContainer}>
+        <Text style={standardText}>{fullName(this.state.modal.player)}</Text>
+        <Text style={standardText}>{positionString(this.state.modal.player.position)}</Text>
+        <Text style={standardText}>£{this.state.modal.player.price}m</Text>
+        <Text style={standardText}>MAYBE SOME STATS AT SOME POINT</Text>
+        {this.props.type==="pickTeam" ? <CheckBox
+        checked={this.props.captain===this.state.modal.player}
+        title="Captain"
+        onPress={()=>this.props.setCaptain(this.state.modal.player)} 
+        /> : null}
+        {this.props.type==="pickTeam" ? <CheckBox
+        checked={this.props.vCaptain===this.state.modal.player}
+        title="Vice - Captain"
+        onPress={()=>this.props.setVCaptain(this.state.modal.player)} 
+        /> : null}
+    </View>
 
     render() { 
         const pitchImg = require('../../images/kisspng-ball-game-football-pitch-corner-kick-football-stadium-5ac96cf3827065.1735532915231500675343.png');
@@ -98,7 +95,7 @@ class Pitch extends Component {
                             <View style={pitch}>
                                 <ImageBackground source={pitchImg} imageStyle={{resizeMode: 'stretch'}} style={pitchImage}>
                                     <View style={{flex: 1, flexDirection: 'row'}}>
-                                        <View style={pitch} onPress={()=>{console.log('hit');this.setState({...this.state, slideDrawer: false})}}>
+                                        <View style={pitch}>
                                             <View style={starters}>
                                                 <View style={positionRow}>
                                                     {this.props.team[4].length>0 ? this.renderPlayers('4', 10) : null}
@@ -117,20 +114,14 @@ class Pitch extends Component {
                                     </View>
                                 </ImageBackground>
 
-                                    {/* <MyModal 
+                                    <MyModal 
                                     visible={this.state.modal.active}
                                     height={vh(30)}
                                     width={vw(80)}
                                     closeModalFcn={()=>this.setState({modal: {...this.state.modal, active: false}})}
                                     jsx={this.modalJSX()}
                                     buttonOptions={[]}
-                                    /> */}
-                                    <View style={slideButtonContainer}>
-                                        <TouchableOpacity
-                                        onPress={this.props.toggleSlideDrawer}>
-                                            <View style={slideButton}></View>
-                                        </TouchableOpacity>
-                                    </View>
+                                    />
                                 </View>
                     </View>
                     {this.props.subs ? <View style={subs}>

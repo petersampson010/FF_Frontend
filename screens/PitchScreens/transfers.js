@@ -7,7 +7,7 @@ import PlayersList from '../../components/playersList/playersList.js';
 import { showMessage } from 'react-native-flash-message';
 import BottomNav from '../../components/bottomNav/bottomNav.js';
 import FadeInView from '../../components/fadeInView.js';
-import { pitchContainer, playersMenu, quickView, menuDrawerContainer, leftDrawerComp, rightDrawerComp, closeDrawer } from './style.js';
+import { pitchContainer } from './style.js';
 import { screenContainer } from '../../styles/global.js';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { validateTransfers } from '../../functions/validity';
@@ -23,8 +23,7 @@ class TransfersScreen extends Component {
         },
 
         positionFilter: '0',
-        budget: this.props.budget,
-        slideDrawerActive: false
+        budget: this.props.budget
     }
 
 
@@ -73,32 +72,6 @@ class TransfersScreen extends Component {
         return allSelectedPlayerIds(this.state.team).includes(player.player_id);
     };
 
-    animateButton = () => {
-        this.fade.animateButton();
-    }
-
-    toggleSlideDrawer = () => {
-        this.setState({
-            ...this.state,
-            slideDrawerActive: !this.state.slideDrawerActive
-        })
-    }
-    
-    drawerContent = () => 
-        <View style={menuDrawerContainer}>
-            <View style={leftDrawerComp}>
-                <TouchableWithoutFeedback onPress={this.toggleSlideDrawer}>
-                    <View style={closeDrawer}></View>
-                </TouchableWithoutFeedback>
-            </View>
-            <View style={rightDrawerComp}>
-                <PlayersList
-                    allSelectedPlayerIds={allSelectedPlayerIds(this.state.team)}
-                    clickFcn={this.transfer}
-                    />
-            </View>
-        </View>
-
     confirmUpdates = () => {
         if (validateTransfers()) {
 
@@ -118,11 +91,11 @@ class TransfersScreen extends Component {
                     subs={false}
                     captain={false}
                     vCaptain={false}
-                    drawerContent={this.drawerContent()}
-                    slideDrawerActive={this.state.slideDrawerActive}
-                    toggleSlideDrawer={this.toggleSlideDrawer}
                     />
-                    
+                    <PlayersList
+                    allSelectedPlayerIds={allSelectedPlayerIds(this.state.team)}
+                    clickFcn={this.transfer}
+                    />
                     
                 </ScrollView>
                 <BottomNav navigate={this.props.navigation.navigate}/>
