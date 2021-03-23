@@ -110,7 +110,6 @@ export const fetchSubsByUserId = id => {
     .then(res => res.json())
 }
 export const postPlayer = (player, aUserId) => {
-    console.log(aUserId);
     let configObj = {
         method: "POST",
         headers: {
@@ -206,6 +205,17 @@ export const patchPlayerUserJoinerCAPTAINS = (captain, vice_captain, pu_id) => {
     };
     return fetch(`http://localhost:3000/player_user_joiners/${pu_id}`, configObj)
     .then(res=>res.json())
+}
+
+export const deletePlayerUserJoiner = () => {
+    let configObj = {
+        method: "DELETE",
+        // headers: {
+        //     "Content-Type": "application/json",
+        //     "Accept": "application/json"
+        // },
+    };
+    fetch(`http://localhost:3000/player_user_joiners/${pu_id}`, configObj)
 }
 
 

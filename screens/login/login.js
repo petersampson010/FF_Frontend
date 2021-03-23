@@ -83,7 +83,6 @@ class LoginScreen extends Component {
         let puJoiners = await fetchAllPlayerUserJoinersByUserId(user.user_id);
         let league = await fetchLeague(user.admin_user_id);
         let gameweek = await fetchLatestGameweekFromAdminUserId(user.admin_user_id);
-        console.log(gameweek);
         if (gameweek) {
           let pgJoiners = await fetchPGJoinersFromUserIdAndGameweekId(user.user_id, gameweek.gameweek_id);
           let ugJoiners = await fetchUGJoiners(user.admin_user_id, gameweek.gameweek_id);

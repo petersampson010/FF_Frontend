@@ -50,8 +50,6 @@ class GameEditorScreen extends Component {
     }
 
     renderRows = () => {
-        console.log('yoohoo');
-        console.log(this.state);
         return Object.keys(this.state.players).map((x,i) => {
             return <Row key={i} data={this.renderRow(x)} style={{...styles.row, backgroundColor: this.state.players[x].valid ? 'green' : 'red'}}/>})
     }

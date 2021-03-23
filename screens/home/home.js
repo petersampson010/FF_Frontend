@@ -16,7 +16,7 @@ class HomeScreen extends Component {
     state = {  }
 
     componentDidMount() {
-        console.log(this.props.gwLatest);
+        // console.log(this.props.gwLatest);
     }
 
     renderRows = () => {

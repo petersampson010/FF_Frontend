@@ -67,6 +67,7 @@ export const validatePlayerScore = playerScore => {
 }
 
 export const validateTransfers = (budget, team) => {
+    console.log(budget);
     if (budget>=0) {
         if (playersObjToArray(team).length===8) {
             return true;
