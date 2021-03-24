@@ -17,7 +17,6 @@ class PlayerGWProfile extends Component {
         return Object.keys(this.props.player.pg).map(score=>{
             let att = this.props.player.pg[score];
             if (att==null || score=="pg_id" || score=="updated_at" || score=="created_at" || score=="player_id" || score=="gameweek_id" || score=="total_points") {
-                console.log(att);
                 return;
             } else {
                 return <Text>{capitalize(score)}: {att}</Text>;

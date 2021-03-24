@@ -1,6 +1,7 @@
 import { playersObjToArray } from "./functions/reusable";
 
 const initialState = {
+    spinner: false,
     endUser: {
         adminUser: {
             active: false,
@@ -37,7 +38,7 @@ const rootReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'LOGINUSER':
             return {
-                ...state, 
+                ...state,
                 endUser: {
                     ...state.endUser,
                     user: action.user,
@@ -178,6 +179,38 @@ const rootReducer = (state = initialState, action) => {
                     games: [...state.gameweek.games, action.game]
                 }
             };
+        case 'SETTRANSFERS':
+            let starters = action.team.filter(player=>player.sub===false);
+            let subs = action.team.filter(player=>player.sub===true);
+            return {
+                ...state, 
+                players: {
+                    ...state.players, 
+                    starters, 
+                    subs
+                }
+            };
+        case 'UPDATEBUDGET':
+            return {
+                ...state, 
+                endUser: {
+                    ...state.endUser,
+                    user: {
+                        ...state.endUser.user,
+                        budget: action.budget
+                    }
+                }
+            }
+        case 'ADDSPINNER':
+            return {
+                ...state, 
+                spinner: true
+            }
+        case "REMOVESPINNER":
+            return {
+                ...state, 
+                spinner: false
+            }
         default:
             return state;
     }

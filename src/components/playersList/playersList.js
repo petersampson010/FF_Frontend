@@ -17,6 +17,11 @@ class PlayersList extends Component {
     }
 
     playerSelected = player => {
+        // console.log(this.props.allSelectedPlayerIds);
+        // console.log(this.props.team[player.position]);
+        // console.log('break');
+        // console.log(player);
+        // console.log(this.props.team[player.position].includes(player));
         return this.props.allSelectedPlayerIds.includes(player.player_id);
     };
 
@@ -37,13 +42,24 @@ class PlayersList extends Component {
         }
     }
 
-    tableRow = (player) => 
-    <TouchableOpacity onPress={this.playerSelected(player) ? null : ()=>this.props.clickFcn(player)}
-    style={{...tableRow, opacity: (this.playerSelected(player) ? 0.3 : 1)}}>
+    tableRow = (player) => {
+        // console.log(player.last_name);
+        // console.log(this.playerSelected(player));
+    return this.playerSelected(player) ? 
+    <TouchableOpacity
+    style={{...tableRow, opacity: 0.3}}>
         <Text style={{...tableElement, ...standardText}}>{fullName(player)}</Text>
         <Text style={{...tableElement, ...standardText}}>{positionString(player.position)}</Text>
         <Text style={{...tableElement, ...standardText}}>£{player.price}m</Text>
-    </TouchableOpacity>;
+    </TouchableOpacity>
+    :
+    <TouchableOpacity onPress={()=>this.props.clickFcn(player)}
+    style={{...tableRow, opacity: 1}}>
+        <Text style={{...tableElement, ...standardText}}>{fullName(player)}</Text>
+        <Text style={{...tableElement, ...standardText}}>{positionString(player.position)}</Text>
+        <Text style={{...tableElement, ...standardText}}>£{player.price}m</Text>
+    </TouchableOpacity>
+    }
 
     render() { 
         return ( 

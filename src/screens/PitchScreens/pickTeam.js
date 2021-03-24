@@ -60,9 +60,9 @@ class PickTeamScreen extends Component {
     }
 
 
-    showState = () => {
-        console.log(this.state)
-    }
+    // showState = () => {
+    //     console.log(this.state)
+    // }
 
     setCaptain = player => {
         if (this.state.captain===player) {

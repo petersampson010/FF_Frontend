@@ -156,6 +156,7 @@ export const fetchAllPlayerUserJoinersByUserId = id => {
 export const fetchPlayerUserJoinerByUserIdAndPlayerId = (userId, playerId) => {
     return fetchAllPlayerUserJoinersByUserId(userId)
     .then(data=>data.filter(x=>x.player_id===playerId))
+    .then(data=>data[0]);
 }
 export const postPlayerUserJoiner = (player, userId, count) => {
     let configObj = {
@@ -168,6 +169,28 @@ export const postPlayerUserJoiner = (player, userId, count) => {
             sub: count>5 ? true : false,
             captain: count===2 ? true : false,
             vice_captain: count===5 ? true : false,
+            player_id: player.player_id,
+            user_id: userId
+        })
+    };
+    return fetch('http://localhost:3000/player_user_joiners', configObj)
+    .then(res=>res.json())
+}
+export const postPlayerUserJoinerTRANSFER = (player, userId, count, captain, vice_captain) => {
+    console.log(player.last_name);
+    console.log(count);
+    console.log(captain);
+    console.log(vice_captain);
+    let configObj = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            sub: count>0 ? true : false,
+            captain,
+            vice_captain,
             player_id: player.player_id,
             user_id: userId
         })
@@ -207,7 +230,7 @@ export const patchPlayerUserJoinerCAPTAINS = (captain, vice_captain, pu_id) => {
     .then(res=>res.json())
 }
 
-export const deletePlayerUserJoiner = () => {
+export const deletePlayerUserJoiner = (pu_id) => {
     let configObj = {
         method: "DELETE",
         // headers: {

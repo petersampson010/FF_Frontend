@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { TouchableHighlightBase } from 'react-native';
 import { View, Text, StyleSheet, Modal, Button } from 'react-native';
 import { vh, vw } from 'react-native-expo-viewport-units';
 import { connect } from 'react-redux';
+import { labelText, standardText } from '../../styles/textStyle';
 import { pitchHead } from './style';
 
 
@@ -17,9 +19,13 @@ class PitchHead extends Component {
             case 'points': 
                 return <Text>Points: {this.props.latestUG.total_points}</Text>;
             case 'transfers':
-                return <Text style={{color: (this.props.budget>=0 ? 'green' : 'red')}}>Budget: {this.props.budget}m</Text>
+                    return <View>
+                        <Text style={labelText}>Transfers Available: {this.props.user.transfers}</Text>
+                        <View style={{flexDirection: "row"}}><Text style={labelText}>Budget: </Text><Text style={{...labelText, color: (this.props.budget>=0 ? 'green' : 'red')}}>{this.props.budget}m</Text></View>
+                    </View>;
+                return 
             case 'pickTeam':
-                return <Text></Text>
+                return <Text></Text>;
             default: 
                 return;
         }
@@ -50,7 +56,8 @@ class PitchHead extends Component {
 
 const mapStateToProps = state => {
     return {
-        latestUG: state.joiners.latestUG
+        latestUG: state.joiners.latestUG,
+        user: state.endUser.user
     }
 }
  

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import OpenerScreen from './screens/opener/opener';
@@ -33,91 +32,91 @@ function Navigation() {
         }}}/>
         <Stack.Screen name="Login" component={LoginScreen} 
         options={{
-          title: 'Sunday',
+          title: 'Login',
           headerStyle: {backgroundColor: $darkBlue}
         , headerTitleStyle: {
           color: 'white'
         }}}/>
         <Stack.Screen name="AdminAccountSetup" component={AdminAccountSetupScreen} 
         options={{
-          title: 'Sunday',
+          title: 'Admin Account Setup',
           headerStyle: {backgroundColor: $darkBlue}
         , headerTitleStyle: {
           color: 'white'
         }}}/>
         <Stack.Screen name="nts1" component={ntsScreen1} 
         options={{
-          title: 'Sunday',
+          title: 'Team Sign Up',
           headerStyle: {backgroundColor: $darkBlue}
         , headerTitleStyle: {
           color: 'white'
         }}}/>
         <Stack.Screen name="nts2" component={ntsScreen2} 
         options={{
-          title: 'Sunday',
+          title: 'Team Set Up',
           headerStyle: {backgroundColor: $darkBlue}
         , headerTitleStyle: {
           color: 'white'
         }}}/>
         <Stack.Screen name="ContactUs" component={ContactUsScreen} 
         options={{
-          title: 'Sunday',
+          title: 'Contact Us',
           headerStyle: {backgroundColor: $darkBlue}
         , headerTitleStyle: {
           color: 'white'
         }}}/>
         <Stack.Screen name="Home" component={HomeScreen} 
         options={{
-          title: 'Sunday',
+          title: 'Home',
           headerStyle: {backgroundColor: $darkBlue}
         , headerTitleStyle: {
           color: 'white'
         }}}/>
         <Stack.Screen name="Transfers" component={TransfersScreen} 
         options={{
-          title: 'Sunday',
+          title: 'Transfers',
           headerStyle: {backgroundColor: $darkBlue}
         , headerTitleStyle: {
           color: 'white'
         }}}/>
         <Stack.Screen name="Points" component={PointsScreen} 
         options={{
-          title: 'Sunday',
+          title: 'Points',
           headerStyle: {backgroundColor: $darkBlue}
         , headerTitleStyle: {
           color: 'white'
         }}}/>
         <Stack.Screen name="ClubSetup" component={ClubSetupScreen} 
         options={{
-          title: 'Sunday',
+          title: 'Club Setup',
           headerStyle: {backgroundColor: $darkBlue}
         , headerTitleStyle: {
           color: 'white'
         }}}/>
         <Stack.Screen name="PickTeam" component={PickTeamScreen} 
         options={{
-          title: 'Sunday',
+          title: 'Pick Team',
           headerStyle: {backgroundColor: $darkBlue}
         , headerTitleStyle: {
           color: 'white'
         }}}/>
         <Stack.Screen name="AdminHome" component={AdminHomeScreen} 
         options={{
-          title: 'Sunday',
+          title: 'Club Home',
           headerStyle: {backgroundColor: $darkBlue}
         , headerTitleStyle: {
           color: 'white'
         }}}/>
         <Stack.Screen name="GameEditor" component={GameEditorScreen} 
         options={{
-          title: 'Sunday',
+          title: 'Game Editor',
           headerStyle: {backgroundColor: $darkBlue}
         , headerTitleStyle: {
           color: 'white'
         }}}/>
         <Stack.Screen name="AdminPlayerEdit" component={AdminPlayerEditScreen} 
         options={{
-          title: 'Sunday',
+          title: 'Player Edit',
           headerStyle: {backgroundColor: $darkBlue}
         , headerTitleStyle: {
           color: 'white'

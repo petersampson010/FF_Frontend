@@ -124,3 +124,29 @@ export const addGameState = game => {
         game
     }
 }
+
+export const setTransfers = team => {
+    return {
+        type: 'SETTRANSFERS',
+        team
+    }
+}
+
+export const updateBudget = budget => {
+    return {
+        type: 'UPDATEBUDGET',
+        budget
+    }
+}
+
+export  const addSpinner = () => {
+    return {
+        type: 'ADDSPINNER'
+    }
+}
+
+export const removeSpinner = () => {
+    return {
+        type: 'REMOVESPINNER'
+    }
+}

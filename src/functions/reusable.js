@@ -79,9 +79,27 @@ export const isVCaptain = (player, puJoiners) => {
     return puJoiner.vice_captain;
 }
 
+export const getPuJ = (player, puJoiners) => {
+    let puJoiner = puJoiners.find(x=>x.player_id===player.player_id);
+    return puJoiner;
+}
+
 export const getPuId = (player, puJoiners) => {
     let puJoiner = puJoiners.find(x=>x.player_id===player.player_id);
     return puJoiner.pu_id;
+}
+
+export const addSubAttributeToPlayersArray = (team, allPuJ, count) => {
+    return team.map(player => { 
+        let sub;
+        let puJ = getPuJ(player, allPuJ);
+        if (puJ) {
+            sub = puJ.sub
+        } else {
+            sub = count>0 ? false : true;
+            count--;
+        }
+        return {...player, sub}})
 }
 
 export const allSelectedPlayers = team => Object.values(team).flat(Infinity);
