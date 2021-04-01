@@ -169,7 +169,7 @@ class TransfersScreen extends Component {
                     clickFcn={this.transfer}
                     />
                 </ScrollView>
-                <BottomNav navigate={this.props.navigation.navigate}/>
+                <BottomNav navigation={this.props.navigation}/>
             </View>
          );
     }

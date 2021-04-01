@@ -6,7 +6,7 @@ import { CheckBox } from 'react-native-elements';
 import MyModal from '../Modal/myModal';
 import { connect } from 'react-redux';
 import PitchHead from '../PitchHead/pitchHead';
-import { pitch, pitchContainer, starters, subs, positionRow, scrollContainer, pitchImage } from './style';
+import { pitch, pitchContainer, starters, subs, positionRow, pitchImage, pitchClassContainer } from './style';
 import { fullName, positionString } from '../../functions/reusable';
 import { modalTextContainer } from '../Modal/style';
 import { standardText } from '../../styles/textStyle';
@@ -84,48 +84,46 @@ class Pitch extends Component {
     render() { 
         const pitchImg = require('../../images/kisspng-ball-game-football-pitch-corner-kick-football-stadium-5ac96cf3827065.1735532915231500675343.png');
         return ( 
-            <View>
+            <View style={pitchClassContainer}>
                 <PitchHead
                 budget={this.props.budget}
                 type={this.props.type}
                 update={this.props.update}
                 />
-                    <View style={pitchContainer}>
-                            <View style={pitch}>
-                                <ImageBackground source={pitchImg} imageStyle={{resizeMode: 'stretch'}} style={pitchImage}>
-                                    <View style={{flex: 1, flexDirection: 'row'}}>
-                                        <View style={pitch}>
-                                            <View style={starters}>
-                                                <View style={positionRow}>
-                                                    {this.props.team[4].length>0 ? this.renderPlayers('4', 10) : null}
-                                                </View>
-                                                <View style={positionRow}>
-                                                    {this.props.team[3].length>0 ? this.renderPlayers('3', 6) : null}
-                                                </View>
-                                                <View style={positionRow}>
-                                                    {this.props.team[2].length>0 ? this.renderPlayers('2', 2) : null}
-                                                </View>
-                                                <View style={positionRow}>
-                                                    {this.props.team[1].length>0 ? this.renderPlayers('1', 1) : null}
-                                                </View>
-                                            </View>
+                <View style={pitchContainer}>
+                        <ImageBackground source={pitchImg} imageStyle={{resizeMode: 'stretch'}} style={pitchImage}>
+                            <View style={{flex: 1, flexDirection: 'row'}}>
+                                <View style={pitch}>
+                                    <View style={starters}>
+                                        <View style={{...positionRow, width: vw(60)}}>
+                                            {this.props.team[4].length>0 ? this.renderPlayers('4', 10) : null}
+                                        </View>
+                                        <View style={{...positionRow, width: vw(70)}}>
+                                            {this.props.team[3].length>0 ? this.renderPlayers('3', 6) : null}
+                                        </View>
+                                        <View style={{...positionRow, width: vw(80)}}>
+                                            {this.props.team[2].length>0 ? this.renderPlayers('2', 2) : null}
+                                        </View>
+                                        <View style={positionRow}>
+                                            {this.props.team[1].length>0 ? this.renderPlayers('1', 1) : null}
                                         </View>
                                     </View>
-                                </ImageBackground>
-
-                                    <MyModal 
-                                    visible={this.state.modal.active}
-                                    height={vh(30)}
-                                    width={vw(80)}
-                                    closeModalFcn={()=>this.setState({modal: {...this.state.modal, active: false}})}
-                                    jsx={this.modalJSX()}
-                                    buttonOptions={[]}
-                                    />
                                 </View>
-                    </View>
-                    {this.props.subs ? <View style={subs}>
+                            </View>
+                        </ImageBackground>
+                        <MyModal 
+                        visible={this.state.modal.active}
+                        height={vh(30)}
+                        width={vw(80)}
+                        closeModalFcn={()=>this.setState({modal: {...this.state.modal, active: false}})}
+                        jsx={this.modalJSX()}
+                        buttonOptions={[]}
+                        />
+                </View>
+                {this.props.subs ? <View style={subs}>
+                    {/* <Text>HIIII</Text> */}
                         {this.renderSubs(12)}
-                    </View> : null}
+                </View> : null}
             </View>
          );
     }

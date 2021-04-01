@@ -46,7 +46,7 @@ class HomeScreen extends Component {
                         {this.renderRows()}
                     </Table>
                 </ScrollView>
-                <BottomNav navigate={this.props.navigation.navigate}/>
+                <BottomNav navigation={this.props.navigation}/>
             </View>
          );
     }

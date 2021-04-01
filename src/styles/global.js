@@ -20,11 +20,12 @@ export const $arylideYellow = '#E9D758';
 
 
 export const $darkBlue = '#152032';
+export const $darkBlueOpacity = 'rgba(21, 32, 50, 0.8)';
 export const $luminousGreen = 'rgb(99, 220, 159)';
 export const $inputBlue = '#3d4151';
 export const $seaBlue = '#0072d2';
 
-export const $electricBlue = 'rgb(49, 52, 62)';
+export const $electricBlue = 'rgba(4, 131, 236, 0.2)';
 export const $electricBlueHighlight = '#0483ee';
 
 export const $pitchGreen = '#417505';

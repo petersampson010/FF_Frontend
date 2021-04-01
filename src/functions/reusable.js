@@ -123,3 +123,5 @@ export const subOrTransfer = type => {
             return '';
     }
 }
+
+export const getNameOfNavPage = navState => navState.routes[navState.index].name;

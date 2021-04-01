@@ -44,12 +44,25 @@ class PlayerGraphic extends Component {
         // console.log(this.props.vCaptain);
     }
 
+    horizontalMargin = player => {
+        switch(player.position) {
+            case '2':
+                return 7;
+            case '3':
+                return 1;
+            case '4':
+                return 0;
+            default: 
+            return 0;
+        }
+    }
+
     render() {
         const playerImg = require('../../images/profile.jpg');
         const subImg = require('../../images/subIcon.png');
         const { player, openModal, type, clickFcn } = this.props;
       return ( 
-            <View style={container}>
+            <View style={{...container, marginHorizontal: this.horizontalMargin(player)}}>
                 <View style={subContainer}>
                     <TouchableOpacity onPress={()=>openModal(player)}>
                         <Image source={playerImg} imageStyle={{resizeMode: 'cover'}} style={playerImage}/>

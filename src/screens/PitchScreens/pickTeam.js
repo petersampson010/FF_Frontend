@@ -151,7 +151,7 @@ class PickTeamScreen extends Component {
                         setCaptain={this.setCaptain}
                         setVCaptain={this.setVCaptain}
                         />
-                <BottomNav navigate={this.props.navigation.navigate}/>
+                <BottomNav navigation={this.props.navigation}/>
             </View>
          );
     }

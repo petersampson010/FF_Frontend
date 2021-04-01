@@ -28,32 +28,32 @@ class PlayersList extends Component {
     table = () => {
         switch(this.state.positionFilter) {
             case '0': 
-                return this.props.clubPlayers.map((player) => this.tableRow(player))
+                return this.props.clubPlayers.map((player, index) => this.tableRow(player, index))
             case '1': 
-                return this.props.clubPlayers.filter(x=>x.position==='1').map((player) => this.tableRow(player))
+                return this.props.clubPlayers.filter(x=>x.position==='1').map((player, index) => this.tableRow(player, index))
             case '2': 
-                return this.props.clubPlayers.filter(x=>x.position==='2').map((player) => this.tableRow(player))
+                return this.props.clubPlayers.filter(x=>x.position==='2').map((player, index) => this.tableRow(player, index))
             case '3': 
-                return this.props.clubPlayers.filter(x=>x.position==='3').map((player) => this.tableRow(player))
+                return this.props.clubPlayers.filter(x=>x.position==='3').map((player, index) => this.tableRow(player, index))
             case '4': 
-                return this.props.clubPlayers.filter(x=>x.position==='4').map((player) => this.tableRow(player));
+                return this.props.clubPlayers.filter(x=>x.position==='4').map((player, index) => this.tableRow(player, index));
             default: 
                 break;
         }
     }
 
-    tableRow = (player) => {
+    tableRow = (player, key) => {
         // console.log(player.last_name);
         // console.log(this.playerSelected(player));
     return this.playerSelected(player) ? 
-    <TouchableOpacity
+    <TouchableOpacity key={key}
     style={{...tableRow, opacity: 0.3}}>
         <Text style={{...tableElement, ...standardText}}>{fullName(player)}</Text>
         <Text style={{...tableElement, ...standardText}}>{positionString(player.position)}</Text>
         <Text style={{...tableElement, ...standardText}}>£{player.price}m</Text>
     </TouchableOpacity>
     :
-    <TouchableOpacity onPress={()=>this.props.clickFcn(player)}
+    <TouchableOpacity key={key} onPress={()=>this.props.clickFcn(player)}
     style={{...tableRow, opacity: 1}}>
         <Text style={{...tableElement, ...standardText}}>{fullName(player)}</Text>
         <Text style={{...tableElement, ...standardText}}>{positionString(player.position)}</Text>

@@ -13,7 +13,7 @@ class BottomNav extends Component {
                 {pages.map((p,i)=>
                 <NavSection 
                 key={i}
-                navigate={this.props.navigate} 
+                navigation={this.props.navigation} 
                 page={p}/>
                 )}
             </View>

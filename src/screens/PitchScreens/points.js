@@ -3,13 +3,19 @@ import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Header from '../../components/header/header';
 import Pitch from '../../components/Pitch/pitch';
-import { getCaptain, getVCaptain, playersArrayToObj } from '../../functions/reusable';
+import { getCaptain, getVCaptain, playersArrayToObj, getNameOfNavPage } from '../../functions/reusable';
 import BottomNav from '../../components/bottomNav/bottomNav';
 
 
 class PointsScreen extends Component {
     state = {  }
 
+    componentDidMount() {
+        console.log('this bit');
+        console.log(getNameOfNavPage(this.props.navigation.dangerouslyGetState()));
+    }
+
+    getNavState = () => this.props.navigation.dangerouslyGetState();
 
     render() { 
         return ( 
@@ -26,7 +32,7 @@ class PointsScreen extends Component {
                 captain={getCaptain(this.props.starters, this.props.puJoiners)}
                 vCaptain={getVCaptain(this.props.starters, this.props.puJoiners)}
                 /> : <Text>No Games played yet, come back soon!</Text>}
-                <BottomNav navigate={this.props.navigation.navigate}/>
+                <BottomNav navigation={this.props.navigation}/>
             </ScrollView>
          );
     }

@@ -6,11 +6,11 @@ export const container = {
 }
 
 export const subContainer = {
-    width: vw(23),
+    width: vw(18),
     flexDirection:  "row",
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: vw(7)
+    paddingLeft: vw(5)
 }
 
 export const playerImage = {
@@ -27,5 +27,5 @@ export const playerName = {
 export const subImage = {
     height: vh(2),
     width: vw(5),
-    marginLeft: vw(2),
+    // marginLeft: vw(2),
 }
