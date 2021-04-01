@@ -38,7 +38,7 @@ export const validatePickTeam = (team) => {
         return true;
     } else {
         showMessage({
-            message: "You need 7 starting players",
+            message: "You need 6 starting players",
             type: "danger"
         });
         return false;

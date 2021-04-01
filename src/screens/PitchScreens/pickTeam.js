@@ -99,19 +99,21 @@ class PickTeamScreen extends Component {
     }
 
     validateTeam = () => {
-        let { result } = validatePickTeam(this.state.team)
-        if (result) {
+        if (validatePickTeam(this.state.team)) {
             this.updateTeam();
         }
     }
         
     updateTeam = async() => {
+        console.log('update team hit');
         let prevCaptain = getCaptain(this.props.starters, this.props.puJoiners);
         let prevVCaptain = getVCaptain(this.props.starters, this.props.puJoiners);
         let startToSub = _.difference(this.props.starters, playersObjToArray(this.state.team))
         let subToStart = _.difference(this.props.subs, this.state.subs);
+        console.log(subToStart);
+        console.log(startToSub);
         try {
-            for (let i=0;i<subToStart.length;i++) {
+            for (let i=0;i<startToSub.length;i++) {
                 await patchPlayerUserJoinerSUBS(true, getPuId(startToSub[i], this.props.puJoiners));
                 await patchPlayerUserJoinerSUBS(false, getPuId(subToStart[i], this.props.puJoiners));
             }

@@ -200,6 +200,8 @@ export const postPlayerUserJoinerTRANSFER = (player, userId, count, captain, vic
 }
 
 export const patchPlayerUserJoinerSUBS = (sub, pu_id) => {
+    console.log(sub);
+    console.log(pu_id);
     let configObj = {
         method: "PATCH",
         headers: {
@@ -212,6 +214,7 @@ export const patchPlayerUserJoinerSUBS = (sub, pu_id) => {
     };
     return fetch(`http://localhost:3000/player_user_joiners/${pu_id}`, configObj)
     .then(res=>res.json())
+    .then(console.log)
 }
 
 export const patchPlayerUserJoinerCAPTAINS = (captain, vice_captain, pu_id) => {
