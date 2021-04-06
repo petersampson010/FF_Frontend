@@ -16,14 +16,7 @@ class PlayersList extends Component {
         positionFilter: '0'
     }
 
-    playerSelected = player => {
-        // console.log(this.props.allSelectedPlayerIds);
-        // console.log(this.props.team[player.position]);
-        // console.log('break');
-        // console.log(player);
-        // console.log(this.props.team[player.position].includes(player));
-        return this.props.allSelectedPlayerIds.includes(player.player_id);
-    };
+    playerSelected = player => this.props.allSelectedPlayerIds.includes(player.player_id);
 
     table = () => {
         switch(this.state.positionFilter) {
@@ -43,8 +36,6 @@ class PlayersList extends Component {
     }
 
     tableRow = (player, key) => {
-        // console.log(player.last_name);
-        // console.log(this.playerSelected(player));
     return this.playerSelected(player) ? 
     <TouchableOpacity key={key}
     style={{...tableRow, opacity: 0.3}}>

@@ -110,7 +110,6 @@ class GameEditorScreen extends Component {
         let outcome = true;
         let postArr = [];
         let updatedState = this.state
-        // console.log(this.props.clubPlayers)
         for (let i=0;i<this.props.clubPlayers.length;i++) {
             let playerID = this.props.clubPlayers[i].player_id
             let { result, post } = validatePlayerScore(this.state.players[playerID])
@@ -140,7 +139,6 @@ class GameEditorScreen extends Component {
     }
     
     postPGJoiners = async(postArr) => {
-        // console.log(postArr)
         try{
             await completeGame(this.props.gwLatest, this.state.score);
             for (let i=0;i<postArr.length;i++) {

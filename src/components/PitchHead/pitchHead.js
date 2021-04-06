@@ -10,10 +10,6 @@ import { pitchHead } from './style';
 class PitchHead extends Component {
     state = {  }
 
-    // componentDidMount() {
-    //     console.log(this.props.latestUG);
-    // }
-
     comp1 = () => {
         switch(this.props.type) {
             case 'points': 

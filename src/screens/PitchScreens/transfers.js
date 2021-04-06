@@ -34,10 +34,6 @@ class TransfersScreen extends Component {
         spinner: false
     }
 
-    componentDidMount() {
-        console.log(this.props.teamPlayers);
-    }
-
     originalTeam = () => {
         return {
             '1': this.props.teamPlayers.filter(x=>x.position==='1'),
@@ -90,41 +86,42 @@ class TransfersScreen extends Component {
                 let captain = false;
                 let vice_captain = false;
                 // players transferred out
-                console.log('before for each statement')
-                  _.difference(playersObjToArray(this.originalTeam()), playersObjToArray(this.state.team)).forEach(async(player) => {
-                    console.log('iniside for each statement');
-                    let puJ = await fetchPlayerUserJoinerByUserIdAndPlayerId(this.props.user.user_id, player.player_id);
-                    console.log('sub = ' + puJ.sub);
-                    if (puJ.sub) {
-                        console.log('hit the count addition');
-                        count++;
-                    }
-                    if (puJ.captain) {
-                        captain = true;
-                    }
-                    if (puJ.vice_captain) {
-                        vice_captain = true;
-                    }
-                    deletePlayerUserJoiner(puJ.pu_id);
-                });
-                console.log('after for each statement');
+                const playersOut = _.difference(playersObjToArray(this.originalTeam()), playersObjToArray(this.state.team));
+                for (let i=0;i<playersOut.length;i++) {
+                    console.log('************* TRANSFERING OUT LOOP *************');
+                  console.log(playersOut[i]);
+                  let puJ = await fetchPlayerUserJoinerByUserIdAndPlayerId(this.props.user.user_id, playersOut[i].player_id);
+                  console.log(puJ);
+                  if (puJ.sub) {
+                      count++;
+                  }
+                  if (puJ.captain) {
+                      captain = true;
+                  }
+                  if (puJ.vice_captain) {
+                      vice_captain = true;
+                  }
+    
+                  deletePlayerUserJoiner(puJ.pu_id);
+                }
                 // players transferred in
-                let playersIn = _.difference(playersObjToArray(this.state.team), playersObjToArray(this.originalTeam()));
-                playersIn.forEach(async(player) => {
+                const playersIn = _.difference(playersObjToArray(this.state.team), playersObjToArray(this.originalTeam()));
+                for (let j=0;j<playersIn.length;j++) {
                     if (captain) {
-                        await postPlayerUserJoinerTRANSFER(player, this.props.user.user_id, count, captain, false);
+                        console.log('hit on captain');
+                        await postPlayerUserJoinerTRANSFER(playersIn[j], this.props.user.user_id, 0, captain, false);
                         captain = false;
-                        count--;
                     } else if (vice_captain) {
-                        await postPlayerUserJoinerTRANSFER(player, this.props.user.user_id, count, false, vice_captain);
+                        console.log('hit on vice captain');
+                        await postPlayerUserJoinerTRANSFER(playersIn[j], this.props.user.user_id, 0, false, vice_captain);
                         vice_captain = false;
-                        count--;
                     } else {
-                        await postPlayerUserJoinerTRANSFER(player, this.props.user.user_id, count, false, false);
+                        console.log('hit');
+                        await postPlayerUserJoinerTRANSFER(playersIn[j], this.props.user.user_id, count, false, false);
                         vice_captain = false;
                         count--
                     }
-                })
+                }
                 // update budget
                 await patchUserBUDGET(this.state.budget, this.props.user.user_id);
                 this.props.updateBudget(this.state.budget);

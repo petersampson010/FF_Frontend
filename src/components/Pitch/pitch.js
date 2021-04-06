@@ -7,9 +7,11 @@ import MyModal from '../Modal/myModal';
 import { connect } from 'react-redux';
 import PitchHead from '../PitchHead/pitchHead';
 import { pitch, pitchContainer, starters, subs, positionRow, pitchImage, pitchClassContainer } from './style';
-import { fullName, positionString } from '../../functions/reusable';
-import { modalTextContainer } from '../Modal/style';
-import { standardText } from '../../styles/textStyle';
+import { fullName, getPuJ, positionString } from '../../functions/reusable';
+import { captainBox, modalTextContainer, nonCaptainBox } from '../Modal/style';
+import { checkBox, headers, labelText, standardText } from '../../styles/textStyle';
+import { TouchableOpacity } from 'react-native';
+import { $arylideYellow, $chocolateBlack, $standardWhite, $zaGreen } from '../../styles/global';
 
 
 
@@ -39,7 +41,6 @@ class Pitch extends Component {
         captain={this.props.captain===player}
         vCaptain={this.props.vCaptain===player}
         playerPG={this.playerPG(player.player_id)}
-        type={this.props.type}
         />)
     }
 
@@ -50,36 +51,37 @@ class Pitch extends Component {
         openModal={this.openModal}
         captain={this.props.captain===player}
         vCaptain={this.props.vCaptain===player}
-        type={this.props.type}
         />)
     }
 
-    openModal = player => {
-        this.setState({...this.state,
+    openModal = player => 
+        this.setState({
             modal: {
-                active: true,
+                active: true, 
                 player
             }
-        })
-    }
+        });
 
-    modalJSX = () => 
-    <View style={modalTextContainer}>
-        <Text style={standardText}>{fullName(this.state.modal.player)}</Text>
-        <Text style={standardText}>{positionString(this.state.modal.player.position)}</Text>
-        <Text style={standardText}>£{this.state.modal.player.price}m</Text>
+    modalJSX = () => {
+        const player = this.state.modal.player;
+        const sub = getPuJ(player, this.props.puJoiners).sub;
+    return <View style={modalTextContainer}>
+        <Text style={standardText}>{fullName(player)}</Text>
+        <Text style={standardText}>{positionString(player.position)}</Text>
+        <Text style={standardText}>£{player.price}m</Text>
         <Text style={standardText}>MAYBE SOME STATS AT SOME POINT</Text>
-        {this.props.type==="pickTeam" ? <CheckBox
-        checked={this.props.captain===this.state.modal.player}
-        title="Captain"
-        onPress={()=>this.props.setCaptain(this.state.modal.player)} 
-        /> : null}
-        {this.props.type==="pickTeam" ? <CheckBox
-        checked={this.props.vCaptain===this.state.modal.player}
-        title="Vice - Captain"
-        onPress={()=>this.props.setVCaptain(this.state.modal.player)} 
-        /> : null}
+        {(this.props.type==="pickTeam" && !sub) ?
+        <View>
+            <TouchableOpacity style={this.props.captain===player ? {...captainBox, backgroundColor: $zaGreen} : {...captainBox, backgroundColor: $standardWhite}} onPress={()=>this.props.setCaptain(player)}>
+                <Text style={this.props.captain===player ? {...checkBox, color: $arylideYellow} : {...checkBox, color: $chocolateBlack}}>Captain</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={this.props.vCaptain===player ? {...captainBox, backgroundColor: $zaGreen} : {...captainBox, backgroundColor: $standardWhite}} onPress={()=>this.props.setVCaptain(player)}>
+                <Text style={this.props.vCaptain===player ? {...checkBox, color: $arylideYellow} : {...checkBox, color: $chocolateBlack}}>Vice Captain</Text>
+            </TouchableOpacity>
+        </View>
+        : null}
     </View>
+    }
 
     render() { 
         const pitchImg = require('../../images/kisspng-ball-game-football-pitch-corner-kick-football-stadium-5ac96cf3827065.1735532915231500675343.png');
@@ -113,7 +115,7 @@ class Pitch extends Component {
                         </ImageBackground>
                         <MyModal 
                         visible={this.state.modal.active}
-                        height={vh(30)}
+                        height={vh(33)}
                         width={vw(80)}
                         closeModalFcn={()=>this.setState({modal: {...this.state.modal, active: false}})}
                         jsx={this.modalJSX()}
@@ -121,7 +123,6 @@ class Pitch extends Component {
                         />
                 </View>
                 {this.props.subs ? <View style={subs}>
-                    {/* <Text>HIIII</Text> */}
                         {this.renderSubs(12)}
                 </View> : null}
             </View>
@@ -131,7 +132,8 @@ class Pitch extends Component {
 
 const mapStateToProps = state => {
     return {
-        pgJoiners: state.joiners.pgJoiners
+        pgJoiners: state.joiners.pgJoiners,
+        puJoiners: state.joiners.puJoiners
     }
 }
  

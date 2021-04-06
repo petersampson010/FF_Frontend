@@ -30,7 +30,7 @@ export const $electricBlueHighlight = '#0483ee';
 
 export const $pitchGreen = '#417505';
 
-
+export const $zaGreen = "#009688";
 
 // text
 

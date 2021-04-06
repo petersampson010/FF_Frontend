@@ -1,4 +1,4 @@
-import { $arylideYellow } from "./global"
+import { $arylideYellow, $chocolateBlack } from "./global"
 
 export const standardText = {
     fontFamily: 'Avenir Next',
@@ -16,4 +16,10 @@ export const headers = {
     color: $arylideYellow,
     fontSize: 20,
     fontFamily: 'Avenir Next',
+}
+
+export const checkBox = {
+    fontFamily: 'Avenir Next',
+    color: $chocolateBlack,
+    fontSize: 16,
 }

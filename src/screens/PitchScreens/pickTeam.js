@@ -60,16 +60,8 @@ class PickTeamScreen extends Component {
     }
 
 
-    // showState = () => {
-    //     console.log(this.state)
-    // }
-
     setCaptain = player => {
-        if (this.state.captain===player) {
-            this.setState({...this.state, 
-                captain: undefined
-            })
-        } else if (this.state.vCaptain===player) {
+        if (this.state.vCaptain===player) {
             showMessage({
                 message: "Player is already a captain",
                 type: 'warning'
@@ -82,11 +74,7 @@ class PickTeamScreen extends Component {
     }
 
     setVCaptain = player => {
-        if (this.state.vCaptain===player) {
-            this.setState({...this.state, 
-                vCaptain: undefined
-            })
-        } else if (this.state.captain===player) {
+        if (this.state.captain===player) {
             showMessage({
                 message: "Player is already a captain",
                 type: 'warning'
@@ -105,13 +93,10 @@ class PickTeamScreen extends Component {
     }
         
     updateTeam = async() => {
-        console.log('update team hit');
         let prevCaptain = getCaptain(this.props.starters, this.props.puJoiners);
         let prevVCaptain = getVCaptain(this.props.starters, this.props.puJoiners);
         let startToSub = _.difference(this.props.starters, playersObjToArray(this.state.team))
         let subToStart = _.difference(this.props.subs, this.state.subs);
-        console.log(subToStart);
-        console.log(startToSub);
         try {
             for (let i=0;i<startToSub.length;i++) {
                 await patchPlayerUserJoinerSUBS(true, getPuId(startToSub[i], this.props.puJoiners));

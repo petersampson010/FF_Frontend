@@ -8,11 +8,6 @@ import { profile, profileContainer } from './style';
 class PlayerGWProfile extends Component {
     state = {  }
 
-    // componentDidMount() {
-    //     console.log('here');
-    //     console.log(this.props.player);
-    // }
-
     renderPointsBreakdown = () => {
         return Object.keys(this.props.player.pg).map(score=>{
             let att = this.props.player.pg[score];

@@ -182,6 +182,11 @@ const rootReducer = (state = initialState, action) => {
         case 'SETTRANSFERS':
             let starters = action.team.filter(player=>player.sub===false);
             let subs = action.team.filter(player=>player.sub===true);
+            console.log('********** STARTERS ***********');
+        
+            console.log(starters);
+            console.log('********** SUBS ***********');
+            console.log(subs);
             return {
                 ...state, 
                 players: {

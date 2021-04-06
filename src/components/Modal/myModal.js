@@ -29,7 +29,7 @@ class MyModal extends Component {
                     {this.renderButtons()}
                 </View>
                 <TouchableOpacity style={closeModalContainer} onPress={this.props.closeModalFcn}>
-                    <Text style={standardText}>Close Modal</Text>
+                    <Text style={standardText}>Close</Text>
                 </TouchableOpacity>
                 </View>
             </Modal>

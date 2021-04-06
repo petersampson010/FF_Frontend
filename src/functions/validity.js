@@ -55,20 +55,17 @@ export const validatePlayerScore = playerScore => {
     })
     totalScore-=playerScore.gameweek_id+playerScore.player_id;
     if (playerScore.minutes>0) {
-        // console.log({ result: true, post: true })
         return { result: true, post: true }
     } else if (totalScore>0) {
-        // console.log({ result: false, post: false })
         return { result: false, post: false }
     } else {
-        // console.log({ result: true, post: false })
         return { result: true, post: false }
     }
 }
 
 export const validateTransfers = (budget, team) => {
     if (budget>=0) {
-        if (playersObjToArray(team).length===9) {
+        if (playersObjToArray(team).length===8) {
             return true;
         } else {
             showMessage({

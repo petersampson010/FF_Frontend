@@ -177,10 +177,11 @@ export const postPlayerUserJoiner = (player, userId, count) => {
     .then(res=>res.json())
 }
 export const postPlayerUserJoinerTRANSFER = (player, userId, count, captain, vice_captain) => {
+    console.log('************* POSTING PLAYER USER JOINER ***************');
+    console.log('count: ' + count);
+    console.log('captain: ' + captain);
+    console.log('vice_captain: ' + vice_captain);
     console.log(player.last_name);
-    console.log(count);
-    console.log(captain);
-    console.log(vice_captain);
     let configObj = {
         method: "POST",
         headers: {
@@ -234,12 +235,10 @@ export const patchPlayerUserJoinerCAPTAINS = (captain, vice_captain, pu_id) => {
 }
 
 export const deletePlayerUserJoiner = (pu_id) => {
+    console.log('************* DELETING PLAYER USER JOINER ***************');
+    console.log(pu_id);
     let configObj = {
-        method: "DELETE",
-        // headers: {
-        //     "Content-Type": "application/json",
-        //     "Accept": "application/json"
-        // },
+        method: "DELETE"
     };
     fetch(`http://localhost:3000/player_user_joiners/${pu_id}`, configObj)
 }

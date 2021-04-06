@@ -15,10 +15,6 @@ import GwScore from '../../components/gwScore/gwScore';
 class HomeScreen extends Component {
     state = {  }
 
-    componentDidMount() {
-        // console.log(this.props.gwLatest);
-    }
-
     renderRows = () => {
         return this.props.league.sort((a,b)=>b.total_points-a.total_points).map((team, i)=>
             <Row key={i} style={''} data={[team.team_name, team.total_points, team.gw_points]}/>);

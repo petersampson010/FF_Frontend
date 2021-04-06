@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import { Image, Text, StyleSheet, View, Button, Modal, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
-import { isCaptain, isVCaptain, fullName, subOrTransfer } from '../../functions/reusable';
-import Svg, { Ellipse } from "react-native-svg";
-import Shirt from '../Shirt/shirt';
-import { box, container, playerImage, playerName, subContainer, subImage, subTransferBtn } from './style';
-import { TouchableHighlightBase } from 'react-native';
-import { ImageBackground } from 'react-native';
+import { fullName, subOrTransfer } from '../../functions/reusable';
+import { box, capText, container, playerImage, playerName, subContainer, subImage, subTransferBtn } from './style';
 import { TouchableOpacity } from 'react-native';
 
 
@@ -39,10 +35,6 @@ class PlayerGraphic extends Component {
         }
     }
 
-    componentDidMount()  {
-        // console.log(this.props.captain);
-        // console.log(this.props.vCaptain);
-    }
 
     horizontalMargin = player => {
         switch(player.position) {
@@ -54,6 +46,14 @@ class PlayerGraphic extends Component {
                 return 0;
             default: 
             return 0;
+        }
+    }
+
+    isCaptain = () => {
+        if (this.props.captain) {
+            return 'C';
+        } else if (this.props.vCaptain) {
+            return 'VC';
         }
     }
 
@@ -73,6 +73,7 @@ class PlayerGraphic extends Component {
                 </View>
                 <TouchableOpacity onPress={()=>openModal(player)}>
                     <Text style={playerName}>{fullName(player)}</Text>
+                    <Text style={capText}>{this.isCaptain()}</Text>
                 </TouchableOpacity>
             </View>
       );

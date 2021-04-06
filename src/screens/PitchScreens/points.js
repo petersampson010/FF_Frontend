@@ -10,11 +10,6 @@ import BottomNav from '../../components/bottomNav/bottomNav';
 class PointsScreen extends Component {
     state = {  }
 
-    componentDidMount() {
-        console.log('this bit');
-        console.log(getNameOfNavPage(this.props.navigation.dangerouslyGetState()));
-    }
-
     getNavState = () => this.props.navigation.dangerouslyGetState();
 
     render() { 

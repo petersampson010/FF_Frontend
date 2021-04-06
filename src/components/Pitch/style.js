@@ -21,11 +21,9 @@ export const subs = {
     width: vw(100),
     backgroundColor: 'grey',
     borderRadius: 20,
-    paddingTop: 5,
-    paddingBottom: 5,
+    paddingTop: 10,
     flexDirection: 'row',
     justifyContent: "space-evenly",
-    alignItems: 'center'
 }
 
 export const pitch = {

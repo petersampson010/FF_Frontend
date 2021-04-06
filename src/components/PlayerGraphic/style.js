@@ -1,4 +1,5 @@
 import { vh, vw } from 'react-native-expo-viewport-units';
+import { $arylideYellow, $baseBlue, $caretColor } from '../../styles/global';
 
 
 export const container = {
@@ -21,11 +22,18 @@ export const playerImage = {
 
 export const playerName = {
     fontSize: 10,
-    marginTop: 10
+    marginTop: 10,
+    textAlign: 'center',
+    fontWeight: "800"
 }
 
 export const subImage = {
     height: vh(2),
     width: vw(5),
-    // marginLeft: vw(2),
+}
+
+export const capText = {
+    color: $arylideYellow,
+    textAlign: 'center',
+    fontWeight: "800"
 }
