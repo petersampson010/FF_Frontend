@@ -14,9 +14,7 @@ export const modal  = {
 }
 
 export const buttons = {
-    // flex: 1,
     flexDirection: 'row',
-
 }
 
 export const button = {

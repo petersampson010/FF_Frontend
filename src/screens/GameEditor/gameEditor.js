@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { View, Text, TextInput, StyleSheet, Button, ScrollView, TouchableHighlightBase } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import Dialog, { DialogButton, DialogContent } from 'react-native-popup-dialog';
-import { Table, Row } from 'react-native-table-component';
 import { connect } from 'react-redux';
-import { postPGJoiner, completeGame, postUGJoiner } from '../functions/APIcalls';
-import { validatePlayerScore } from '../functions/validity';
-import { completeGameState } from '../actions';
+import { postPGJoiner, completeGame, postUGJoiner } from '../../functions/APIcalls';
+import { validatePlayerScore } from '../../functions/validity';
+import { completeGameState } from '../../actions';
+import { $baseBlue, $darkBlue, $electricBlue, $inputBlue, screenContainer } from '../../styles/global';
+import { tableElement1, tableElement9, tableRow } from '../../styles/table';
+import { vh, vw } from 'react-native-expo-viewport-units';
 
 class GameEditorScreen extends Component {
     state = { 
@@ -27,7 +29,7 @@ class GameEditorScreen extends Component {
             players = {
                 ...players,
                 [player.player_id]: {
-                    name: player.first_name + player.last_name,
+                    name: player.first_name + ' ' + player.last_name,
                     player_id: player.player_id,
                     gameweek_id: this.props.gwLatest,
                     minutes: '',
@@ -51,43 +53,43 @@ class GameEditorScreen extends Component {
 
     renderRows = () => {
         return Object.keys(this.state.players).map((x,i) => {
-            return <Row key={i} data={this.renderRow(x)} style={{...styles.row, backgroundColor: this.state.players[x].valid ? 'green' : 'red'}}/>})
+            return <View key={i} style={{...tableRow, backgroundColor: this.state.players[x].valid ? $inputBlue : 'red'}}>{this.renderRow(x)}</View>})
     }
 
-    renderRow = (playerID) => [<Text>{this.state.players[playerID].name}</Text>,
-        <TextInput 
+    renderRow = (playerID) => [<Text style={tableElement1}>{this.state.players[playerID].name}</Text>,
+        <TextInput style={tableElement9}
         value={this.state.players[playerID].minutes} 
         onChange={el=>this.updateScore(playerID, el.nativeEvent.text, 'minutes')}
         placeholder="0"
-        />, <TextInput 
+        />, <TextInput style={tableElement9}
         value={this.state.players[playerID].assists} 
         onChange={el=>this.updateScore(playerID, el.nativeEvent.text, 'assists')}
         placeholder="0"
-        />, <TextInput 
+        />, <TextInput style={tableElement9}
         value={this.state.players[playerID].goals} 
         onChange={el=>this.updateScore(playerID, el.nativeEvent.text, 'goals')}
         placeholder="0"
-        />, <TextInput 
+        />, <TextInput style={tableElement9}
         value={this.state.players[playerID].own_goals} 
         onChange={el=>this.updateScore(playerID, el.nativeEvent.text, 'own_goals')}
         placeholder="0"
-        />, <TextInput 
+        />, <TextInput style={tableElement9}
         value={this.state.players[playerID].y_cards} 
         onChange={el=>this.updateScore(playerID, el.nativeEvent.text, 'y_cards')}
         placeholder="0"
-        />, <TextInput 
+        />, <TextInput style={tableElement9}
         value={this.state.players[playerID].r_cards} 
         onChange={el=>this.updateScore(playerID, el.nativeEvent.text, 'r_cards')}
         placeholder="0"
-        />, <TextInput 
+        />, <TextInput style={tableElement9}
         value={this.state.players[playerID].bonus} 
         onChange={el=>this.updateScore(playerID, el.nativeEvent.text, 'bonus')}
         placeholder="0"
-        />, <TextInput 
+        />, <TextInput style={tableElement9}
         value={this.state.players[playerID].penalty_miss} 
         onChange={el=>this.updateScore(playerID, el.nativeEvent.text, 'penalty_miss')}
         placeholder="0"
-        />, <TextInput 
+        />, <TextInput style={tableElement9}
         value={this.state.players[playerID].goals_conceded} 
         onChange={el=>this.updateScore(playerID, el.nativeEvent.text, 'goals_conceded')}
         placeholder="0"
@@ -160,8 +162,8 @@ class GameEditorScreen extends Component {
     }
     
     render() { 
-        return ( 
-            <ScrollView>
+        return (
+            <View style={{backgroundColor: $darkBlue}}>
                 <View>
                     <Button title="Confirm" onPress={()=>this.setState({...this.state, dialog: {active: true}})}/>
                     <TextInput
@@ -174,11 +176,23 @@ class GameEditorScreen extends Component {
                     onChange={el=>this.setState({...this.state, score: {...this.state.score, oppo: el.nativeEvent.text}})}
                     placeholder='their team'
                     />
-                    <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
-                        <Row style={styles.head} data={['Player', 'M', 'A', 'G', 'OG', 'YC', 'RC', "B", 'PM', 'GC']}/>
-                        {this.renderRows()}
-                    </Table>
+                        <View style={{...tableRow, backgroundColor: $darkBlue}}>
+                            <Text style={tableElement1}>Player</Text>
+                            <Text style={tableElement9}>M</Text>
+                            <Text style={tableElement9}>A</Text>
+                            <Text style={tableElement9}>G</Text>
+                            <Text style={tableElement9}>OG</Text>
+                            <Text style={tableElement9}>YC</Text>
+                            <Text style={tableElement9}>RC</Text>
+                            <Text style={tableElement9}>B</Text>
+                            <Text style={tableElement9}>PM</Text>
+                            <Text style={tableElement9}>GC</Text>
+                        </View>
                 </View>
+            <ScrollView style={screenContainer}>
+                    <View style={{paddingBottom: vh(30)}}>
+                        {this.renderRows()}
+                    </View>
                 <Dialog
                 visible={this.state.dialog.active}
                 width={0.6}
@@ -194,6 +208,8 @@ class GameEditorScreen extends Component {
                     />
                 </Dialog>
             </ScrollView>
+
+            </View> 
         );
     }
 }
@@ -214,12 +230,3 @@ const mapDispatchToProps = dispatch => {
 }
  
 export default connect(mapStateToProps, mapDispatchToProps)(GameEditorScreen);
-
-const styles = StyleSheet.create({
-    head: {
-        height: 20
-    },
-    row: {
-        height: 35
-    }
-})

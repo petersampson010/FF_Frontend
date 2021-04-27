@@ -3,11 +3,11 @@ import { View, Text } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { connect } from 'react-redux';
 import { fullName, positionString } from '../../functions/reusable';
-import { Table, Row } from 'react-native-table-component';
 import {vw, vh} from 'react-native-expo-viewport-units';
-import { filter, itemPositionPicker, pickerItem, playersListContainer, positionPicker, slidable, tableElement, tableHead, tableRow, tableText } from './style';
+import { filter, itemPositionPicker, pickerItem, playersListContainer, positionPicker, slidable, tableHead, tableText } from './style';
 import { TouchableOpacity } from 'react-native';
 import { labelText, standardText } from '../../styles/textStyle';
+import { tableElement3, tableRow } from '../../styles/table';
 
 
 
@@ -39,16 +39,16 @@ class PlayersList extends Component {
     return this.playerSelected(player) ? 
     <TouchableOpacity key={key}
     style={{...tableRow, opacity: 0.3}}>
-        <Text style={{...tableElement, ...standardText}}>{fullName(player)}</Text>
-        <Text style={{...tableElement, ...standardText}}>{positionString(player.position)}</Text>
-        <Text style={{...tableElement, ...standardText}}>£{player.price}m</Text>
+        <Text style={{...tableElement3, ...standardText}}>{fullName(player)}</Text>
+        <Text style={{...tableElement3, ...standardText}}>{positionString(player.position)}</Text>
+        <Text style={{...tableElement3, ...standardText}}>£{player.price}m</Text>
     </TouchableOpacity>
     :
     <TouchableOpacity key={key} onPress={()=>this.props.clickFcn(player)}
     style={{...tableRow, opacity: 1}}>
-        <Text style={{...tableElement, ...standardText}}>{fullName(player)}</Text>
-        <Text style={{...tableElement, ...standardText}}>{positionString(player.position)}</Text>
-        <Text style={{...tableElement, ...standardText}}>£{player.price}m</Text>
+        <Text style={{...tableElement3, ...standardText}}>{fullName(player)}</Text>
+        <Text style={{...tableElement3, ...standardText}}>{positionString(player.position)}</Text>
+        <Text style={{...tableElement3, ...standardText}}>£{player.price}m</Text>
     </TouchableOpacity>
     }
 
@@ -68,14 +68,14 @@ class PlayersList extends Component {
                     </Picker>
                 </View>
                 <View >
-                    <Table>
+                    <View>
                         <View style={tableRow}>
-                            <Text style={{...tableElement, ...labelText}}>Name</Text>
-                            <Text style={{...tableElement, ...labelText}}>Position</Text>
-                            <Text style={{...tableElement, ...labelText}}>Price</Text>
+                            <Text style={{...tableElement3, ...labelText}}>Name</Text>
+                            <Text style={{...tableElement3, ...labelText}}>Position</Text>
+                            <Text style={{...tableElement3, ...labelText}}>Price</Text>
                         </View>
                         {this.table()}
-                    </Table>
+                    </View>
                 </View>
             </View>
          );

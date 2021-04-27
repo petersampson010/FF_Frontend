@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
-import { ListItem } from 'react-native-elements';
-import { Button, ScrollView, View, StyleSheet, Text } from 'react-native';
+import { Button, ScrollView, View, Text } from 'react-native';
 import { Input } from 'react-native-elements';  
 import { connect } from 'react-redux';
 import {vw, vh} from 'react-native-expo-viewport-units';
-import { validateGame } from '../functions/validity';
+import { validateGame } from '../../functions/validity';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { postGame, patchGame } from '../functions/APIcalls';
+import { postGame, patchGame } from '../../functions/APIcalls';
 import { showMessage } from 'react-native-flash-message';
 import TouchableScale from 'react-native-touchable-scale'
-import { setGwSelectId, addGameState } from '../actions';
-import { displayDate } from '../functions/reusable';
-import MyModal from '../components/Modal/myModal';
+import { setGwSelectId, addGameState } from '../../actions';
+import { displayDate } from '../../functions/reusable';
+import MyModal from '../../components/Modal/myModal';
+import { TouchableOpacity } from 'react-native';
+import { gameContainer } from './style';
+import { headers, standardText } from '../../styles/textStyle';
+import { screenContainer } from '../../styles/global';
 
 class AdminHomeScreen extends Component {
     state = { 
@@ -37,25 +40,12 @@ class AdminHomeScreen extends Component {
     renderGames = () => {
         let sortedArr = this.props.games.sort((a,b)=>Date.parse(b.date)-Date.parse(a.date));
         return sortedArr.map((game,i) => 
-        <ListItem key={i} style={styles.listItem}
-        onPress={()=>{
-            this.setState({...this.state, modal2: {active: true, game}})
-            this.props.setGwSelectId(game.gameweek_id)}}
-        Component={TouchableScale}
-        friction={90} //
-        tension={100} // These props are passed to the parent component (here TouchableScale)
-        activeScale={0.95} //
-        linearGradientProps={{
-            colors: game.complete ? ['grey', 'black'] : ['#FF9800', '#F44336'],
-            start: { x: 1, y: 0 },
-            end: { x: 0.2, y: 0 },
-        }}
-        >
-            <ListItem.Content>
-                <ListItem.Title style={styles.listTitle}>{game.opponent}</ListItem.Title>
-                <ListItem.Subtitle style={styles.listSub}>{displayDate(game.date)}</ListItem.Subtitle>
-            </ListItem.Content>
-        </ListItem>
+
+        <TouchableOpacity key={i} style={gameContainer}
+        onPress={()=>{this.setState({...this.state, modal2: {active: true, game}});this.props.setGwSelectId(game.gameweek_id);}}>
+            <Text style={{...headers}}>{game.opponent}</Text>
+            <Text style={standardText}>{displayDate(game.date)}</Text>
+        </TouchableOpacity>
         )
     }
 
@@ -117,7 +107,7 @@ class AdminHomeScreen extends Component {
 
     render() { 
         return ( 
-            <ScrollView>
+            <ScrollView style={screenContainer}>
                 <Button title="Add Event/Game" onPress={()=>this.setState({...this.state, modal: {...this.state.modal, active: true}})}/>
                 <Button title="Add/Remove/Edit Player(s)" onPress={()=>this.props.navigation.navigate('AdminPlayerEdit')} />
                 <ScrollView>
@@ -158,7 +148,7 @@ class AdminHomeScreen extends Component {
                 }
                 jsx={this.state.modal2.game.complete ? <Text>This game has been completed, you are unable to edit the player statistics</Text> 
                     : 
-                    <View><Text>Edit game or update stats</Text><Text>Remember... when entering player stats and completing a game, all changes are final so be sure to double check your entries!</Text></View>}
+                    <View><Text style={standardText}>Edit game or update stats</Text><Text style={standardText}>Remember... when entering player stats and completing a game, all changes are final so be sure to double check your entries!</Text></View>}
                 buttonOptions={this.state.modal2.game.complete ? [] : [{text: 'Submit Game Stats', fcn: ()=>{this.setState({...this.state, modal2: {...this.state.modal2, active: false}});this.props.navigation.navigate('GameEditor')}},
                 {text: 'Edit Game', fcn: ()=>this.setState({...this.state, modal: {active: true, update: true,
                     game: this.state.modal2.game}, modal2: {...this.state.modal2, active: false}})}]}
@@ -183,20 +173,3 @@ const mapDispatchToProps = dispatch => {
 }
  
 export default connect(mapStateToProps, mapDispatchToProps)(AdminHomeScreen);
-
-const styles = StyleSheet.create({
-    
-    listItem: {
-        borderRadius: 17,
-        marginBottom: 10,
-    },
-    listTitle: {
-        color: 'white',
-        fontWeight: 'bold'
-    },
-    listSub: {
-        color: 'white',
-
-    },
-    
-})

@@ -1,4 +1,5 @@
 import { vw } from "react-native-expo-viewport-units"
+import { standardText } from "../../styles/textStyle"
 
 export const topPerformers = {
     flex: 1,
@@ -10,4 +11,8 @@ export const topPerformers = {
 export const topPlayerStyle = {
     width: vw(40),
     backgroundColor: 'white'
+}
+
+export const leagueTable = {
+    ...standardText
 }

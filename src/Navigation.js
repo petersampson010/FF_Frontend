@@ -12,8 +12,8 @@ import TransfersScreen from './screens/PitchScreens/transfers.js';
 import PointsScreen from './screens/PitchScreens/points';
 import ClubSetupScreen from './screens/clubSetup';
 import PickTeamScreen from './screens/PitchScreens/pickTeam';
-import AdminHomeScreen from './screens/adminHome';
-import GameEditorScreen from './screens/gameEditor';
+import AdminHomeScreen from './screens/AdminHome/adminHome';
+import GameEditorScreen from './screens/GameEditor/gameEditor';
 import AdminPlayerEditScreen from './screens/adminPlayerEdit';
 import { $darkBlue } from './styles/global';
 
