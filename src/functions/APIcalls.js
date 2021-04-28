@@ -287,6 +287,8 @@ export const patchGame = (game) => {
     .then(res=>res.json())
 }
 export const completeGame = (id, score) => {
+    console.log('hittty');
+    console.log(id);
     let configObj = {
         method: "PATCH",
         headers: {

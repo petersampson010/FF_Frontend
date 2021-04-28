@@ -9,6 +9,7 @@ import { completeGameState } from '../../actions';
 import { $baseBlue, $darkBlue, $electricBlue, $inputBlue, screenContainer } from '../../styles/global';
 import { tableElement1, tableElement9, tableRow } from '../../styles/table';
 import { vh, vw } from 'react-native-expo-viewport-units';
+import { standardText } from '../../styles/textStyle';
 
 class GameEditorScreen extends Component {
     state = { 
@@ -31,7 +32,7 @@ class GameEditorScreen extends Component {
                 [player.player_id]: {
                     name: player.first_name + ' ' + player.last_name,
                     player_id: player.player_id,
-                    gameweek_id: this.props.gwLatest,
+                    gameweek_id: this.props.gwSelectId,
                     minutes: '',
                     assists: '',
                     goals: '',
@@ -56,7 +57,7 @@ class GameEditorScreen extends Component {
             return <View key={i} style={{...tableRow, backgroundColor: this.state.players[x].valid ? $inputBlue : 'red'}}>{this.renderRow(x)}</View>})
     }
 
-    renderRow = (playerID) => [<Text style={tableElement1}>{this.state.players[playerID].name}</Text>,
+    renderRow = (playerID) => [<View style={tableElement1}><Text style={standardText}>{this.state.players[playerID].name}</Text></View>,
         <TextInput style={tableElement9}
         value={this.state.players[playerID].minutes} 
         onChange={el=>this.updateScore(playerID, el.nativeEvent.text, 'minutes')}
@@ -142,12 +143,12 @@ class GameEditorScreen extends Component {
     
     postPGJoiners = async(postArr) => {
         try{
-            await completeGame(this.props.gwLatest, this.state.score);
+            await completeGame(this.props.gwSelectId, this.state.score);
             for (let i=0;i<postArr.length;i++) {
                 await postPGJoiner(postArr[i]);
             }
             await this.postUGJoiners()
-            this.props.completeGameState(this.props.gwLatest);
+            this.props.completeGameState(this.props.gwSelectId);
             this.props.navigation.navigate('AdminHome');
         } catch(e) {
             console.warn(e);
@@ -155,9 +156,9 @@ class GameEditorScreen extends Component {
     }
 
     postUGJoiners = async() => {
-        let { allUsers, gwLatest } = this.props
+        let { allUsers, gwSelectId } = this.props
         for (let i=0;i<allUsers.length;i++) {
-            await postUGJoiner(allUsers[i].user_id, gwLatest);
+            await postUGJoiner(allUsers[i].user_id, gwSelectId);
         }
     }
     
@@ -177,7 +178,7 @@ class GameEditorScreen extends Component {
                     placeholder='their team'
                     />
                         <View style={{...tableRow, backgroundColor: $darkBlue}}>
-                            <Text style={tableElement1}>Player</Text>
+                            <View style={tableElement1}><Text style={standardText}>Player</Text></View>
                             <Text style={tableElement9}>M</Text>
                             <Text style={tableElement9}>A</Text>
                             <Text style={tableElement9}>G</Text>
@@ -217,7 +218,7 @@ class GameEditorScreen extends Component {
 const mapStateToProps = state => {
     return {
         clubPlayers: state.players.clubPlayers,
-        gwLatest: state.gameweek.gwLatest,
+        gwSelectId: state.gameweek.gwSelectId,
         aUser: state.endUser.adminUser.aUser,
         allUsers: state.endUser.adminUser.allUsers
     }

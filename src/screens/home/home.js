@@ -5,12 +5,13 @@ import Header from '../../components/header/header';
 import { topPlayer, topUser } from '../../functions/reusable';
 import BottomNav from '../../components/bottomNav/bottomNav';
 import { screenContainer } from '../../styles/global';
-import { leagueTable, topPerformers, topPlayerStyle } from './style';
+import { gwInfo, leagueTable, topPerformers, topPlayerStyle } from './style';
 import PlayerGWProfile from '../../components/profile/playerGWProfile';
 import UserGWProfile from '../../components/profile/userGWProfile';
 import GwScore from '../../components/gwScore/gwScore';
 import { tableElement3, tableRow } from '../../styles/table';
 import { standardText } from '../../styles/textStyle';
+import { vh } from 'react-native-expo-viewport-units';
 
 
 class HomeScreen extends Component {
@@ -32,7 +33,7 @@ class HomeScreen extends Component {
         return ( 
             <View style={screenContainer}>
                 {gwLatest ? 
-                <View>
+                <View style={gwInfo}>
                     <GwScore />
                     <View style={topPerformers}>
                         <View style={topPlayer}>
@@ -43,13 +44,13 @@ class HomeScreen extends Component {
                         </View>
                     </View>
                 </View> : null}
+                <View style={tableRow}>
+                    <Text style={{...tableElement3, ...standardText}}>Team</Text>
+                    <Text style={{...tableElement3, ...standardText}}>Total Points</Text>
+                    <Text style={{...tableElement3, ...standardText}}>{gwLatest.opponent} Points</Text>
+                </View>
                 <ScrollView style={''}>
-                    <View>
-                        <View style={tableRow}>
-                            <Text style={{...tableElement3, ...standardText}}>Team</Text>
-                            <Text style={{...tableElement3, ...standardText}}>Total Points</Text>
-                            <Text style={{...tableElement3, ...standardText}}>GW {gwLatest} Points</Text>
-                        </View>
+                    <View style={{paddingBottom: vh(20)}}>
                         {this.renderRows()}
                     </View>
                 </ScrollView>

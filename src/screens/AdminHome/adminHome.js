@@ -12,9 +12,9 @@ import { setGwSelectId, addGameState } from '../../actions';
 import { displayDate } from '../../functions/reusable';
 import MyModal from '../../components/Modal/myModal';
 import { TouchableOpacity } from 'react-native';
-import { gameContainer } from './style';
+import { gameContainer, gameScore } from './style';
 import { headers, standardText } from '../../styles/textStyle';
-import { screenContainer } from '../../styles/global';
+import { $arylideYellow, $chocolateBlack, $darkBlue, screenContainer } from '../../styles/global';
 
 class AdminHomeScreen extends Component {
     state = { 
@@ -38,15 +38,23 @@ class AdminHomeScreen extends Component {
      }
 
     renderGames = () => {
-        let sortedArr = this.props.games.sort((a,b)=>Date.parse(b.date)-Date.parse(a.date));
-        return sortedArr.map((game,i) => 
-
-        <TouchableOpacity key={i} style={gameContainer}
-        onPress={()=>{this.setState({...this.state, modal2: {active: true, game}});this.props.setGwSelectId(game.gameweek_id);}}>
-            <Text style={{...headers}}>{game.opponent}</Text>
-            <Text style={standardText}>{displayDate(game.date)}</Text>
-        </TouchableOpacity>
-        )
+        let completedGamesSorted = this.props.games.filter(x => x.complete).sort((a,b)=>Date.parse(b.date)-Date.parse(a.date));
+        let openGameesSorted = this.props.games.filter(x=>!x.complete).sort((a,b)=>Date.parse(b.date)-Date.parse(a.date));
+        let sortedArr = [...openGameesSorted, ...completedGamesSorted];
+        return sortedArr.map((game,i) => {
+            const gameColour = game.complete ? $chocolateBlack : $darkBlue;
+            console.log(game.score);
+            return <TouchableOpacity key={i} style={{...gameContainer, backgroundColor: gameColour}}
+            onPress={()=>{this.setState({...this.state, modal2: {active: true, game}});this.props.setGwSelectId(game.gameweek_id);}}>
+                <View>
+                    <Text style={{...headers}}>{game.opponent}</Text>
+                    <Text style={standardText}>{displayDate(game.date)}</Text>
+                </View>
+                <View style={gameScore}>
+                    <Text style={standardText}>{game.score}</Text>
+                </View>
+            </TouchableOpacity>
+        })
     }
 
     formChange = (id, value) => {

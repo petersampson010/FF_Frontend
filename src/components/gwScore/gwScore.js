@@ -1,7 +1,6 @@
-const { ImagePickerIOS, View } = require("react-native");
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { View, Text } from 'react-native';
 
 class GwScore extends Component {
     state = {  }
