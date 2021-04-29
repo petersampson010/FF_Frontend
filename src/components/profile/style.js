@@ -1,4 +1,5 @@
 import { vh, vw } from "react-native-expo-viewport-units";
+import { standardText } from "../../styles/textStyle";
 
 export const profile = {
     width: vw(15),
@@ -9,7 +10,6 @@ export const profile = {
 
 export const profileContainer = {
     height: vh(40),
-
 }
 
 export const profileFlexContainer = {

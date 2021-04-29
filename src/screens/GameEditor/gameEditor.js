@@ -10,6 +10,7 @@ import { $baseBlue, $darkBlue, $electricBlue, $inputBlue, screenContainer } from
 import { tableElement1, tableElement9, tableRow } from '../../styles/table';
 import { vh, vw } from 'react-native-expo-viewport-units';
 import { standardText } from '../../styles/textStyle';
+import { inputFieldSmall, input, inputFieldContainerInLine } from '../../styles/input';
 
 class GameEditorScreen extends Component {
     state = { 
@@ -32,7 +33,7 @@ class GameEditorScreen extends Component {
                 [player.player_id]: {
                     name: player.first_name + ' ' + player.last_name,
                     player_id: player.player_id,
-                    gameweek_id: this.props.gwSelectId,
+                    gameweek_id: this.props.gwSelect,
                     minutes: '',
                     assists: '',
                     goals: '',
@@ -143,12 +144,12 @@ class GameEditorScreen extends Component {
     
     postPGJoiners = async(postArr) => {
         try{
-            await completeGame(this.props.gwSelectId, this.state.score);
+            await completeGame(this.props.gwSelect.gameweek_id, this.state.score);
             for (let i=0;i<postArr.length;i++) {
                 await postPGJoiner(postArr[i]);
             }
             await this.postUGJoiners()
-            this.props.completeGameState(this.props.gwSelectId);
+            this.props.completeGameState(this.props.gwSelect.gameweek_id);
             this.props.navigation.navigate('AdminHome');
         } catch(e) {
             console.warn(e);
@@ -156,27 +157,36 @@ class GameEditorScreen extends Component {
     }
 
     postUGJoiners = async() => {
-        let { allUsers, gwSelectId } = this.props
+        let { allUsers, gwSelect } = this.props
         for (let i=0;i<allUsers.length;i++) {
-            await postUGJoiner(allUsers[i].user_id, gwSelectId);
+            await postUGJoiner(allUsers[i].user_id, gwSelect.gameweek_id);
         }
     }
     
     render() { 
         return (
             <View style={{backgroundColor: $darkBlue}}>
-                <View>
-                    <Button title="Confirm" onPress={()=>this.setState({...this.state, dialog: {active: true}})}/>
-                    <TextInput
-                    value={this.state.score.team}
-                    onChange={el=>this.setState({...this.state, score: {...this.state.score, team: el.nativeEvent.text}})}
-                    placeholder='your team'
-                    />
-                    <TextInput
-                    value={this.state.score.oppo}
-                    onChange={el=>this.setState({...this.state, score: {...this.state.score, oppo: el.nativeEvent.text}})}
-                    placeholder='their team'
-                    />
+                <Button title="Confirm" onPress={()=>this.setState({...this.state, dialog: {active: true}})}/>
+                <View style={inputFieldContainerInLine}>
+                    <Text style={{...standardText, width: vw(20), textAlign: 'right'}}>{this.props.aUser.club_name}</Text>
+                    <View style={inputFieldSmall}>
+                        <TextInput
+                        style={input}
+                        value={this.state.score.team}
+                        onChange={el=>this.setState({...this.state, score: {...this.state.score, team: el.nativeEvent.text}})}
+                        placeholder='your team'
+                        />
+                    </View>
+                    <View style={inputFieldSmall}>
+                        <TextInput
+                        style={input}
+                        value={this.state.score.oppo}
+                        onChange={el=>this.setState({...this.state, score: {...this.state.score, oppo: el.nativeEvent.text}})}
+                        placeholder='their team'
+                        />
+                    </View>
+                    <Text style={{...standardText, width: vw(20), textAlign: 'left'}}>{this.props.gwSelect.opponent}</Text>
+                </View>
                         <View style={{...tableRow, backgroundColor: $darkBlue}}>
                             <View style={tableElement1}><Text style={standardText}>Player</Text></View>
                             <Text style={tableElement9}>M</Text>
@@ -189,7 +199,6 @@ class GameEditorScreen extends Component {
                             <Text style={tableElement9}>PM</Text>
                             <Text style={tableElement9}>GC</Text>
                         </View>
-                </View>
             <ScrollView style={screenContainer}>
                     <View style={{paddingBottom: vh(30)}}>
                         {this.renderRows()}
@@ -218,7 +227,7 @@ class GameEditorScreen extends Component {
 const mapStateToProps = state => {
     return {
         clubPlayers: state.players.clubPlayers,
-        gwSelectId: state.gameweek.gwSelectId,
+        gwSelect: state.gameweek.gwSelect,
         aUser: state.endUser.adminUser.aUser,
         allUsers: state.endUser.adminUser.allUsers
     }

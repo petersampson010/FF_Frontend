@@ -22,7 +22,7 @@ const initialState = {
     },
     gameweek: {
         games: [],
-        gwSelectId: null,
+        gwSelect: null,
         gwLatest: null,
     },
     homeGraphics: {
@@ -40,7 +40,10 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 endUser: {
-                    ...state.endUser,
+                    adminUser: {
+                        ...state.endUser.adminUser,
+                        aUser: action.aUser
+                    },
                     user: action.user,
                 },
                 players: {
@@ -148,12 +151,12 @@ const rootReducer = (state = initialState, action) => {
                     subs: action.subs
                 }
             };
-        case 'SETGWSELECTID':
+        case 'SETGWSELECT':
             return {
                 ...state, 
                 gameweek: {
                     ...state.gameweek,
-                    gwSelectId: action.id
+                    gwSelect: action.game
                 }
             };
         case 'COMPLETEGAME':

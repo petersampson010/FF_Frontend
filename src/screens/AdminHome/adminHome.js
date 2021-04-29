@@ -8,7 +8,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { postGame, patchGame } from '../../functions/APIcalls';
 import { showMessage } from 'react-native-flash-message';
 import TouchableScale from 'react-native-touchable-scale'
-import { setGwSelectId, addGameState } from '../../actions';
+import { setGwSelect, addGameState } from '../../actions';
 import { displayDate } from '../../functions/reusable';
 import MyModal from '../../components/Modal/myModal';
 import { TouchableOpacity } from 'react-native';
@@ -45,7 +45,7 @@ class AdminHomeScreen extends Component {
             const gameColour = game.complete ? $chocolateBlack : $darkBlue;
             console.log(game.score);
             return <TouchableOpacity key={i} style={{...gameContainer, backgroundColor: gameColour}}
-            onPress={()=>{this.setState({...this.state, modal2: {active: true, game}});this.props.setGwSelectId(game.gameweek_id);}}>
+            onPress={()=>{this.setState({...this.state, modal2: {active: true, game}});this.props.setGwSelect(game);}}>
                 <View>
                     <Text style={{...headers}}>{game.opponent}</Text>
                     <Text style={standardText}>{displayDate(game.date)}</Text>
@@ -175,7 +175,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setGwSelectId: id => dispatch(setGwSelectId(id)),
+        setGwSelect: game => dispatch(setGwSelect(game)),
         addGameState: game => dispatch(addGameState(game))
     }
 }

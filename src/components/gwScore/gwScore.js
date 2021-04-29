@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Text } from 'react-native';
+import { headers } from '../../styles/textStyle';
+import { headerText } from '../header/style';
 
 class GwScore extends Component {
     state = {  }
 
     componentDidMount() {
-
+        console.log(this.props.aUser.email);
     }
 
 
@@ -14,7 +16,7 @@ class GwScore extends Component {
         const { aUser, gwLatest } = this.props;
         return ( 
             <View>
-                <Text>${aUser.club_name} ${gwLatest.score} ${gwLatest.opponent}</Text>
+                <Text style={headerText}>{aUser.club_name} {gwLatest.score} {gwLatest.opponent}</Text>
             </View>
          );
     }

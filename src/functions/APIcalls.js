@@ -376,6 +376,8 @@ export const postPGJoiner = async(joiner) => {
 }
 
 export const fetchPGJoinersFromUserIdAndGameweekId = (userId, gameweekId) => {
+    console.log(userId);
+    console.log(gameweekId);
     return fetch(`http://localhost:3000/users/${userId}/${gameweekId}/pg_joiners`)
     .then(res=>res.json())
 }

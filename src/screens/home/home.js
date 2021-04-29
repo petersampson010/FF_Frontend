@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ScrollView, TouchableOpacity, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import Header from '../../components/header/header';
-import { topPlayer, topUser } from '../../functions/reusable';
+import { displayDate, topPlayer, topUser } from '../../functions/reusable';
 import BottomNav from '../../components/bottomNav/bottomNav';
 import { screenContainer } from '../../styles/global';
 import { gwInfo, leagueTable, topPerformers, topPlayerStyle } from './style';
@@ -10,8 +10,10 @@ import PlayerGWProfile from '../../components/profile/playerGWProfile';
 import UserGWProfile from '../../components/profile/userGWProfile';
 import GwScore from '../../components/gwScore/gwScore';
 import { tableElement3, tableRow } from '../../styles/table';
-import { standardText } from '../../styles/textStyle';
+import { headers, sidenote, standardText } from '../../styles/textStyle';
 import { vh } from 'react-native-expo-viewport-units';
+import { headerText } from '../../components/header/style';
+import NoScoreGW from '../../components/noScoreGW/noScoreGW';
 
 
 class HomeScreen extends Component {
@@ -29,12 +31,15 @@ class HomeScreen extends Component {
 
 
     render() { 
-        const { gwLatest } = this.props
+        const { gwLatest, user } = this.props
+        console.log(gwLatest);
         return ( 
             <View style={screenContainer}>
-                {gwLatest ? 
+                {/* <Text style={headerText}>{user.teamname}</Text> */}
+                {gwLatest && topPlayer ? 
                 <View style={gwInfo}>
                     <GwScore />
+                    <Text style={{...sidenote, textAlign: 'right'}}>{displayDate(gwLatest.date)}</Text>
                     <View style={topPerformers}>
                         <View style={topPlayer}>
                             <PlayerGWProfile player={this.props.topPlayer}/>
@@ -43,7 +48,7 @@ class HomeScreen extends Component {
                             <UserGWProfile user={this.props.topUser}/>
                         </View>
                     </View>
-                </View> : null}
+                </View> : <NoScoreGW/>}
                 <View style={tableRow}>
                     <Text style={{...tableElement3, ...standardText}}>Team</Text>
                     <Text style={{...tableElement3, ...standardText}}>Total Points</Text>

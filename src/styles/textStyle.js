@@ -18,6 +18,12 @@ export const headers = {
     fontFamily: 'Avenir Next',
 }
 
+export const sidenote = {
+    color: $arylideYellow,
+    fontSize: 12,
+    fontFamily: 'Avenir Next'
+}
+
 export const checkBox = {
     fontFamily: 'Avenir Next',
     color: $chocolateBlack,

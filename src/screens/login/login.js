@@ -5,10 +5,11 @@ import { connect } from 'react-redux';
 import { loginUser, loginAdminUser, resetTeamPlayers } from '../../actions';
 import { fetchUserByEmail, fetchAdminUserByEmail, fetchAllPlayersByAdminUserId, 
   fetchStartersByUserId, fetchSubsByUserId, fetchAllPlayerUserJoinersByUserId, 
-  fetchAllUsersByAdminUserId, fetchAllGamesByAdminUserId, fetchLeague, fetchLatestGameweekFromAdminUserId, fetchPGJoinersFromUserIdAndGameweekId, fetchUGJoiner, fetchUGJoiners, fetchPlayerById, fetchUserById } 
+  fetchAllUsersByAdminUserId, fetchAllGamesByAdminUserId, fetchLeague, fetchLatestGameweekFromAdminUserId, fetchPGJoinersFromUserIdAndGameweekId, fetchUGJoiner, fetchUGJoiners, fetchPlayerById, fetchUserById, fetchAdminUserById } 
   from '../../functions/APIcalls'; 
 import { screenContainer } from '../../styles/global';
-import { input, inputField, inputFieldsContainer, loginHead, switchText, textLabel } from './style';
+import { loginHead, switchText, textLabel } from './style';
+import { input, inputFieldLarge, inputFieldContainerCenter } from '../../styles/input';
 
 
 class LoginScreen extends Component {
@@ -77,29 +78,38 @@ class LoginScreen extends Component {
   handleUserReturn = async(user) => {
     try {
       if (user !== undefined && user !== null) {
-        let clubPlayers = await fetchAllPlayersByAdminUserId(user.admin_user_id)
+        let clubPlayers = await fetchAllPlayersByAdminUserId(user.admin_user_id);
+        let aUser = await fetchAdminUserById(user.admin_user_id);
         let starters = await fetchStartersByUserId(user.user_id);
         let subs = await fetchSubsByUserId(user.user_id);
         let puJoiners = await fetchAllPlayerUserJoinersByUserId(user.user_id);
         let league = await fetchLeague(user.admin_user_id);
         let gameweek = await fetchLatestGameweekFromAdminUserId(user.admin_user_id);
+        console.log(gameweek);
         if (gameweek) {
           let pgJoiners = await fetchPGJoinersFromUserIdAndGameweekId(user.user_id, gameweek.gameweek_id);
-          let ugJoiners = await fetchUGJoiners(user.admin_user_id, gameweek.gameweek_id);
-          let latestUG = await fetchUGJoiner(user.user_id, gameweek.gameweek_id);
-          let pg = pgJoiners.sort((a,b)=>a.total_points-b.total_points)[0];
-          let topPlayer = {
-            pg,
-            player: await fetchPlayerById(pg.player_id)
-          };
-          let ug = ugJoiners.sort((a,b)=>a.total_points-b.total_points)[0];
-          let topUser = {
-            ug,
-            user: await fetchUserById(ug.user_id)
-          };
-          await this.props.loginUser(user, clubPlayers, starters, subs, puJoiners, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser);
+          console.log(pgJoiners.length)
+          if (pgJoiners.length<1) {
+            await this.props.loginUser(user, aUser, clubPlayers, starters, subs, puJoiners, league, gameweek, [], [], null, null, null);
+          } else {
+            let ugJoiners = await fetchUGJoiners(user.admin_user_id, gameweek.gameweek_id);
+            let latestUG = await fetchUGJoiner(user.user_id, gameweek.gameweek_id);
+            console.log(pgJoiners[0]);
+            let pg = pgJoiners.sort((a,b)=>a.total_points-b.total_points)[0];
+            console.log(pg);
+            let topPlayer = {
+              pg,
+              player: await fetchPlayerById(pg.player_id)
+            };
+            let ug = ugJoiners.sort((a,b)=>b.total_points-a.total_points)[0];
+            let topUser = {
+              ug,
+              user: await fetchUserById(ug.user_id)
+            };
+            await this.props.loginUser(user, aUser, clubPlayers, starters, subs, puJoiners, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser);
+          }
         } else {
-          await this.props.loginUser(user, clubPlayers, starters, subs, puJoiners, league, null, [], [], null, null, null);
+          await this.props.loginUser(user, aUser, clubPlayers, starters, subs, puJoiners, league, null, [], [], null, null, null);
         }
         this.props.navigation.navigate('Home');
       } else {
@@ -139,12 +149,12 @@ class LoginScreen extends Component {
     render() {
         return (
           <View style={screenContainer}>
-            <View style={inputFieldsContainer}>
+            <View style={inputFieldContainerCenter}>
               <Text style={loginHead}>{this.state.admin ? 'Admin Account Login' : 'User Account Login'}</Text>
               <Switch value={this.state.admin} onValueChange={this.toggleAdmin} />
               <Text style={switchText}>Switch Admin/User Login</Text>
               <Text style={textLabel}>Enter your email address</Text>
-              <View style={inputField}>
+              <View style={inputFieldLarge}>
                 <TextInput style={input}
                 value={this.state.userObj.email} 
                 onChangeText={value => this.formChange('email', value)}
@@ -154,7 +164,7 @@ class LoginScreen extends Component {
                 />
               </View>
               <Text style={textLabel}>Enter your password</Text>
-              <View style={inputField}>
+              <View style={inputFieldLarge}>
                 <TextInput style={input}
                 value={this.state.userObj.password} 
                 onChangeText={value => this.formChange('password', value)}
@@ -180,7 +190,7 @@ class LoginScreen extends Component {
 
   const mapDispatchToProps = dispatch => {
     return {
-      loginUser: (user, clubPlayers, starters, subs, puJoiners, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser) => dispatch(loginUser(user, clubPlayers, starters, subs, puJoiners, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser)),
+      loginUser: (user, aUser, clubPlayers, starters, subs, puJoiners, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser) => dispatch(loginUser(user, aUser, clubPlayers, starters, subs, puJoiners, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser)),
       loginAdminUser: (aUser, clubPlayers, allUsers, games) => dispatch(loginAdminUser(aUser, clubPlayers, allUsers, games)),
       resetTeamPlayers: () => dispatch(resetTeamPlayers()),
     }

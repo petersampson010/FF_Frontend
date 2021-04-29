@@ -1,6 +1,6 @@
 import { isCaptain, isVCaptain } from "./functions/reusable"
 
-export const loginUser = (user, clubPlayers, starters, subs, puJoiners, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser) => {
+export const loginUser = (user, aUser, clubPlayers, starters, subs, puJoiners, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser) => {
     let captain, vCaptain;
     for (let i=0;i<starters.length;i++) {
         if (isCaptain(starters[i], puJoiners)) {
@@ -12,6 +12,7 @@ export const loginUser = (user, clubPlayers, starters, subs, puJoiners, league, 
     return {
         type: 'LOGINUSER',
         user,
+        aUser,
         clubPlayers, 
         starters, 
         subs,
@@ -104,10 +105,10 @@ export const nts2Login = (user, starters, subs, puJoiners) => {
     }
 }
 
-export const setGwSelectId = id =>{
+export const setGwSelect = game =>{
     return {
-        type: 'SETGWSELECTID',
-        id
+        type: 'SETGWSELECT',
+        game
     }
 }
 

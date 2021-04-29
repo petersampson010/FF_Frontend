@@ -11,12 +11,3 @@ export const topPerformers = {
     justifyContent: 'space-evenly',
     width: vw(100),
 }
-
-export const topPlayerStyle = {
-    width: vw(40),
-    backgroundColor: 'white'
-}
-
-export const leagueTable = {
-    ...standardText
-}
