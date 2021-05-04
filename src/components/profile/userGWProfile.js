@@ -9,10 +9,6 @@ import { standardText } from '../../styles/textStyle';
 
 class UserGWProfile extends Component {
 
-    componentDidMount() {
-        console.log('hereeee');
-        console.log(this.props.user);
-    }
     state = {  }
 
     render() { 

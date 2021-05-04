@@ -20,6 +20,10 @@ class PlayerGWProfile extends Component {
         });
     }
 
+    componentDidMount() {
+        // console.log(this.props.topPlayer);
+    }
+
     render() { 
         const { player } = this.props;
         return ( 

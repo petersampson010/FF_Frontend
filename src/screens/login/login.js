@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { loginUser, loginAdminUser, resetTeamPlayers } from '../../actions';
 import { fetchUserByEmail, fetchAdminUserByEmail, fetchAllPlayersByAdminUserId, 
   fetchStartersByUserId, fetchSubsByUserId, fetchAllPlayerUserJoinersByUserId, 
-  fetchAllUsersByAdminUserId, fetchAllGamesByAdminUserId, fetchLeague, fetchLatestGameweekFromAdminUserId, fetchPGJoinersFromUserIdAndGameweekId, fetchUGJoiner, fetchUGJoiners, fetchPlayerById, fetchUserById, fetchAdminUserById } 
+  fetchAllUsersByAdminUserId, fetchAllGamesByAdminUserId, fetchLeague, fetchLatestGameweekFromAdminUserId, fetchAllPGJoinersFromGameweekId, fetchUGJoiner, fetchUGJoiners, fetchPlayerById, fetchUserById, fetchAdminUserById } 
   from '../../functions/APIcalls'; 
 import { screenContainer } from '../../styles/global';
 import { loginHead, switchText, textLabel } from './style';
@@ -85,23 +85,22 @@ class LoginScreen extends Component {
         let puJoiners = await fetchAllPlayerUserJoinersByUserId(user.user_id);
         let league = await fetchLeague(user.admin_user_id);
         let gameweek = await fetchLatestGameweekFromAdminUserId(user.admin_user_id);
-        console.log(gameweek);
         if (gameweek) {
-          let pgJoiners = await fetchPGJoinersFromUserIdAndGameweekId(user.user_id, gameweek.gameweek_id);
-          console.log(pgJoiners.length)
+          let pgJoiners = await fetchAllPGJoinersFromGameweekId(gameweek.gameweek_id);
           if (pgJoiners.length<1) {
             await this.props.loginUser(user, aUser, clubPlayers, starters, subs, puJoiners, league, gameweek, [], [], null, null, null);
           } else {
             let ugJoiners = await fetchUGJoiners(user.admin_user_id, gameweek.gameweek_id);
             let latestUG = await fetchUGJoiner(user.user_id, gameweek.gameweek_id);
-            console.log(pgJoiners[0]);
-            let pg = pgJoiners.sort((a,b)=>a.total_points-b.total_points)[0];
+            console.log(gameweek.gameweek_id);
+            let pg = pgJoiners.sort((a,b)=>a.total_points-b.total_points);
             console.log(pg);
+            pg = pg[0];
             let topPlayer = {
               pg,
               player: await fetchPlayerById(pg.player_id)
             };
-            let ug = ugJoiners.sort((a,b)=>b.total_points-a.total_points)[0];
+            let ug = ugJoiners.sort((a,b)=>a.total_points-b.total_points)[0];
             let topUser = {
               ug,
               user: await fetchUserById(ug.user_id)

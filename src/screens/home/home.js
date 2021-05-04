@@ -29,13 +29,16 @@ class HomeScreen extends Component {
         </TouchableOpacity>);
     }
 
+    componentDidMount() {
+        // console.log(this.props.gwLatest);
+        // console.log(this.props.topPlayer);
+    }
+
 
     render() { 
-        const { gwLatest, user } = this.props
-        console.log(gwLatest);
+        const { gwLatest, user, topPlayer } = this.props
         return ( 
             <View style={screenContainer}>
-                {/* <Text style={headerText}>{user.teamname}</Text> */}
                 {gwLatest && topPlayer ? 
                 <View style={gwInfo}>
                     <GwScore />

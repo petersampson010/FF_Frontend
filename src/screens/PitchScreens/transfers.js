@@ -88,10 +88,7 @@ class TransfersScreen extends Component {
                 // players transferred out
                 const playersOut = _.difference(playersObjToArray(this.originalTeam()), playersObjToArray(this.state.team));
                 for (let i=0;i<playersOut.length;i++) {
-                    console.log('************* TRANSFERING OUT LOOP *************');
-                  console.log(playersOut[i]);
                   let puJ = await fetchPlayerUserJoinerByUserIdAndPlayerId(this.props.user.user_id, playersOut[i].player_id);
-                  console.log(puJ);
                   if (puJ.sub) {
                       count++;
                   }
@@ -108,15 +105,12 @@ class TransfersScreen extends Component {
                 const playersIn = _.difference(playersObjToArray(this.state.team), playersObjToArray(this.originalTeam()));
                 for (let j=0;j<playersIn.length;j++) {
                     if (captain) {
-                        console.log('hit on captain');
                         await postPlayerUserJoinerTRANSFER(playersIn[j], this.props.user.user_id, 0, captain, false);
                         captain = false;
                     } else if (vice_captain) {
-                        console.log('hit on vice captain');
                         await postPlayerUserJoinerTRANSFER(playersIn[j], this.props.user.user_id, 0, false, vice_captain);
                         vice_captain = false;
                     } else {
-                        console.log('hit');
                         await postPlayerUserJoinerTRANSFER(playersIn[j], this.props.user.user_id, count, false, false);
                         vice_captain = false;
                         count--

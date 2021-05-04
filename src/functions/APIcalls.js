@@ -177,11 +177,6 @@ export const postPlayerUserJoiner = (player, userId, count) => {
     .then(res=>res.json())
 }
 export const postPlayerUserJoinerTRANSFER = (player, userId, count, captain, vice_captain) => {
-    console.log('************* POSTING PLAYER USER JOINER ***************');
-    console.log('count: ' + count);
-    console.log('captain: ' + captain);
-    console.log('vice_captain: ' + vice_captain);
-    console.log(player.last_name);
     let configObj = {
         method: "POST",
         headers: {
@@ -201,8 +196,6 @@ export const postPlayerUserJoinerTRANSFER = (player, userId, count, captain, vic
 }
 
 export const patchPlayerUserJoinerSUBS = (sub, pu_id) => {
-    console.log(sub);
-    console.log(pu_id);
     let configObj = {
         method: "PATCH",
         headers: {
@@ -215,7 +208,6 @@ export const patchPlayerUserJoinerSUBS = (sub, pu_id) => {
     };
     return fetch(`http://localhost:3000/player_user_joiners/${pu_id}`, configObj)
     .then(res=>res.json())
-    .then(console.log)
 }
 
 export const patchPlayerUserJoinerCAPTAINS = (captain, vice_captain, pu_id) => {
@@ -235,8 +227,6 @@ export const patchPlayerUserJoinerCAPTAINS = (captain, vice_captain, pu_id) => {
 }
 
 export const deletePlayerUserJoiner = (pu_id) => {
-    console.log('************* DELETING PLAYER USER JOINER ***************');
-    console.log(pu_id);
     let configObj = {
         method: "DELETE"
     };
@@ -287,8 +277,6 @@ export const patchGame = (game) => {
     .then(res=>res.json())
 }
 export const completeGame = (id, score) => {
-    console.log('hittty');
-    console.log(id);
     let configObj = {
         method: "PATCH",
         headers: {
@@ -325,7 +313,7 @@ export const postPGJoiner = async(joiner) => {
             }
         }
         let { minutes, assists, goals, own_goals, y_cards, r_cards, bonus, penalty_miss, goals_conceded } = newObj
-        let player = await fetchPlayerById(joiner.player_id)
+        let player = await fetchPlayerById(joiner.player_id);
         let score;
         switch(player.position) {
             case '4': 
@@ -376,9 +364,12 @@ export const postPGJoiner = async(joiner) => {
 }
 
 export const fetchPGJoinersFromUserIdAndGameweekId = (userId, gameweekId) => {
-    console.log(userId);
-    console.log(gameweekId);
     return fetch(`http://localhost:3000/users/${userId}/${gameweekId}/pg_joiners`)
+    .then(res=>res.json())
+}
+
+export const fetchAllPGJoinersFromGameweekId = (gameweekId) => {
+    return fetch(`http://localhost:3000/player_gameweek_joiners/by_gw/${gameweekId}`)
     .then(res=>res.json())
 }
 
@@ -386,6 +377,7 @@ export const fetchPGJoinersFromUserIdAndGameweekId = (userId, gameweekId) => {
 // USER-GAMEWEEK JOINERS
 
 export const postUGJoiner = async(userId, gameweekId) => {
+
     let PGJoiners = await fetchPGJoinersFromUserIdAndGameweekId(userId, gameweekId);
     let score = 0;
     for (let i=0;i<PGJoiners.length;i++) {

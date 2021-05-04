@@ -33,7 +33,7 @@ class GameEditorScreen extends Component {
                 [player.player_id]: {
                     name: player.first_name + ' ' + player.last_name,
                     player_id: player.player_id,
-                    gameweek_id: this.props.gwSelect,
+                    gameweek_id: this.props.gwSelect.gameweek_id,
                     minutes: '',
                     assists: '',
                     goals: '',
@@ -113,7 +113,7 @@ class GameEditorScreen extends Component {
     validatePlayerScores = () => {
         let outcome = true;
         let postArr = [];
-        let updatedState = this.state
+        let updatedState = this.state;
         for (let i=0;i<this.props.clubPlayers.length;i++) {
             let playerID = this.props.clubPlayers[i].player_id
             let { result, post } = validatePlayerScore(this.state.players[playerID])

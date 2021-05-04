@@ -16,7 +16,7 @@ class PointsScreen extends Component {
         return ( 
             <ScrollView>
                 <Header title='Points' navigate={page=>this.props.navigation.navigate(page)}/>
-                {this.props.latestGw ? 
+                {this.props.gwLatest ? 
                 <Pitch
                 type="points"
                 update={()=>console.log('do nothing')}
@@ -35,6 +35,7 @@ class PointsScreen extends Component {
 
 const mapStateToProps = state => {
     return {
+        gwLatest: state.gameweek.gwLatest,
         subs: state.players.subs,
         starters: state.players.starters,
         puJoiners: state.joiners.puJoiners,

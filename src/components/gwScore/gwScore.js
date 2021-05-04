@@ -7,10 +7,6 @@ import { headerText } from '../header/style';
 class GwScore extends Component {
     state = {  }
 
-    componentDidMount() {
-        console.log(this.props.aUser.email);
-    }
-
 
     render() { 
         const { aUser, gwLatest } = this.props;

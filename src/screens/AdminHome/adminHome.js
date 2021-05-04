@@ -43,7 +43,6 @@ class AdminHomeScreen extends Component {
         let sortedArr = [...openGameesSorted, ...completedGamesSorted];
         return sortedArr.map((game,i) => {
             const gameColour = game.complete ? $chocolateBlack : $darkBlue;
-            console.log(game.score);
             return <TouchableOpacity key={i} style={{...gameContainer, backgroundColor: gameColour}}
             onPress={()=>{this.setState({...this.state, modal2: {active: true, game}});this.props.setGwSelect(game);}}>
                 <View>
@@ -130,11 +129,12 @@ class AdminHomeScreen extends Component {
                         active: false
                     }})}
                 jsx={<View><Input value={this.state.modal.game.opponent} 
+                style={standardText}
                 onChange={(el)=>this.formChange('opponent', el.nativeEvent.text)}
                 placeholder="Fantasy FC"
                 label="Opposition"
                 />
-                    <Text>Please select the date the game will be played</Text>
+                    <Text style={standardText}>Please select the date the game will be played</Text>
                     <DateTimePicker
                     value={this.state.modal.game.date}
                     onChange={(event, date)=>this.formChange('date', date)}
