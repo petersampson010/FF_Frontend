@@ -1,17 +1,27 @@
 import { vh, vw } from "react-native-expo-viewport-units"
-import { $electricBlueHighlight, $standardWhite } from "./global"
+import { $arylideYellow, $electricBlueHighlight, $standardWhite } from "./global"
 
 export const tableRow = {
     flexDirection: "row",
-    height: vh(5),
     borderBottomWidth: 1,
     borderColor: $electricBlueHighlight,
-    // justifyContent: 'space-evenly',
+    justifyContent: 'space-evenly',
+    paddingTop: vh(1),
+    paddingBottom: vh(1)
+}
+
+export const tableRowHead = {
+    ...tableRow,
+    borderTopWidth: 1, 
+    borderTopColor: $arylideYellow, 
+    marginTop: vh(2), 
+    textAlign: 'center'
 }
 
 export const tableElement3 = {
     width: vw(30),
-    color: $standardWhite
+    color: $standardWhite,
+    // textAlign: 'center'
 }
 
 export const tableElement9 = {

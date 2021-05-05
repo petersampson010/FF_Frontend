@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import Header from '../../components/header/header';
 import { displayDate, topPlayer, topUser } from '../../functions/reusable';
 import BottomNav from '../../components/bottomNav/bottomNav';
-import { screenContainer } from '../../styles/global';
+import { $arylideYellow, screenContainer } from '../../styles/global';
 import { gwInfo, leagueTable, topPerformers, topPlayerStyle } from './style';
 import PlayerGWProfile from '../../components/profile/playerGWProfile';
 import UserGWProfile from '../../components/profile/userGWProfile';
 import GwScore from '../../components/gwScore/gwScore';
-import { tableElement3, tableRow } from '../../styles/table';
+import { tableElement3, tableRow, tableRowHead } from '../../styles/table';
 import { headers, sidenote, standardText } from '../../styles/textStyle';
 import { vh } from 'react-native-expo-viewport-units';
 import { headerText } from '../../components/header/style';
@@ -52,7 +52,7 @@ class HomeScreen extends Component {
                         </View>
                     </View>
                 </View> : <NoScoreGW/>}
-                <View style={tableRow}>
+                <View style={tableRowHead}>
                     <Text style={{...tableElement3, ...standardText}}>Team</Text>
                     <Text style={{...tableElement3, ...standardText}}>Total Points</Text>
                     <Text style={{...tableElement3, ...standardText}}>{gwLatest.opponent} Points</Text>
