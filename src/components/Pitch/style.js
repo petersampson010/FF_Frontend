@@ -28,7 +28,7 @@ export const subs = {
 
 export const pitch = {
     flex: 1,
-    height: vh(52),
+    height: vh(50),
     marginTop: vh(1)
 }
 export const starters = {
@@ -39,7 +39,7 @@ export const starters = {
 export const positionRow = {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'space-evenly'
 }
 
 

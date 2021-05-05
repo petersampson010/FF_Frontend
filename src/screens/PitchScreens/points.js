@@ -5,6 +5,8 @@ import Header from '../../components/header/header';
 import Pitch from '../../components/Pitch/pitch';
 import { getCaptain, getVCaptain, playersArrayToObj, getNameOfNavPage } from '../../functions/reusable';
 import BottomNav from '../../components/bottomNav/bottomNav';
+import { pitchContainer } from '../../components/Pitch/style';
+import { screenContainer } from '../../styles/global';
 
 
 class PointsScreen extends Component {
@@ -14,21 +16,22 @@ class PointsScreen extends Component {
 
     render() { 
         return ( 
-            <ScrollView>
-                <Header title='Points' navigate={page=>this.props.navigation.navigate(page)}/>
-                {this.props.gwLatest ? 
-                <Pitch
-                type="points"
-                update={()=>console.log('do nothing')}
-                budget={false}
-                team={playersArrayToObj(this.props.starters)}
-                subs={this.props.subs}
-                clickFcn={()=>console.log('do nothing')}
-                captain={getCaptain(this.props.starters, this.props.puJoiners)}
-                vCaptain={getVCaptain(this.props.starters, this.props.puJoiners)}
-                /> : <Text>No Games played yet, come back soon!</Text>}
+            <View style={screenContainer}>
+                <ScrollView style={pitchContainer}>
+                    {this.props.gwLatest ? 
+                    <Pitch
+                    type="points"
+                    update={()=>console.log('do nothing')}
+                    budget={false}
+                    team={playersArrayToObj(this.props.starters)}
+                    subs={this.props.subs}
+                    clickFcn={()=>console.log('do nothing')}
+                    captain={getCaptain(this.props.starters, this.props.puJoiners)}
+                    vCaptain={getVCaptain(this.props.starters, this.props.puJoiners)}
+                    /> : <Text>No Games played yet, come back soon!</Text>}
+                </ScrollView>
                 <BottomNav navigation={this.props.navigation}/>
-            </ScrollView>
+            </View>
          );
     }
 }

@@ -33,9 +33,12 @@ class Pitch extends Component {
 
     playerPG = (playerId) => this.props.type==="points" ? this.props.pgJoiners.filter(pg=>pg.player_id===playerId)[0] : false;
 
-    renderPlayers = (position, j) => {
+    renderPlayers = (position) => {
         return this.props.team[position].map((player, i) => 
-        <PlayerGraphic player={player} key={i} num={i+j}
+        <PlayerGraphic 
+        player={player} 
+        key={i}
+        type={this.props.type}
         clickFcn={this.props.clickFcn}
         openModal={this.openModal}
         captain={this.props.captain===player}
@@ -46,7 +49,11 @@ class Pitch extends Component {
 
     renderSubs = j => {
         return this.props.subs.map((player, i) => 
-        <PlayerGraphic player={player} key={i} num={i+j} 
+        <PlayerGraphic 
+        player={player} 
+        key={i} 
+        num={i+j} 
+        type={this.props.type}
         clickFcn={this.props.clickFcn} 
         openModal={this.openModal}
         captain={this.props.captain===player}
@@ -97,17 +104,17 @@ class Pitch extends Component {
                             <View style={{flex: 1, flexDirection: 'row'}}>
                                 <View style={pitch}>
                                     <View style={starters}>
-                                        <View style={{...positionRow, width: vw(60)}}>
-                                            {this.props.team[4].length>0 ? this.renderPlayers('4', 10) : null}
+                                        <View style={{...positionRow, width: vw(50)}}>
+                                            {this.props.team[4].length>0 ? this.renderPlayers('4') : null}
                                         </View>
-                                        <View style={{...positionRow, width: vw(70)}}>
-                                            {this.props.team[3].length>0 ? this.renderPlayers('3', 6) : null}
+                                        <View style={{...positionRow, width: vw(65)}}>
+                                            {this.props.team[3].length>0 ? this.renderPlayers('3') : null}
                                         </View>
                                         <View style={{...positionRow, width: vw(80)}}>
-                                            {this.props.team[2].length>0 ? this.renderPlayers('2', 2) : null}
+                                            {this.props.team[2].length>0 ? this.renderPlayers('2') : null}
                                         </View>
                                         <View style={positionRow}>
-                                            {this.props.team[1].length>0 ? this.renderPlayers('1', 1) : null}
+                                            {this.props.team[1].length>0 ? this.renderPlayers('1') : null}
                                         </View>
                                     </View>
                                 </View>

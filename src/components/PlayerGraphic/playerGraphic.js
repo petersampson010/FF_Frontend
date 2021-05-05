@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { Image, Text, StyleSheet, View, Button, Modal, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
 import { fullName, subOrTransfer } from '../../functions/reusable';
-import { box, capText, container, playerImage, playerName, subContainer, subImage, subTransferBtn } from './style';
+import { box, capText, container, playerImage, subContainer, subImage, subTransferBtn } from './style';
 import { TouchableOpacity } from 'react-native';
+import { vw } from 'react-native-expo-viewport-units';
+import { checkBox, headers, playerNamePoints } from '../../styles/textStyle';
 
 
 class PlayerGraphic extends Component {
@@ -19,8 +21,8 @@ class PlayerGraphic extends Component {
     }
 
     renderPoints = () => {
-        if (this.props.type!='pickTeam') {
-            return <Text>{this.points()}</Text>
+        if (this.props.type==='points') {
+            return <Text style={playerNamePoints}>{this.points()}</Text>
         }
     }
 
@@ -36,8 +38,8 @@ class PlayerGraphic extends Component {
     }
 
 
-    horizontalMargin = player => {
-        switch(player.position) {
+    horizontalMargin = () => {
+        switch(this.props.player.position) {
             case '2':
                 return 7;
             case '3':
@@ -46,6 +48,19 @@ class PlayerGraphic extends Component {
                 return 0;
             default: 
             return 0;
+        }
+    }
+
+    containerWidth = () => {
+        switch(this.props.player.position) {
+            case '2':
+                return vw(25);
+            case '3':
+                return vw(20);
+            case '4':
+                return vw(15);
+            default: 
+                return vw(15);
         }
     }
 
@@ -61,20 +76,26 @@ class PlayerGraphic extends Component {
         const playerImg = require('../../images/profile.jpg');
         const subImg = require('../../images/subIcon.png');
         const { player, openModal, type, clickFcn } = this.props;
+        console.log(type);
       return ( 
-            <View style={{...container, marginHorizontal: this.horizontalMargin(player)}}>
-                <View style={subContainer}>
+            <View style={{...container, marginHorizontal: this.horizontalMargin(), width: this.containerWidth()}}>
+                <View style={ type!=="points" ? {...subContainer, paddingLeft: vw(5)} : subContainer}>
                     <TouchableOpacity onPress={()=>openModal(player)}>
                         <Image source={playerImg} imageStyle={{resizeMode: 'cover'}} style={playerImage}/>
                     </TouchableOpacity>
+                    {type!=='points' ?
+                    <View>
+                    <Text style={capText}>{this.isCaptain()}</Text>
                     <TouchableOpacity onPress={()=>clickFcn(player)}>
                         <Image source={subImg} imageStyle={{resizeMode: 'cover'}} style={subImage}/>
                     </TouchableOpacity>
+                    </View>
+                    : null}
                 </View>
                 <TouchableOpacity onPress={()=>openModal(player)}>
-                    <Text style={playerName}>{fullName(player)}</Text>
-                    <Text style={capText}>{this.isCaptain()}</Text>
+                    <Text style={playerNamePoints}>{fullName(player)}</Text>
                 </TouchableOpacity>
+                    {this.renderPoints()}
             </View>
       );
     }

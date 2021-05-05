@@ -56,7 +56,9 @@ class TransfersScreen extends Component {
                 budget: newBudget
             })
         } else {
-            if (this.state.team[position].length>3) {
+            console.log(this.state.team[position].length);
+            console.log(position);
+            if (this.state.team[position].length>2) {
                 showMessage({
                     message: "Too many players in this position",
                     type: "warning"

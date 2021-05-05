@@ -13,7 +13,7 @@ class PitchHead extends Component {
     comp1 = () => {
         switch(this.props.type) {
             case 'points': 
-                return <Text>Points: {this.props.latestUG.total_points}</Text>;
+                return <Text style={labelText}>{this.props.user.teamname}</Text>;
             case 'transfers':
                     return <View>
                         <Text style={labelText}>Transfers Available: {this.props.user.transfers}</Text>
@@ -30,7 +30,7 @@ class PitchHead extends Component {
     comp2 = () => {
         switch(this.props.type) {
             case 'points': 
-                return <Text>XXX</Text>;
+                return <Text style={labelText}>Points: {this.props.latestUG.total_points}</Text>;
             case 'transfers':
                 return <Button title="Confirm" onPress={this.props.update}/>
             case 'pickTeam':
