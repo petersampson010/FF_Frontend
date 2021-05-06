@@ -128,6 +128,7 @@ class PickTeamScreen extends Component {
             <View style={screenContainer}>
                         <Pitch
                         type="pickTeam"
+                        modalType="pickTeam"
                         update={this.validateTeam}
                         budget={false}
                         team={this.state.team}

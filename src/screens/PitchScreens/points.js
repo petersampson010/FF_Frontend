@@ -21,6 +21,7 @@ class PointsScreen extends Component {
                     {this.props.gwLatest ? 
                     <Pitch
                     type="points"
+                    modalType="playerProfile"
                     update={()=>console.log('do nothing')}
                     budget={false}
                     team={playersArrayToObj(this.props.starters)}

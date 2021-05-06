@@ -37,7 +37,6 @@ const initialState = {
 const rootReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'LOGINUSER':
-            console.log(action.topPlayer);
             return {
                 ...state,
                 endUser: {

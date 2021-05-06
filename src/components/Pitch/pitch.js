@@ -69,27 +69,6 @@ class Pitch extends Component {
             }
         });
 
-    modalJSX = () => {
-        const player = this.state.modal.player;
-        const sub = getPuJ(player, this.props.puJoiners).sub;
-    return <View style={modalTextContainer}>
-        <Text style={standardText}>{fullName(player)}</Text>
-        <Text style={standardText}>{positionString(player.position)}</Text>
-        <Text style={standardText}>£{player.price}m</Text>
-        <Text style={standardText}>MAYBE SOME STATS AT SOME POINT</Text>
-        {(this.props.type==="pickTeam" && !sub) ?
-        <View>
-            <TouchableOpacity style={this.props.captain===player ? {...captainBox, backgroundColor: $zaGreen} : {...captainBox, backgroundColor: $standardWhite}} onPress={()=>this.props.setCaptain(player)}>
-                <Text style={this.props.captain===player ? {...checkBox, color: $arylideYellow} : {...checkBox, color: $chocolateBlack}}>Captain</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={this.props.vCaptain===player ? {...captainBox, backgroundColor: $zaGreen} : {...captainBox, backgroundColor: $standardWhite}} onPress={()=>this.props.setVCaptain(player)}>
-                <Text style={this.props.vCaptain===player ? {...checkBox, color: $arylideYellow} : {...checkBox, color: $chocolateBlack}}>Vice Captain</Text>
-            </TouchableOpacity>
-        </View>
-        : null}
-    </View>
-    }
-
     render() { 
         const pitchImg = require('../../images/kisspng-ball-game-football-pitch-corner-kick-football-stadium-5ac96cf3827065.1735532915231500675343.png');
         return ( 
@@ -125,7 +104,8 @@ class Pitch extends Component {
                         height={vh(33)}
                         width={vw(80)}
                         closeModalFcn={()=>this.setState({modal: {...this.state.modal, active: false}})}
-                        jsx={this.modalJSX()}
+                        modalType={this.props.modalType}
+                        entry={this.state.modal.player}
                         buttonOptions={[]}
                         />
                 </View>

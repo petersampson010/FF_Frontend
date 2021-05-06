@@ -76,7 +76,6 @@ class PlayerGraphic extends Component {
         const playerImg = require('../../images/profile.jpg');
         const subImg = require('../../images/subIcon.png');
         const { player, openModal, type, clickFcn } = this.props;
-        console.log(type);
       return ( 
             <View style={{...container, marginHorizontal: this.horizontalMargin(), width: this.containerWidth()}}>
                 <View style={ type!=="points" ? {...subContainer, paddingLeft: vw(5)} : subContainer}>

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Modal, TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { Modal, TouchableOpacity, View, Text } from 'react-native';
 import {vw, vh} from 'react-native-expo-viewport-units';
+import { connect } from 'react-redux';
+import { fullName, getPuJ, positionString } from '../../functions/reusable';
 import { labelText, standardText } from '../../styles/textStyle';
-import { button, buttons, closeModalContainer, modal, modalText } from './style';
+import { button, buttons, closeModalContainer, modal, modalTextContainer } from './style';
 
 
 class MyModal extends Component {
@@ -14,30 +16,77 @@ class MyModal extends Component {
             <Text style={{...labelText, textAlign: 'center'}}>{x.text}</Text>
         </TouchableOpacity>})
     }
-    // componentDidMount() {
 
-    // }
+    modalJSX = () => {
+        const { modalType, entry } = this.props;
+        switch(this.props.modalType) {
+            case 'userProfile':
+                const { user, ug } = entry;
+                return <View style={modalTextContainer}>
+                    <Text style={standardText}>{user.teamname}</Text>
+                    <Text style={standardText}>GW Points: {ug.total_points}</Text>
+                    {/* <Text style={standardText}>Total Points: {totalPoints}</Text> */}
+                    <Text style={standardText}>maybe total score</Text>
+                </View>
+            case 'playerProfile':
+                const { player, pg } = entry;
+                return <View style={modalTextContainer}>
+                    <Text style={standardText}>{fullName(player)}</Text>
+                    <Text style={standardText}>{positionString(player.position)}</Text>
+                    <Text style={standardText}>£{player.price}</Text>
+                    <Text style={standardText}>MAYBE SOME STATS AT SOME POINT</Text>
+                </View>
+            case 'pickTeam':
+                // const { player, pg } = entry;
+                const sub = getPuJ(player, this.props.puJoiners).sub;
+                return <View style={modalTextContainer}>
+                    <Text style={standardText}>{fullName(player)}</Text>
+                    <Text style={standardText}>{positionString(player.position)}</Text>
+                    <Text style={standardText}>£{player.price}m</Text>
+                    <Text style={standardText}>MAYBE SOME STATS AT SOME POINT</Text>
+                    {(!sub) ?
+                    <View>
+                        <TouchableOpacity style={this.props.captain===player ? {...captainBox, backgroundColor: $zaGreen} : {...captainBox, backgroundColor: $standardWhite}} onPress={()=>this.props.setCaptain(player)}>
+                            <Text style={this.props.captain===player ? {...checkBox, color: $arylideYellow} : {...checkBox, color: $chocolateBlack}}>Captain</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={this.props.vCaptain===player ? {...captainBox, backgroundColor: $zaGreen} : {...captainBox, backgroundColor: $standardWhite}} onPress={()=>this.props.setVCaptain(player)}>
+                            <Text style={this.props.vCaptain===player ? {...checkBox, color: $arylideYellow} : {...checkBox, color: $chocolateBlack}}>Vice Captain</Text>
+                        </TouchableOpacity>
+                    </View>
+                    : null}
+                </View>
+            default: 
+                return <View></View>
+        }
+    }
     render() { 
         return ( 
             <Modal visible={this.props.visible} 
             transparent={true}>
                 <View style={{...modal, height:this.props.height, width:this.props.width, left:(vw(100)-(this.props.width))/2}}>
-                <View>
-                    {this.props.jsx}
-                </View>
-                <View style={buttons}>
-                    {this.renderButtons()}
-                </View>
-                <TouchableOpacity style={closeModalContainer} onPress={this.props.closeModalFcn}>
-                    <Text style={standardText}>Close</Text>
-                </TouchableOpacity>
+                    <View>
+                        {this.modalJSX()}
+                    </View>
+                    <View style={buttons}>
+                        {this.renderButtons()}
+                    </View>
+                    <TouchableOpacity style={closeModalContainer} onPress={this.props.closeModalFcn}>
+                        <Text style={standardText}>Close</Text>
+                    </TouchableOpacity>
                 </View>
             </Modal>
          );
     }
 }
  
-export default MyModal;
+const mapStateToProps = state => {
+    return {
+        puJoiners: state.joiners.puJoiners
+    }
+}
+
+export default connect(mapStateToProps)(MyModal);
+
 
 
 // props we need: 

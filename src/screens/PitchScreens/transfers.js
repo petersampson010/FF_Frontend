@@ -56,8 +56,6 @@ class TransfersScreen extends Component {
                 budget: newBudget
             })
         } else {
-            console.log(this.state.team[position].length);
-            console.log(position);
             if (this.state.team[position].length>2) {
                 showMessage({
                     message: "Too many players in this position",
@@ -148,6 +146,7 @@ class TransfersScreen extends Component {
                 <ScrollView style={pitchContainer}>
                     <Pitch 
                     type="transfers"
+                    modalType="playerProfile"
                     update={this.confirmUpdates}
                     budget={this.state.budget}
                     team={this.state.team}

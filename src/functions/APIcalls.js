@@ -50,6 +50,11 @@ export const patchUserBUDGET = (budget, user_id) => {
     .then(res=>res.json())
 }
 
+export const getUserTotalPoints = (userId) => {
+    return fetch(`http://localhost:3000/users/${userId}/total_points`)
+    .then(res => res.json());
+}
+
 // ADMIN_USER
 
 export const fetchAllAdminUsers = () => {

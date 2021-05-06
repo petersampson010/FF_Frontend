@@ -92,9 +92,7 @@ class LoginScreen extends Component {
           } else {
             let ugJoiners = await fetchUGJoiners(user.admin_user_id, gameweek.gameweek_id);
             let latestUG = await fetchUGJoiner(user.user_id, gameweek.gameweek_id);
-            console.log(gameweek.gameweek_id);
             let pg = pgJoiners.sort((a,b)=>b.total_points-a.total_points);
-            console.log(pg);
             pg = pg[0];
             let topPlayer = {
               pg,
