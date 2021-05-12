@@ -8,12 +8,25 @@ import { filter, itemPositionPicker, pickerItem, playersListContainer, positionP
 import { TouchableOpacity } from 'react-native';
 import { labelText, standardText } from '../../styles/textStyle';
 import { tableElement3, tableRow } from '../../styles/table';
+import MyModal from '../Modal/myModal';
 
 
 
 class PlayersList extends Component {
     state = { 
-        positionFilter: '0'
+        positionFilter: '0',
+        modal: {
+            active: false,
+            player: {
+                player_id: 1,
+                first_name: "Steve",
+                last_name: "Dunno",
+                position: "1",
+                price: 80,
+                availability: "a",
+                admin_user_id: 1
+            }
+        }
     }
 
     playerSelected = player => this.props.allSelectedPlayerIds.includes(player.player_id);
@@ -35,22 +48,15 @@ class PlayersList extends Component {
         }
     }
 
-    tableRow = (player, key) => {
-    return this.playerSelected(player) ? 
+    tableRow = (player, key) => 
     <TouchableOpacity key={key}
-    style={{...tableRow, opacity: 0.3}}>
+    style={this.playerSelected(player) ? {...tableRow, opacity: 0.3} : {...tableRow, opacity: 1}}
+    onPress={this.playerSelected(player) ? null : ()=>this.props.clickFcn(player)}
+    onLongPress={()=>this.setState({...this.state, modal: {active: true, player}})}>
         <Text style={{...tableElement3, ...standardText}}>{fullName(player)}</Text>
         <Text style={{...tableElement3, ...standardText}}>{positionString(player.position)}</Text>
         <Text style={{...tableElement3, ...standardText}}>£{player.price}m</Text>
     </TouchableOpacity>
-    :
-    <TouchableOpacity key={key} onPress={()=>this.props.clickFcn(player)}
-    style={{...tableRow, opacity: 1}}>
-        <Text style={{...tableElement3, ...standardText}}>{fullName(player)}</Text>
-        <Text style={{...tableElement3, ...standardText}}>{positionString(player.position)}</Text>
-        <Text style={{...tableElement3, ...standardText}}>£{player.price}m</Text>
-    </TouchableOpacity>
-    }
 
     render() { 
         return ( 
@@ -67,6 +73,15 @@ class PlayersList extends Component {
                         <Picker.Item color="white" label="FWD" value='4'/>
                     </Picker>
                 </View>
+                <MyModal
+                        visible={this.state.modal.active}
+                        height={vh(33)}
+                        width={vw(80)}
+                        closeModalFcn={()=>this.setState({...this.state, modal: {...this.state.modal, active: false}})}
+                        modalType={this.props.modalType}
+                        entry={this.state.modal.player}
+                        buttonOptions={[]}
+                        />
                 <View >
                     <View>
                         <View style={tableRow}>

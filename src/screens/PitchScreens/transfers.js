@@ -159,6 +159,7 @@ class TransfersScreen extends Component {
                     team={this.state.team}
                     allSelectedPlayerIds={allSelectedPlayerIds(this.state.team)}
                     clickFcn={this.transfer}
+                    modalType="playerProfile"
                     />
                 </ScrollView>
                 <BottomNav navigation={this.props.navigation}/>
