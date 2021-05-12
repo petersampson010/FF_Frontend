@@ -3,8 +3,9 @@ import { Modal, TouchableOpacity, View, Text } from 'react-native';
 import {vw, vh} from 'react-native-expo-viewport-units';
 import { connect } from 'react-redux';
 import { fullName, getPuJ, positionString } from '../../functions/reusable';
-import { labelText, standardText } from '../../styles/textStyle';
-import { button, buttons, closeModalContainer, modal, modalTextContainer } from './style';
+import { $arylideYellow, $chocolateBlack, $standardWhite, $zaGreen } from '../../styles/global';
+import { checkBox, labelText, standardText } from '../../styles/textStyle';
+import { button, buttons, captainBox, closeModalContainer, modal, modalTextContainer } from './style';
 
 
 class MyModal extends Component {
@@ -19,7 +20,10 @@ class MyModal extends Component {
 
     modalJSX = () => {
         const { modalType, entry } = this.props;
-        switch(this.props.modalType) {
+        console.log('*******THAT PART*******');
+        console.log(entry);
+        console.log(modalType);
+        switch(modalType) {
             case 'userProfile':
                 const { user, ug } = entry;
                 return <View style={modalTextContainer}>
@@ -29,7 +33,7 @@ class MyModal extends Component {
                     <Text style={standardText}>maybe total score</Text>
                 </View>
             case 'playerProfile':
-                const { player, pg } = entry;
+                let player = entry.pg ? entry.player : entry;
                 return <View style={modalTextContainer}>
                     <Text style={standardText}>{fullName(player)}</Text>
                     <Text style={standardText}>{positionString(player.position)}</Text>
@@ -37,7 +41,8 @@ class MyModal extends Component {
                     <Text style={standardText}>MAYBE SOME STATS AT SOME POINT</Text>
                 </View>
             case 'pickTeam':
-                // const { player, pg } = entry;
+                player = entry.pg ? entry.player : entry;
+                console.log(this.props.setCaptain);
                 const sub = getPuJ(player, this.props.puJoiners).sub;
                 return <View style={modalTextContainer}>
                     <Text style={standardText}>{fullName(player)}</Text>

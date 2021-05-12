@@ -20,11 +20,6 @@ class PlayerGWProfile extends Component {
         }
      }
 
-     componentDidMount() {
-         console.log('*************HERE*****************');
-         console.log(this.props.player);
-     }
-
     renderPointsBreakdown = () => {
         return Object.keys(this.props.player.pg).map(score=>{
             let att = this.props.player.pg[score];

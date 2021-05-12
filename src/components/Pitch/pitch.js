@@ -107,6 +107,10 @@ class Pitch extends Component {
                         modalType={this.props.modalType}
                         entry={this.state.modal.player}
                         buttonOptions={[]}
+                        captain={this.props.captain}
+                        vCaptain={this.props.vCaptain}
+                        setCaptain={this.props.setCaptain}
+                        setVCaptain={this.props.setVCaptain}
                         />
                 </View>
                 {this.props.subs ? <View style={subs}>
