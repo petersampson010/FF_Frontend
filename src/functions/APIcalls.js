@@ -107,14 +107,19 @@ export const fetchAllPlayersByAdminUserId = id => {
     .then(res => res.json())
 }
 export const fetchCurrentStartersByUserId = id => {
-    return fetch(`http://localhost:3000/users/${id}/team_start`)
+    return fetch(`http://localhost:3000/users/${id}/latest_starters`)
     .then(res => res.json())
 }
-export const fetchLastGwStartersByUserId = (id, gameweekId) => {
-    
+export const fetchGwStartersByUserId = (id, gameweekId) => {
+    return fetch(`http://localhost:3000/users/${id}/${gameweekId}/last_gw_starters`)
+    .then(res => res.json())
 }
-export const fetchSubsByUserId = id => {
-    return fetch(`http://localhost:3000/users/${id}/team_sub`)
+export const fetchLatestSubsByUserId = id => {
+    return fetch(`http://localhost:3000/users/${id}/latest_subs`)
+    .then(res => res.json())
+}
+export const fetchGwSubsByUserId = (id, gameweekId) => {
+    return fetch(`http://localhost:3000/users/${id}/${gameweekId}/last_gw_subs`)
     .then(res => res.json())
 }
 export const postPlayer = (player, aUserId) => {

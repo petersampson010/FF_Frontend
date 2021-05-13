@@ -4,7 +4,7 @@ import { showMessage } from 'react-native-flash-message';
 import { connect } from 'react-redux';
 import { loginUser, loginAdminUser, resetTeamPlayers } from '../../actions';
 import { fetchUserByEmail, fetchAdminUserByEmail, fetchAllPlayersByAdminUserId, 
-  fetchStartersByUserId, fetchSubsByUserId, fetchAllPlayerUserJoinersByUserId, 
+  fetchStartersByUserId, fetchLaSubsByUserId, fetchAllPlayerUserJoinersByUserId, 
   fetchAllUsersByAdminUserId, fetchAllGamesByAdminUserId, fetchLeague, fetchLatestGameweekFromAdminUserId, fetchAllPGJoinersFromGameweekId, fetchUGJoiner, fetchUGJoiners, fetchPlayerById, fetchUserById, fetchAdminUserById } 
   from '../../functions/APIcalls'; 
 import { screenContainer } from '../../styles/global';
@@ -76,22 +76,26 @@ class LoginScreen extends Component {
   }
     
   handleUserReturn = async(user) => {
+    const { admin_user_id, user_id } = user;
     try {
       if (user !== undefined && user !== null) {
-        let clubPlayers = await fetchAllPlayersByAdminUserId(user.admin_user_id);
-        let aUser = await fetchAdminUserById(user.admin_user_id);
-        let starters = await fetchStartersByUserId(user.user_id);
-        let subs = await fetchSubsByUserId(user.user_id);
-        let puJoiners = await fetchAllPlayerUserJoinersByUserId(user.user_id);
-        let league = await fetchLeague(user.admin_user_id);
-        let gameweek = await fetchLatestGameweekFromAdminUserId(user.admin_user_id);
+        let gameweek = await fetchLatestGameweekFromAdminUserId(admin_user_id);
+        let clubPlayers = await fetchAllPlayersByAdminUserId(admin_user_id);
+        let aUser = await fetchAdminUserById(admin_user_id);
+        let latestStarters = await fetchLatestStartersByUserId(user_id);
+        let latestSubs = await fetchLatestSubsByUserId(user_id);
+        let puJoiners = await fetchAllPlayerUserJoinersByUserId(user_id);
+        let league = await fetchLeague(admin_user_id);
         if (gameweek) {
-          let pgJoiners = await fetchAllPGJoinersFromGameweekId(gameweek.gameweek_id);
+          const { gameweek_id } = gameweek;
+          let lastGwStarters = await fetchGwStartersByUserId(user_id, gameweek_id);
+          let lastGwSubs = await fetchGwSubsByUserId(user_id, gameweek_id);
+          let pgJoiners = await fetchAllPGJoinersFromGameweekId(gameweek_id);
           if (pgJoiners.length<1) {
-            await this.props.loginUser(user, aUser, clubPlayers, starters, subs, puJoiners, league, gameweek, [], [], null, null, null);
+            await this.props.loginUser(user, aUser, clubPlayers, latestStarters, latestSubs, lastGwStarters, lastGwSubs, puJoiners, league, gameweek, [], [], null, null, null);
           } else {
-            let ugJoiners = await fetchUGJoiners(user.admin_user_id, gameweek.gameweek_id);
-            let latestUG = await fetchUGJoiner(user.user_id, gameweek.gameweek_id);
+            let ugJoiners = await fetchUGJoiners(admin_user_id, gameweek_id);
+            let latestUG = await fetchUGJoiner(user_id, gameweek_id);
             let pg = pgJoiners.sort((a,b)=>b.total_points-a.total_points);
             pg = pg[0];
             let topPlayer = {
@@ -103,10 +107,10 @@ class LoginScreen extends Component {
               ug,
               user: await fetchUserById(ug.user_id)
             };
-            await this.props.loginUser(user, aUser, clubPlayers, starters, subs, puJoiners, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser);
+            await this.props.loginUser(user, aUser, clubPlayers, latestStarters, latestSubs, lastGwStarters, lastGwSubs, puJoiners, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser);
           }
         } else {
-          await this.props.loginUser(user, aUser, clubPlayers, starters, subs, puJoiners, league, null, [], [], null, null, null);
+          await this.props.loginUser(user, aUser, clubPlayers, latestStarters, latestSubs, puJoiners, league, null, [], [], null, null, null);
         }
         this.props.navigation.navigate('Home');
       } else {
