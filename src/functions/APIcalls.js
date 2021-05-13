@@ -52,7 +52,7 @@ export const patchUserBUDGET = (budget, user_id) => {
 
 export const getUserTotalPoints = (userId) => {
     return fetch(`http://localhost:3000/users/${userId}/total_points`)
-    .then(res => res.json());
+    .then(res => res.json())
 }
 
 // ADMIN_USER
@@ -106,9 +106,12 @@ export const fetchAllPlayersByAdminUserId = id => {
     return fetch(`http://localhost:3000/admin_users/${id}/players`)
     .then(res => res.json())
 }
-export const fetchStartersByUserId = id => {
+export const fetchCurrentStartersByUserId = id => {
     return fetch(`http://localhost:3000/users/${id}/team_start`)
     .then(res => res.json())
+}
+export const fetchLastGwStartersByUserId = (id, gameweekId) => {
+    
 }
 export const fetchSubsByUserId = id => {
     return fetch(`http://localhost:3000/users/${id}/team_sub`)

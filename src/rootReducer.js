@@ -12,8 +12,14 @@ const initialState = {
     },
     players: {
         clubPlayers: [],
-        starters: [],
-        subs: []
+        current: {
+            starters: [],
+            subs: []
+        }, 
+        lastGw: {
+            starters: [],
+            subs: []
+        }
     },
     joiners: {
         puJoiners: [],
@@ -47,9 +53,11 @@ const rootReducer = (state = initialState, action) => {
                     user: action.user,
                 },
                 players: {
-                    clubPlayers: action.clubPlayers, 
-                    starters: action.starters,
-                    subs: action.subs, 
+                    clubPlayers: action.clubPlayers,
+                    current: {
+                        starters: action.starters,
+                        subs: action.subs, 
+                    }
                 },
                 joiners: {
                     puJoiners: action.puJoiners,
