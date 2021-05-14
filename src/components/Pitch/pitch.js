@@ -7,7 +7,7 @@ import MyModal from '../Modal/myModal';
 import { connect } from 'react-redux';
 import PitchHead from '../PitchHead/pitchHead';
 import { pitch, pitchContainer, starters, subs, positionRow, pitchImage, pitchClassContainer } from './style';
-import { fullName, getPuJ, positionString } from '../../functions/reusable';
+import { fullName, getPuJ, playersArrayToObj, positionString } from '../../functions/reusable';
 import { captainBox, modalTextContainer, nonCaptainBox } from '../Modal/style';
 import { checkBox, headers, labelText, standardText } from '../../styles/textStyle';
 import { TouchableOpacity } from 'react-native';
@@ -31,34 +31,67 @@ class Pitch extends Component {
         }
     }
 
+    componentDidMount() {
+        console.log(`****** ${this.props.type} PITCH REACHED *******`);
+
+        console.log('***** team:');
+        console.log(this.props.team);
+
+        console.log('***** subs');
+        console.log(this.props.subs);
+
+        // console.log('***** latest starters:');
+        // console.log(this.props.latestStaters);
+
+        // console.log('***** latest subs');
+        // console.log(this.props.latestSubs);
+
+        // console.log('***** last gw starters');
+        // console.log(this.props.lastGwStaters);
+
+        // console.log('***** last gw subs');
+        // console.log(this.props.lastGwSubs);
+
+        console.log('***** END OF LOGS ******');
+    }
+
     playerPG = (playerId) => this.props.type==="points" ? this.props.pgJoiners.filter(pg=>pg.player_id===playerId)[0] : false;
 
     renderPlayers = (position) => {
-        return this.props.team[position].map((player, i) => 
+        return this.team()[position].map((player, i) => 
         <PlayerGraphic 
+        sub={false}
         player={player} 
         key={i}
         type={this.props.type}
         clickFcn={this.props.clickFcn}
         openModal={this.openModal}
-        captain={this.props.captain===player}
-        vCaptain={this.props.vCaptain===player}
         playerPG={this.playerPG(player.player_id)}
         />)
     }
 
-    renderSubs = j => {
-        return this.props.subs.map((player, i) => 
-        <PlayerGraphic 
-        player={player} 
-        key={i} 
-        num={i+j} 
-        type={this.props.type}
-        clickFcn={this.props.clickFcn} 
-        openModal={this.openModal}
-        captain={this.props.captain===player}
-        vCaptain={this.props.vCaptain===player}
-        />)
+    renderSubs = () => {
+        if (this.props.type==='points') {
+            return this.props.lastGwSubs.map((player, i) => 
+            <PlayerGraphic 
+            sub={true}
+            player={player} 
+            key={i}
+            type={this.props.type}
+            clickFcn={this.props.clickFcn} 
+            openModal={this.openModal}
+            />)
+        } else {
+            return this.props.latestSubs.map((player, i) => 
+            <PlayerGraphic 
+            sub={true}
+            player={player} 
+            key={i}
+            type={this.props.type}
+            clickFcn={this.props.clickFcn} 
+            openModal={this.openModal}
+            />)
+        }
     }
 
     openModal = player => 
@@ -69,12 +102,25 @@ class Pitch extends Component {
             }
         });
 
+    team = () => {
+        switch(this.props.type) {
+            case 'transfers':
+                return playersArrayToObj(this.props.latestStarters.concat(this.props.latestSubs));
+            case 'pickTeam': 
+                return playersArrayToObj(this.props.latestStarters);
+            case 'points':
+                return playersArrayToObj(this.props.lastGwStarters);
+            default: 
+                return null;
+        }
+    }
+
     render() { 
         const pitchImg = require('../../images/kisspng-ball-game-football-pitch-corner-kick-football-stadium-5ac96cf3827065.1735532915231500675343.png');
-        return ( 
+        const team = this.team()
+        return (
             <View style={pitchClassContainer}>
                 <PitchHead
-                budget={this.props.budget}
                 type={this.props.type}
                 update={this.props.update}
                 />
@@ -84,16 +130,16 @@ class Pitch extends Component {
                                 <View style={pitch}>
                                     <View style={starters}>
                                         <View style={{...positionRow, width: vw(50)}}>
-                                            {this.props.team[4].length>0 ? this.renderPlayers('4') : null}
+                                            {team[4].length>0 ? this.renderPlayers('4') : null}
                                         </View>
                                         <View style={{...positionRow, width: vw(65)}}>
-                                            {this.props.team[3].length>0 ? this.renderPlayers('3') : null}
+                                            {team[3].length>0 ? this.renderPlayers('3') : null}
                                         </View>
                                         <View style={{...positionRow, width: vw(80)}}>
-                                            {this.props.team[2].length>0 ? this.renderPlayers('2') : null}
+                                            {team[2].length>0 ? this.renderPlayers('2') : null}
                                         </View>
                                         <View style={positionRow}>
-                                            {this.props.team[1].length>0 ? this.renderPlayers('1') : null}
+                                            {team[1].length>0 ? this.renderPlayers('1') : null}
                                         </View>
                                     </View>
                                 </View>
@@ -107,14 +153,10 @@ class Pitch extends Component {
                         modalType={this.props.modalType}
                         entry={this.state.modal.player}
                         buttonOptions={[]}
-                        captain={this.props.captain}
-                        vCaptain={this.props.vCaptain}
-                        setCaptain={this.props.setCaptain}
-                        setVCaptain={this.props.setVCaptain}
                         />
                 </View>
-                {this.props.subs ? <View style={subs}>
-                        {this.renderSubs(12)}
+                {this.props.type!=='transfers' ? <View style={subs}>
+                        {this.renderSubs()}
                 </View> : null}
             </View>
          );
@@ -124,7 +166,11 @@ class Pitch extends Component {
 const mapStateToProps = state => {
     return {
         pgJoiners: state.joiners.pgJoiners,
-        puJoiners: state.joiners.puJoiners
+        puJoiners: state.joiners.puJoiners,
+        latestStarters: state.players.latest.starters,
+        latestSubs: state.players.latest.subs,
+        lastGwStarters: state.players.lastGw.starters,
+        lastGwStarters: state.players.lastGw.subs
     }
 }
  

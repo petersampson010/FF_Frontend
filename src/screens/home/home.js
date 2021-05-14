@@ -19,24 +19,44 @@ import NoScoreGW from '../../components/noScoreGW/noScoreGW';
 class HomeScreen extends Component {
     state = {  }
 
+    componentDidMount() {
+        console.log('****** HOME PAGE REACHED, USER LOGGED IN *******');
+
+        console.log('***** user:');
+        console.log(this.props.user);
+
+        console.log('***** latest gw');
+        console.log(this.props.gwLatest);
+
+        console.log('***** latest starters:');
+        console.log(this.props.latestStaters);
+
+        console.log('***** latest subs');
+        console.log(this.props.latestSubs);
+
+        console.log('***** last gw starters');
+        console.log(this.props.lastGwStaters);
+
+        console.log('***** last gw subs');
+        console.log(this.props.lastGwSubs);
+
+        console.log('***** END OF LOGS ******');
+    }
+
     renderRows = () => {
         return this.props.league.sort((a,b)=>b.total_points-a.total_points).map((team, i)=>
         <TouchableOpacity key={i}
             style={tableRow}>
             <Text style={{...tableElement3, ...standardText}}>{team.team_name}</Text>
             <Text style={{...tableElement3, ...standardText}}>{team.total_points}</Text>
-            <Text style={{...tableElement3, ...standardText}}>{team.gw_points}</Text>
+            {this.props.gwLatest ? <Text style={{...tableElement3, ...standardText}}>{team.gw_points}</Text> : null}
         </TouchableOpacity>);
-    }
-
-    componentDidMount() {
-        // console.log(this.props.gwLatest);
-        // console.log(this.props.topPlayer);
     }
 
 
     render() { 
-        const { gwLatest, user, topPlayer } = this.props
+        const { user, topPlayer } = this.props
+        const gwLatest = this.props.gwLatest ? this.props.gwLatest : false;
         return ( 
             <View style={screenContainer}>
                 {gwLatest && topPlayer ? 
@@ -55,7 +75,9 @@ class HomeScreen extends Component {
                 <View style={tableRowHead}>
                     <Text style={{...tableElement3, ...standardText}}>Team</Text>
                     <Text style={{...tableElement3, ...standardText}}>Total Points</Text>
+                    {gwLatest ? 
                     <Text style={{...tableElement3, ...standardText}}>{gwLatest.opponent} Points</Text>
+                    : null}
                 </View>
                 <ScrollView style={''}>
                     <View style={{paddingBottom: vh(20)}}>
@@ -74,7 +96,12 @@ const mapStateToProps = state => {
         league: state.homeGraphics.league,
         topPlayer: state.homeGraphics.topPlayer,
         topUser: state.homeGraphics.topUser,
-        gwLatest: state.gameweek.gwLatest
+        gwLatest: state.gameweek.gwLatest,
+        latestStaters: state.players.latest.starters,
+        latestSubs: state.players.latest.subs,
+        lastGwStaters: state.players.lastGw.starters,
+        lastGwSubs: state.players.lastGw.subs,
+
     }
 }
 

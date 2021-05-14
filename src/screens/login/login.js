@@ -4,7 +4,7 @@ import { showMessage } from 'react-native-flash-message';
 import { connect } from 'react-redux';
 import { loginUser, loginAdminUser, resetTeamPlayers } from '../../actions';
 import { fetchUserByEmail, fetchAdminUserByEmail, fetchAllPlayersByAdminUserId, 
-  fetchStartersByUserId, fetchLaSubsByUserId, fetchAllPlayerUserJoinersByUserId, 
+  fetchLatestStartersByUserId, fetchLatestSubsByUserId, fetchGwStartersByUserId, fetchGwSubsByUserId, fetchAllPlayerUserJoinersByUserId, 
   fetchAllUsersByAdminUserId, fetchAllGamesByAdminUserId, fetchLeague, fetchLatestGameweekFromAdminUserId, fetchAllPGJoinersFromGameweekId, fetchUGJoiner, fetchUGJoiners, fetchPlayerById, fetchUserById, fetchAdminUserById } 
   from '../../functions/APIcalls'; 
 import { screenContainer } from '../../styles/global';
@@ -76,9 +76,9 @@ class LoginScreen extends Component {
   }
     
   handleUserReturn = async(user) => {
-    const { admin_user_id, user_id } = user;
     try {
       if (user !== undefined && user !== null) {
+        const { admin_user_id, user_id } = user;
         let gameweek = await fetchLatestGameweekFromAdminUserId(admin_user_id);
         let clubPlayers = await fetchAllPlayersByAdminUserId(admin_user_id);
         let aUser = await fetchAdminUserById(admin_user_id);
@@ -110,7 +110,7 @@ class LoginScreen extends Component {
             await this.props.loginUser(user, aUser, clubPlayers, latestStarters, latestSubs, lastGwStarters, lastGwSubs, puJoiners, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser);
           }
         } else {
-          await this.props.loginUser(user, aUser, clubPlayers, latestStarters, latestSubs, puJoiners, league, null, [], [], null, null, null);
+          await this.props.loginUser(user, aUser, clubPlayers, latestStarters, latestSubs, null, null, puJoiners, league, null, [], [], null, null, null);
         }
         this.props.navigation.navigate('Home');
       } else {
@@ -191,7 +191,7 @@ class LoginScreen extends Component {
 
   const mapDispatchToProps = dispatch => {
     return {
-      loginUser: (user, aUser, clubPlayers, starters, subs, puJoiners, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser) => dispatch(loginUser(user, aUser, clubPlayers, starters, subs, puJoiners, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser)),
+      loginUser: (user, aUser, clubPlayers, latestStarters, latestSubs, lastGwStarters, lastGwSubs, puJoiners, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser) => dispatch(loginUser(user, aUser, clubPlayers, latestStarters, latestSubs, lastGwStarters, lastGwSubs, puJoiners, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser)),
       loginAdminUser: (aUser, clubPlayers, allUsers, games) => dispatch(loginAdminUser(aUser, clubPlayers, allUsers, games)),
       resetTeamPlayers: () => dispatch(resetTeamPlayers()),
     }

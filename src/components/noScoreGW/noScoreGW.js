@@ -5,16 +5,20 @@ import GwScore from '../gwScore/gwScore';
 
 class NoScoreGW extends Component {
     state = {  }
+
+    componentDidMount() {
+        console.log('should be getting hiti');
+    }
     render() { 
         return ( 
             <View>
                 {this.props.topPlayer ? 
-                <Text style={headers}>No Games Played Yet!</Text>
-                :
                 <View>
                     <GwScore/>
                     <Text style={headers}>No Points Were Scored For This Gameweek! Maybe someone else should take over the admin account..</Text>
                 </View>
+                :
+                <Text style={headers}>No Games Played Yet!</Text>
                 }
             </View>
          );

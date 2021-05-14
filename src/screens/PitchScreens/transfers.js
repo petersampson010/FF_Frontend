@@ -148,12 +148,7 @@ class TransfersScreen extends Component {
                     type="transfers"
                     modalType="playerProfile"
                     update={this.confirmUpdates}
-                    budget={this.state.budget}
-                    team={this.state.team}
                     clickFcn={this.transfer}
-                    subs={false}
-                    captain={false}
-                    vCaptain={false}
                     />
                     <PlayersList
                     team={this.state.team}
@@ -170,7 +165,7 @@ class TransfersScreen extends Component {
 
 const mapStateToProps = state => {
     return {
-        teamPlayers: state.players.starters.concat(state.players.subs),
+        teamPlayers: state.players.latest.starters.concat(state.players.latest.subs),
         clubPlayers: state.players.clubPlayers,
         user: state.endUser.user,
 

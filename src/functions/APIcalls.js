@@ -106,7 +106,7 @@ export const fetchAllPlayersByAdminUserId = id => {
     return fetch(`http://localhost:3000/admin_users/${id}/players`)
     .then(res => res.json())
 }
-export const fetchCurrentStartersByUserId = id => {
+export const fetchLatestStartersByUserId = id => {
     return fetch(`http://localhost:3000/users/${id}/latest_starters`)
     .then(res => res.json())
 }

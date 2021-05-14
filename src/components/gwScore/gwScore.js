@@ -7,12 +7,16 @@ import { headerText } from '../header/style';
 class GwScore extends Component {
     state = {  }
 
+    componentDidMount() {
+        console.log('getting hit');
+    }
+
 
     render() { 
         const { aUser, gwLatest } = this.props;
-        return ( 
+        return (
             <View>
-                <Text style={headerText}>{aUser.club_name} {gwLatest.score} {gwLatest.opponent}</Text>
+                {/* <Text style={headerText}>{aUser.club_name} {gwLatest.score} {gwLatest.opponent}</Text> */}
             </View>
          );
     }

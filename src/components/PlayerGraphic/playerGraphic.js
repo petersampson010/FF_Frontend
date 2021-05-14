@@ -52,23 +52,36 @@ class PlayerGraphic extends Component {
     }
 
     containerWidth = () => {
-        switch(this.props.player.position) {
-            case '2':
-                return vw(25);
-            case '3':
-                return vw(20);
-            case '4':
-                return vw(15);
-            default: 
-                return vw(15);
+        if (this.props.sub) {
+            return vw(20)
+        } else {
+            switch(this.props.player.position) {
+                case '2':
+                    return vw(25);
+                case '3':
+                    return vw(20);
+                case '4':
+                    return vw(15);
+                default: 
+                    return vw(15);
+            }
         }
     }
 
     isCaptain = () => {
-        if (this.props.captain) {
-            return 'C';
-        } else if (this.props.vCaptain) {
-            return 'VC';
+        const { player, type, lastGwCaptain, lastGwVCaptain, latestCaptain, latestVCaptain } = this.props;
+        if (type==='points') {
+            if (player===lastGwCaptain) {
+                return 'C';
+            } else if (lastGwVCaptain) {
+                return 'VC';
+            }
+        } else {
+            if (player===latestCaptain) {
+                return 'C';
+            } else if (player===latestVCaptain) {
+                return 'VC';
+            }
         }
     }
 
@@ -102,7 +115,12 @@ class PlayerGraphic extends Component {
 
 const mapStateToProps = state => {
     return {
-        puJoiners: state.joiners.puJoiners
+        puJoiners: state.joiners.puJoiners,
+        latestCaptain: state.players.latest.captain,
+        latestVCaptain: state.players.latest.vCaptain,
+        lastGwVCaptain: state.players.lastGw.vCaptain,
+        lastGwCaptain: state.players.lastGw.captain,
+
     }
 }
  

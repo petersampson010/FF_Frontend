@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Modal, TouchableOpacity, View, Text } from 'react-native';
 import {vw, vh} from 'react-native-expo-viewport-units';
 import { connect } from 'react-redux';
+import { setCaptain } from '../../actions';
 import { fullName, getPuJ, positionString } from '../../functions/reusable';
 import { $arylideYellow, $chocolateBlack, $standardWhite, $zaGreen } from '../../styles/global';
 import { checkBox, labelText, standardText } from '../../styles/textStyle';
@@ -16,6 +17,28 @@ class MyModal extends Component {
         return <TouchableOpacity key={i} onPress={x.fcn} style={button}>
             <Text style={{...labelText, textAlign: 'center'}}>{x.text}</Text>
         </TouchableOpacity>})
+    }
+
+    setCaptain = player => {
+        if (this.props.vCaptain===player) {
+            showMessage({
+                message: "Player is already a captain",
+                type: 'warning'
+            })
+        } else {
+            this.props.setCaptain(player);
+        }
+    }
+
+    setVCaptain = player => {
+        if (this.props.captain===player) {
+            showMessage({
+                message: "Player is already a captain",
+                type: 'warning'
+            })
+        } else {
+            this.props.setVCaptain(player);
+        }
     }
 
     modalJSX = () => {
@@ -51,10 +74,10 @@ class MyModal extends Component {
                     <Text style={standardText}>MAYBE SOME STATS AT SOME POINT</Text>
                     {(!sub) ?
                     <View>
-                        <TouchableOpacity style={this.props.captain===player ? {...captainBox, backgroundColor: $zaGreen} : {...captainBox, backgroundColor: $standardWhite}} onPress={()=>this.props.setCaptain(player)}>
+                        <TouchableOpacity style={this.props.captain===player ? {...captainBox, backgroundColor: $zaGreen} : {...captainBox, backgroundColor: $standardWhite}} onPress={()=>this.setCaptain(player)}>
                             <Text style={this.props.captain===player ? {...checkBox, color: $arylideYellow} : {...checkBox, color: $chocolateBlack}}>Captain</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={this.props.vCaptain===player ? {...captainBox, backgroundColor: $zaGreen} : {...captainBox, backgroundColor: $standardWhite}} onPress={()=>this.props.setVCaptain(player)}>
+                        <TouchableOpacity style={this.props.vCaptain===player ? {...captainBox, backgroundColor: $zaGreen} : {...captainBox, backgroundColor: $standardWhite}} onPress={()=>this.setVCaptain(player)}>
                             <Text style={this.props.vCaptain===player ? {...checkBox, color: $arylideYellow} : {...checkBox, color: $chocolateBlack}}>Vice Captain</Text>
                         </TouchableOpacity>
                     </View>
@@ -86,11 +109,20 @@ class MyModal extends Component {
  
 const mapStateToProps = state => {
     return {
-        puJoiners: state.joiners.puJoiners
+        puJoiners: state.joiners.puJoiners,
+        captain: state.players.latest.captain,
+        vCaptain: state.players.latest.vCaptain
     }
 }
 
-export default connect(mapStateToProps)(MyModal);
+const mapDispatchToProps = dispatch => {
+    return {
+        setCaptain: player => dispatch(setCaptain(player)),
+        setVCaptain: player => dispatch(setVCaptain(player))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyModal);
 
 
 

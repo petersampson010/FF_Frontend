@@ -12,13 +12,23 @@ const initialState = {
     },
     players: {
         clubPlayers: [],
-        current: {
+        latest: {
             starters: [],
-            subs: []
+            subs: [],
+            captain: null,
+            vCaptain: null
         }, 
+        transferring: {
+            starters: [],
+            subs: [],
+            captain: null,
+            vCaptain: null
+        },
         lastGw: {
             starters: [],
-            subs: []
+            subs: [],
+            captain: null,
+            vCaptain: null
         }
     },
     joiners: {
@@ -43,6 +53,8 @@ const initialState = {
 const rootReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'LOGINUSER':
+            console.log('here');
+            console.log(action.latestSubs);
             return {
                 ...state,
                 endUser: {
@@ -54,9 +66,17 @@ const rootReducer = (state = initialState, action) => {
                 },
                 players: {
                     clubPlayers: action.clubPlayers,
-                    current: {
-                        starters: action.starters,
-                        subs: action.subs, 
+                    latest: {
+                        starters: action.latestStarters,
+                        subs: action.latestSubs, 
+                    },
+                    transferring: {
+                        starters: action.latestStarters,
+                        subs: action.latestSubs, 
+                    },
+                    lastGw: {
+                        starters: action.lastGwStarters,
+                        subs: action.lastGwSubs, 
                     }
                 },
                 joiners: {
@@ -106,8 +126,10 @@ const rootReducer = (state = initialState, action) => {
                 },
                 players: {
                     ...state.players,
-                    starters: action.starters,
-                    subs: action.subs
+                    latest: {
+                        starters: action.starters,
+                        subs: action.subs
+                    }
                 },
                 joiners: {
                     ...state.joiners,
@@ -146,8 +168,14 @@ const rootReducer = (state = initialState, action) => {
                 ...state, 
                 players: {
                     ...state.players,
-                    starters: [], 
-                    subs: []
+                    latest: {
+                        starters: [],
+                        subs: []
+                    }, 
+                    lastGw: {
+                        starters: [],
+                        subs: []
+                    }
                 }
             };
         case 'PICKTEAMUPDATE':
@@ -197,8 +225,10 @@ const rootReducer = (state = initialState, action) => {
                 ...state, 
                 players: {
                     ...state.players, 
-                    starters, 
-                    subs
+                    latest: {
+                        starters, 
+                        subs
+                    }
                 }
             };
         case 'UPDATEBUDGET':
@@ -221,6 +251,66 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state, 
                 spinner: false
+            }
+        case "SUBIN":
+            return {
+                ...state,
+                players: {
+                    ...state.players,
+                    transferring: {
+                        starters: [...state.players.latest.starters, action.player],
+                        subs: state.players.latest.subs.filter(x=>x!==action.player)
+                    }
+                }
+            }
+        case "SUBOUT":
+            return {
+                ...state,
+                players: {
+                    ...state.players,
+                    transferring: {
+                        starters: state.players.latest.starters.filter(x=>x!==action.player),
+                        subs: [...state.players.latest.subs, action.player]
+                    }
+                }
+            }
+        case "SETCAPTAIN":
+            return {
+                ...state,
+                players: {
+                    ...state.players,
+                    latest: {
+                        ...state.players.latest,
+                        captain: action.player
+                    }
+                }
+            }
+        case "SETVCAPTAIN":
+            return {
+                ...state,
+                players: {
+                    ...state.players,
+                    latest: {
+                        ...state.players.latest,
+                        captain: action.player
+                    }
+                }
+            }
+        case "SETTRANSFERRINGBACKTOLATEST":
+            return {
+                ...state, 
+                players: {
+                    ...state.players,
+                    transferring: state.players.latest
+                }
+            }
+        case "SETLATESTTOTRANSFERRING":
+            return {
+                ...state, 
+                players: {
+                    ...state.players,
+                    latest: state.players.transferring
+                }
             }
         default:
             return state;

@@ -1,12 +1,12 @@
 import { isCaptain, isVCaptain } from "./functions/reusable"
 
-export const loginUser = (user, aUser, clubPlayers, starters, subs, puJoiners, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser) => {
+export const loginUser = (user, aUser, clubPlayers, latestStarters, latestSubs, lastGwStarters, lastGwSubs, puJoiners, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser) => {
     let captain, vCaptain;
-    for (let i=0;i<starters.length;i++) {
-        if (isCaptain(starters[i], puJoiners)) {
-            captain = starters[i];
-        } else if (isVCaptain(starters[i], puJoiners)) {
-            vCapain = starters[i];
+    for (let i=0;i<latestStarters.length;i++) {
+        if (isCaptain(latestStarters[i], puJoiners)) {
+            captain = latestStarters[i];
+        } else if (isVCaptain(latestStarters[i], puJoiners)) {
+            vCapain = latestStarters[i];
         }
     }
     return {
@@ -14,8 +14,10 @@ export const loginUser = (user, aUser, clubPlayers, starters, subs, puJoiners, l
         user,
         aUser,
         clubPlayers, 
-        starters, 
-        subs,
+        latestStarters, 
+        latestSubs, 
+        lastGwStarters, 
+        lastGwSubs, 
         puJoiners,
         captain,
         vCaptain,
@@ -149,5 +151,45 @@ export  const addSpinner = () => {
 export const removeSpinner = () => {
     return {
         type: 'REMOVESPINNER'
+    }
+}
+
+export const setCaptain = player => {
+    return {
+        type: 'SETCAPTAIN',
+        player
+    }
+}
+
+export const setVCaptain = player => {
+    return {
+        type: 'SETVCAPTAIN',
+        player
+    }
+}
+
+export const subIn = player => {
+    return {
+        type: 'SUBIN',
+        player
+    }
+}
+
+export const subOut = player => {
+    return {
+        type: 'SUBOUT',
+        player
+    }
+}
+
+export const setTransferringBackToLatest = () => {
+    return {
+        type: 'SETTRANSFERRINGBACKTOLATEST'
+    }
+}
+
+export const setLatestToTransferring = () => {
+    return {
+        type: 'SETLATESTTOTRANSFERRING'
     }
 }

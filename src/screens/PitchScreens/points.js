@@ -23,9 +23,6 @@ class PointsScreen extends Component {
                     type="points"
                     modalType="playerProfile"
                     update={()=>console.log('do nothing')}
-                    budget={false}
-                    team={playersArrayToObj(this.props.starters)}
-                    subs={this.props.subs}
                     clickFcn={()=>console.log('do nothing')}
                     captain={getCaptain(this.props.starters, this.props.puJoiners)}
                     vCaptain={getVCaptain(this.props.starters, this.props.puJoiners)}
@@ -40,8 +37,8 @@ class PointsScreen extends Component {
 const mapStateToProps = state => {
     return {
         gwLatest: state.gameweek.gwLatest,
-        subs: state.players.subs,
-        starters: state.players.starters,
+        subs: state.players.lastGw.subs,
+        starters: state.players.lastGw.starters,
         puJoiners: state.joiners.puJoiners,
         league: state.homeGraphics.league
     }
