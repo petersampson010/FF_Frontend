@@ -102,9 +102,7 @@ export const addSubAttributeToPlayersArray = (team, allPuJ, count) => {
         return {...player, sub}})
 }
 
-export const allSelectedPlayers = team => Object.values(team).flat(Infinity);
-
-export const allSelectedPlayerIds = team => allSelectedPlayers(team).map(x=>x.player_id);
+export const playerIds = players => players.map(x=>x.player_id);
 
 export const displayDate = date => {
     let options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};

@@ -53,8 +53,6 @@ const initialState = {
 const rootReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'LOGINUSER':
-            console.log('here');
-            console.log(action.latestSubs);
             return {
                 ...state,
                 endUser: {
@@ -231,7 +229,11 @@ const rootReducer = (state = initialState, action) => {
                     }
                 }
             };
-        case 'UPDATEBUDGET':
+        case 'XX':
+            console.log('update budget');
+            console.log(action.budget);
+            console.log(state.endUser);
+            console.log('dont like iit');
             return {
                 ...state, 
                 endUser: {
@@ -253,13 +255,16 @@ const rootReducer = (state = initialState, action) => {
                 spinner: false
             }
         case "SUBIN":
+            console.log('hit');
+            console.log(action.player);
             return {
                 ...state,
                 players: {
                     ...state.players,
                     transferring: {
-                        starters: [...state.players.latest.starters, action.player],
-                        subs: state.players.latest.subs.filter(x=>x!==action.player)
+                        ...state.players.transferring,
+                        starters: [...state.players.transferring.starters, action.player],
+                        subs: state.players.transferring.subs.filter(x=>x!==action.player)
                     }
                 }
             }
@@ -269,8 +274,35 @@ const rootReducer = (state = initialState, action) => {
                 players: {
                     ...state.players,
                     transferring: {
-                        starters: state.players.latest.starters.filter(x=>x!==action.player),
-                        subs: [...state.players.latest.subs, action.player]
+                        ...state.players.transferring,
+                        starters: state.players.transferring.starters.filter(x=>x!==action.player),
+                        subs: [...state.players.transferring.subs, action.player]
+                    }
+                }
+            }
+        case "TRANSFERIN":
+            return {
+                ...state,
+                players: {
+                    ...state.players,
+                    transferring: {
+                        ...state.players.transferring,
+                        starters: [...state.players.transferring.starters, action.player]
+                    }
+                }
+            }
+        case "TRANSFEROUT":
+            console.log('yaas hittty');
+            console.log(action.player)
+
+            return {
+                ...state,
+                players: {
+                    ...state.players,
+                    transferring: {
+                        ...state.players.transferring,
+                        starters: state.players.transferring.starters.filter(x=>x!==action.player),
+                        subs: state.players.transferring.subs.filter(x=>x!==action.player)
                     }
                 }
             }

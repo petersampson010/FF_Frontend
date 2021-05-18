@@ -32,13 +32,13 @@ class Pitch extends Component {
     }
 
     componentDidMount() {
-        console.log(`****** ${this.props.type} PITCH REACHED *******`);
+        // console.log(`****** ${this.props.type} PITCH REACHED *******`);
 
-        console.log('***** team:');
-        console.log(this.props.team);
+        // console.log('***** team:');
+        // console.log(this.props.team);
 
-        console.log('***** subs');
-        console.log(this.props.subs);
+        // console.log('***** subs');
+        // console.log(this.props.subs);
 
         // console.log('***** latest starters:');
         // console.log(this.props.latestStaters);
@@ -57,6 +57,8 @@ class Pitch extends Component {
 
     playerPG = (playerId) => this.props.type==="points" ? this.props.pgJoiners.filter(pg=>pg.player_id===playerId)[0] : false;
 
+    team = () => playersArrayToObj(this.props.team);
+
     renderPlayers = (position) => {
         return this.team()[position].map((player, i) => 
         <PlayerGraphic 
@@ -70,9 +72,7 @@ class Pitch extends Component {
         />)
     }
 
-    renderSubs = () => {
-        if (this.props.type==='points') {
-            return this.props.lastGwSubs.map((player, i) => 
+    renderSubs = () => this.props.subs.map((player, i) => 
             <PlayerGraphic 
             sub={true}
             player={player} 
@@ -81,18 +81,6 @@ class Pitch extends Component {
             clickFcn={this.props.clickFcn} 
             openModal={this.openModal}
             />)
-        } else {
-            return this.props.latestSubs.map((player, i) => 
-            <PlayerGraphic 
-            sub={true}
-            player={player} 
-            key={i}
-            type={this.props.type}
-            clickFcn={this.props.clickFcn} 
-            openModal={this.openModal}
-            />)
-        }
-    }
 
     openModal = player => 
         this.setState({
@@ -102,22 +90,9 @@ class Pitch extends Component {
             }
         });
 
-    team = () => {
-        switch(this.props.type) {
-            case 'transfers':
-                return playersArrayToObj(this.props.latestStarters.concat(this.props.latestSubs));
-            case 'pickTeam': 
-                return playersArrayToObj(this.props.latestStarters);
-            case 'points':
-                return playersArrayToObj(this.props.lastGwStarters);
-            default: 
-                return null;
-        }
-    }
-
     render() { 
         const pitchImg = require('../../images/kisspng-ball-game-football-pitch-corner-kick-football-stadium-5ac96cf3827065.1735532915231500675343.png');
-        const team = this.team()
+        const team = this.team();
         return (
             <View style={pitchClassContainer}>
                 <PitchHead
@@ -167,10 +142,6 @@ const mapStateToProps = state => {
     return {
         pgJoiners: state.joiners.pgJoiners,
         puJoiners: state.joiners.puJoiners,
-        latestStarters: state.players.latest.starters,
-        latestSubs: state.players.latest.subs,
-        lastGwStarters: state.players.lastGw.starters,
-        lastGwStarters: state.players.lastGw.subs
     }
 }
  

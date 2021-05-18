@@ -6,9 +6,6 @@ import GwScore from '../gwScore/gwScore';
 class NoScoreGW extends Component {
     state = {  }
 
-    componentDidMount() {
-        console.log('should be getting hiti');
-    }
     render() { 
         return ( 
             <View>

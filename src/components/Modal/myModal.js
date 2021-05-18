@@ -43,9 +43,9 @@ class MyModal extends Component {
 
     modalJSX = () => {
         const { modalType, entry } = this.props;
-        console.log('*******THAT PART*******');
-        console.log(entry);
-        console.log(modalType);
+        // console.log('*******THAT PART*******');
+        // console.log(entry);
+        // console.log(modalType);
         switch(modalType) {
             case 'userProfile':
                 const { user, ug } = entry;
@@ -65,7 +65,6 @@ class MyModal extends Component {
                 </View>
             case 'pickTeam':
                 player = entry.pg ? entry.player : entry;
-                console.log(this.props.setCaptain);
                 const sub = getPuJ(player, this.props.puJoiners).sub;
                 return <View style={modalTextContainer}>
                     <Text style={standardText}>{fullName(player)}</Text>

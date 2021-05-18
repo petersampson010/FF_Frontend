@@ -7,7 +7,7 @@ import { nts2Login } from '../../actions';
 import Pitch from '../../components/Pitch/pitch';
 import PlayersList from '../../components/playersList/playersList';
 import { showMessage } from 'react-native-flash-message';
-import { allSelectedPlayerIds, allSelectedPlayers } from '../../functions/reusable';
+import { PlayerIds, allSelectedPlayers } from '../../functions/reusable';
 import pitchHead from '../../components/PitchHead/pitchHead';
 
 class ntsScreen2 extends Component {
@@ -23,7 +23,7 @@ class ntsScreen2 extends Component {
     }
 
     clickFcn = player => {
-        if (allSelectedPlayerIds(this.state.team).includes(player.player_id)) {
+        if (PlayerIds(this.state.team).includes(player.player_id)) {
             this.deSelect(player);
         } else {
             this.select(player);

@@ -137,8 +137,8 @@ export const setTransfers = team => {
 
 export const updateBudget = budget => {
     return {
-        type: 'UPDATEBUDGET',
-        budget
+        type: 'XX'
+        // budget
     }
 }
 
@@ -178,6 +178,20 @@ export const subIn = player => {
 export const subOut = player => {
     return {
         type: 'SUBOUT',
+        player
+    }
+}
+
+export const transferIn = player => {
+    return {
+        type: 'TRANSFERIN',
+        player
+    }
+}
+
+export const transferOut = player => {
+    return {
+        type: 'TRANSFEROUT',
         player
     }
 }

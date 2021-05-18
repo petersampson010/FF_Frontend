@@ -120,7 +120,6 @@ const mapStateToProps = state => {
         latestVCaptain: state.players.latest.vCaptain,
         lastGwVCaptain: state.players.lastGw.vCaptain,
         lastGwCaptain: state.players.lastGw.captain,
-
     }
 }
  

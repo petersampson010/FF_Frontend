@@ -7,11 +7,6 @@ import { headerText } from '../header/style';
 class GwScore extends Component {
     state = {  }
 
-    componentDidMount() {
-        console.log('getting hit');
-    }
-
-
     render() { 
         const { aUser, gwLatest } = this.props;
         return (

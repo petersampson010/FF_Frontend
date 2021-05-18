@@ -35,7 +35,7 @@ export const postUser = (userObj) => {
     return fetch('http://localhost:3000/users', configObj)
     .then(res=>res.json())
 }
-export const patchUserBUDGET = (budget, user_id) => {
+export const patchUserBUDGET = (user) => {
     let configObj = {
         method: "PATCH",
         headers: {
@@ -43,10 +43,10 @@ export const patchUserBUDGET = (budget, user_id) => {
             "Accept": "application/json"
         },
         body: JSON.stringify({
-            budget
+            budget: user.budget
         })
     };
-    return fetch(`http://localhost:3000/users/${user_id}`, configObj)
+    return fetch(`http://localhost:3000/users/${user.user_id}`, configObj)
     .then(res=>res.json())
 }
 

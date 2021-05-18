@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { connect } from 'react-redux';
-import { fullName, positionString } from '../../functions/reusable';
+import { fullName, positionString, playerIds } from '../../functions/reusable';
 import {vw, vh} from 'react-native-expo-viewport-units';
 import { filter, itemPositionPicker, pickerItem, playersListContainer, positionPicker, slidable, tableHead, tableText } from './style';
 import { TouchableOpacity } from 'react-native';
@@ -29,8 +29,6 @@ class PlayersList extends Component {
         }
     }
 
-    playerSelected = player => this.props.allSelectedPlayerIds.includes(player.player_id);
-
     table = () => {
         switch(this.state.positionFilter) {
             case '0': 
@@ -47,6 +45,8 @@ class PlayersList extends Component {
                 break;
         }
     }
+
+    playerSelected = player => playerIds(this.props.teamPlayers).includes(player.player_id);
 
     tableRow = (player, key) => 
     <TouchableOpacity key={key}
@@ -99,7 +99,8 @@ class PlayersList extends Component {
 
 const mapStateToProps = state => {
     return {
-        clubPlayers: state.players.clubPlayers
+        clubPlayers: state.players.clubPlayers,
+        teamPlayers: state.players.transferring.starters.concat(state.players.transferring.subs)
     }
 }
  

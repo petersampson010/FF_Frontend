@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { ScrollView, Text, View, StyleSheet, Button, Picker, Modal, TouchableHighlight } from 'react-native';
-import { getCaptain, getVCaptain, positionString, fullName, playersObjToArray, getPuId } from '../../functions/reusable';
+import { getCaptain, getVCaptain, positionString, fullName, playersObjToArray, getPuId, playersArrayToObj } from '../../functions/reusable';
 import { connect } from 'react-redux';
-import { pickTeamUpdate, setLatestToTransferring, setTransferringBackToLatest, subIn, subOut } from '../../actions';
+import { addSpinner, pickTeamUpdate, removeSpinner, setLatestToTransferring, setTransferringBackToLatest, subIn, subOut } from '../../actions';
 import {vw, vh} from 'react-native-expo-viewport-units';
 import { validatePickTeam } from '../../functions/validity';
 import _ from 'lodash';
@@ -15,55 +15,65 @@ import { screenContainer } from '../../styles/global';
 
 
 class PickTeamScreen extends Component {
-    state = {
-    }
 
     transfer = player => {
-        if (this.props.subs.includes(player)) {
-            this.props.subIn(player)
+        const { subs, subIn, subOut } = this.props;
+        if (subs.includes(player)) {
+            subIn(player)
         } else {
-            this.props.subOut(player);
+            subOut(player);
         }
     }
 
-
-
     validateTeam = () => {
-        if (validatePickTeam(this.state.team)) {
+        if (validatePickTeam(playersArrayToObj(this.props.starters))) {
             this.updateTeam();
         }
     }
         
     updateTeam = async() => {
-        let prevCaptain = getCaptain(this.props.starters, this.props.puJoiners);
-        let prevVCaptain = getVCaptain(this.props.starters, this.props.puJoiners);
-        let startToSub = _.difference(this.props.starters, this.props.transferStarters)
-        let subToStart = _.difference(this.props.subs, this.props.transferSubs);
+        const { starters, subs, originalStarters, originalSubs, puJoiners, captain, vCaptain, originalCaptain, originalVCaptain, addSpinner, removeSpinner, setLatestToTransferring, setTransferringBackToLatest } = this.props;
+        let startToSub = _.difference(originalStarters, starters)
+        let subToStart = _.difference(originalSubs, subs);
         try {
+            addSpinner();
             for (let i=0;i<startToSub.length;i++) {
-                await patchPlayerUserJoinerSUBS(true, getPuId(startToSub[i], this.props.puJoiners));
-                await patchPlayerUserJoinerSUBS(false, getPuId(subToStart[i], this.props.puJoiners));
+                await patchPlayerUserJoinerSUBS(true, getPuId(startToSub[i], puJoiners));
+                await patchPlayerUserJoinerSUBS(false, getPuId(subToStart[i], puJoiners));
             }
-            if (prevCaptain!==this.state.captain) {
-                await patchPlayerUserJoinerCAPTAINS(true, false, getPuId(this.state.captain, this.props.puJoiners));
-                await patchPlayerUserJoinerCAPTAINS(false, false, getPuId(prevCaptain, this.props.puJoiners));
+            if (originalCaptain!==captain) {
+                await patchPlayerUserJoinerCAPTAINS(true, false, getPuId(captain, puJoiners));
+                await patchPlayerUserJoinerCAPTAINS(false, false, getPuId(originalCaptain, puJoiners));
             } 
-            if (prevVCaptain!==this.state.vCaptain) {
-                await patchPlayerUserJoinerCAPTAINS(false, true, getPuId(this.state.vCaptain, this.props.puJoiners));
-                await patchPlayerUserJoinerCAPTAINS(false, false, getPuId(prevVCaptain, this.props.puJoiners));
+            if (originalVCaptain!==vCaptain) {
+                await patchPlayerUserJoinerCAPTAINS(false, true, getPuId(vCaptain, puJoiners));
+                await patchPlayerUserJoinerCAPTAINS(false, false, getPuId(originalVCaptain, puJoiners));
             }
-            this.props.setTransferringBackToLatest()
+            setLatestToTransferring();
+            removeSpinner();
+            showMessage({
+                type: 'success',
+                message: `Team selection successful`
+            })
         } catch(e) {
             console.warn(e);
+            setTransferringBackToLatest();
+            removeSpinner();
+            showMessage({
+                type: 'danger',
+                message: "This update was not successful, please try again later"
+            })
         }
     }
 
-    teamChange = () =>
-        (this.props.subs===this.state.subs && 
-        getCaptain(this.props.starters, this.props.puJoiners)===this.state.captain &&
-        getVCaptain(this.props.starters, this.props.puJoiners)===this.state.vCaptain
+    teamChange = () => {
+        const { subs, originalStarters, originalSubs, puJoiners, captain, vCaptain,} = this.props;
+        return (originalSubs===subs && 
+        getCaptain(originalStarters, puJoiners)===captain &&
+        getVCaptain(originalStarters, puJoiners)===vCaptain
         ) ?
         false : true;
+    }
 
         
     render() { 
@@ -74,6 +84,8 @@ class PickTeamScreen extends Component {
                 modalType="pickTeam"
                 update={this.validateTeam}
                 clickFcn={this.transfer}
+                team={this.props.starters}
+                subs={this.props.subs}
                 />
                 <BottomNav navigation={this.props.navigation}/>
             </View>
@@ -83,11 +95,15 @@ class PickTeamScreen extends Component {
 
 const mapStateToProps = state => {
     return {
-        subs: state.players.latest.subs,
-        starters: state.players.latest.starters,
-        transferSubs: state.players.transferring.subs,
-        transferStarters: state.players.transferring.starters,
+        subs: state.players.transferring.subs,
+        starters: state.players.transferring.starters,
+        originalSubs: state.players.latest.subs,
+        originalStarters: state.players.latest.starters,
         puJoiners: state.joiners.puJoiners,
+        captain: state.players.transferring.captain,
+        vCaptain: state.players.transferring.captain,
+        originalCaptain: state.players.latest.captain,
+        originalVCaptain: state.players.latest.captain,
     }
 }
 
@@ -97,7 +113,9 @@ const mapDispatchToProps = dispatch => {
         subIn: player => dispatch(subIn(player)),
         subOut: player => dispatch(subOut(player)),
         setTransferringBackToLatest: () => dispatch(setTransferringBackToLatest()),
-        setLatestToTransferring: () => dispatch(setLatestToTransferring())
+        setLatestToTransferring: () => dispatch(setLatestToTransferring()),
+        addSpinner: () => dispatch(addSpinner()),
+        removeSpinner: () => dispatch(removeSpinner())
     }
 }
  
