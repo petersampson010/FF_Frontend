@@ -127,7 +127,6 @@ class TransfersScreen extends Component {
                     team={this.props.teamPlayers}
                     />
                     <PlayersList
-                    team={this.props.teamPlayers}
                     clickFcn={this.transfer}
                     modalType="playerProfile"
                     />
@@ -155,7 +154,7 @@ export const mapDispatchToProps = dispatch => {
         addSpinner: () => dispatch(addSpinner()),
         removeSpinner: () => dispatch(removeSpinner()),
         setTransferringBackToLatest: () => dispatch(setTransferringBackToLatest()),
-        setLatestToTransferring: () => dispatch(setLatestToTransferring()),
+        setLatestToTransferring: () => dispatch(setLatestToTransferring())
     }
 }
  

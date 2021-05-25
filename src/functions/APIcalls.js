@@ -28,7 +28,7 @@ export const postUser = (userObj) => {
             teamname: userObj.teamName,
             password: userObj.password,
             transfers: 0,
-            budget: 600,
+            budget: userObj.budget,
             admin_user_id: userObj.clubId
         })
     };

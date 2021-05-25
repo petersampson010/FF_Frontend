@@ -7,7 +7,8 @@ import Header from '../../components/header/header';
 import { setAdminUser, setClubPlayers, setUser } from '../../actions';
 import { showMessage } from 'react-native-flash-message';
 import { screenContainer } from '../../styles/global';
-import { input, inputField, inputFieldsContainer, loginHead, switchText, textLabel } from './style';
+import { inputField, inputFieldsContainer, loginHead, switchText, textLabel } from './style';
+import { inputFieldContainerCenter, inputFieldLarge, input } from '../../styles/input';
 
 
 
@@ -20,7 +21,8 @@ class ntsScreen1 extends Component {
       password: '',
       rePassword: '',
       clubId: '',
-      terms: ''
+      terms: '',
+      budget: 100
     },
     signedUp: false,
   }
@@ -85,10 +87,10 @@ class ntsScreen1 extends Component {
   render() {
     return (
       <View style={screenContainer}>
-            <View style={inputFieldsContainer}>
+            <View style={inputFieldContainerCenter}>
               <Text style={loginHead}>Create Account</Text>
               <Text style={textLabel}>Enter your email address</Text>
-              <View style={inputField}>
+              <View style={inputFieldLarge}>
                 <TextInput style={input}
                 value={this.state.userObj.email} 
                 onChangeText={value => this.formChange('email', value)}
@@ -98,7 +100,7 @@ class ntsScreen1 extends Component {
                 />
               </View>
               <Text style={textLabel}>Enter your team name</Text>
-              <View style={inputField}>
+              <View style={inputFieldLarge}>
                 <TextInput style={input}
                 value={this.state.userObj.teamName} 
                 onChangeText={value => this.formChange('teamName', value)}
@@ -107,7 +109,7 @@ class ntsScreen1 extends Component {
                 />
               </View>
               <Text style={textLabel}>Enter your password</Text>
-              <View style={inputField}>
+              <View style={inputFieldLarge}>
                 <TextInput style={input}
                 value={this.state.userObj.password} 
                 onChangeText={value => this.formChange('password', value)}
@@ -118,7 +120,7 @@ class ntsScreen1 extends Component {
                 />
               </View>
               <Text style={textLabel}>Re-enter your password</Text>
-              <View style={inputField}>
+              <View style={inputFieldLarge}>
                 <TextInput style={input}
                 value={this.state.userObj.rePassword} 
                 onChangeText={value => this.formChange('rePassword', value)}
@@ -129,7 +131,7 @@ class ntsScreen1 extends Component {
                 />
               </View>
               <Text style={textLabel}>Club ID</Text>
-              <View style={inputField}>
+              <View style={inputFieldLarge}>
                 <TextInput style={input}
                 value={this.state.userObj.clubId} 
                 onChangeText={value => this.formChange('clubID', value)}
@@ -141,17 +143,6 @@ class ntsScreen1 extends Component {
               <Button title="Sign Up" onPress={this.fetchInfo}/>
             </View>
           </View>
-      // <View style={styles.container}>
-      //   <Header title='Create Account'/>
-      //   <View style={styles.formContainer}>
-      //     <Text>Email</Text>
-      //     <Text>Club Name</Text
-      //     <TextInput value={this.state.userObj.rePassword} onChange={el => this.formChange('rePassword', el.nativeEvent.text)}/>
-      //     <Text>Club ID</Text>
-      //     <TextInput value={this.state.userObj.clubId} onChange={el => this.formChange('clubID', el.nativeEvent.text)}/>
-      //     <Button title="Sign Up" onPress={this.fetchInfo}/>
-      //   </View>
-      // </View>
     );
   }
 }
@@ -171,13 +162,3 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ntsScreen1);
-
-const styles = StyleSheet.create({
-  container: {
-  },
-  formContainer: {
-    marginTop: '20%',
-    marginLeft: '10%',
-    marginRight: '10%'
-  }
-})

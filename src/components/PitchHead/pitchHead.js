@@ -17,7 +17,7 @@ class PitchHead extends Component {
             case 'transfers':
                     return <View>
                         <Text style={labelText}>Transfers Available: {this.props.user.transfers}</Text>
-                        <View style={{flexDirection: "row"}}><Text style={labelText}>Budget: </Text><Text style={{...labelText, color: (this.props.budget>=0 ? 'green' : 'red')}}>{this.props.budget}m</Text></View>
+                        <View style={{flexDirection: "row"}}><Text style={labelText}>Budget: </Text><Text style={{...labelText, color: (this.props.budget>=0 ? 'green' : 'red')}}>{Math.floor(this.props.budget*100)/100}m</Text></View>
                     </View>;
                 return 
             case 'pickTeam':

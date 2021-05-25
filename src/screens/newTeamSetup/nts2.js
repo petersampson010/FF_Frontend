@@ -1,34 +1,41 @@
 import React, { Component } from 'react';
 import Header from '../../components/header/header';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import { patchUserBUDGET, postPlayerUserJoiner } from '../../functions/APIcalls';
-import { nts2Login } from '../../actions';
 import Pitch from '../../components/Pitch/pitch';
 import PlayersList from '../../components/playersList/playersList';
 import { showMessage } from 'react-native-flash-message';
 import { PlayerIds, allSelectedPlayers } from '../../functions/reusable';
-import pitchHead from '../../components/PitchHead/pitchHead';
+import { screenContainer } from '../../styles/global';
+import { pitchContainer } from '../PitchScreens/style';
+import { nts2Login, addSpinner, removeSpinner, setLatestToTransferring, setTransferringBackToLatest, transferIn, transferOut } from '../../actions';
+import { addSubAttributeToPlayersArray, playerIds, fullName, getPuId, playersArrayToObj, playersObjToArray, positionString } from '../../functions/reusable';
+
+
 
 class ntsScreen2 extends Component {
-    state = { 
-        budget: 600,
-        num: 1,
-        team: {
-            '1': [],
-            '2': [],
-            '3': [],
-            '4': []
-        }
-    }
+    state = {}
 
-    clickFcn = player => {
-        if (PlayerIds(this.state.team).includes(player.player_id)) {
-            this.deSelect(player);
+    transfer = player => {
+        let { position, price } = player;
+        const { transferOut, transferIn, user, teamPlayers } = this.props;
+        if (this.playerSelected(player)) {
+            transferOut(player);
         } else {
-            this.select(player);
+            if (teamPlayers.filter(x=>x.position===position).length>2) {
+                showMessage({
+                    message: "Too many players in this position",
+                    type: "warning"
+                })
+            } else {
+                transferIn(player);
+            }
         }
-    }
+    } 
+
+    playerSelected = player => playerIds(this.props.teamPlayers).includes(player.player_id);
+
 
     select = player => {
         const { team } = this.state;
@@ -96,20 +103,22 @@ class ntsScreen2 extends Component {
     }
 
     submitTeam = async() => {
-        let team = allSelectedPlayers(this.state.team);
+        const { teamPlayers, budget, addSpinner, removeSpinner, user, navigation, nts2Login } = this.props
+        const teamPlayersObj = playersArrayToObj(teamPlayers);
         try {
-            if (team.length===8) {
-                if (this.state.budget>=0) {
-                    if (this.state.team['1'].length===1) {
-                        let puJoiners = []
+            addSpinner();
+            if (teamPlayers.length===8) {
+                if (budget>=0) {
+                    if (teamPlayersObj['1'].length===1) {
+                        let puJoiners = [];
                         for (let i=0;i<8;i++) {
-                            let puJoiner = await postPlayerUserJoiner(team[i], this.props.user.user_id, i)
+                            let puJoiner = await postPlayerUserJoiner(teamPlayers[i], user.user_id, i);
                             puJoiners.push(puJoiner);
                         }
-                        let teamPlayers = Object.values(this.state.team).flat(Infinity);
-                        let user = await patchUserBUDGET(this.state.budget, this.props.user.user_id);
-                        this.props.nts2Login(user, teamPlayers.slice(0,6), teamPlayers.slice(-2), puJoiners);
-                        this.props.navigation.navigate('Home');
+                        let returnUser = await patchUserBUDGET(
+                            budget, user.user_id);
+                        nts2Login(returnUser, teamPlayers.slice(0,6), teamPlayers.slice(-2), puJoiners);
+                        navigation.navigate('Home');
                     } else {
                         showMessage({
                             message: "You need 1 Goalkeeper selected",
@@ -128,50 +137,53 @@ class ntsScreen2 extends Component {
                     type: "danger"
                 });
             }
+            removeSpinner()
         } catch(e) {
+            removeSpinner()
             console.warn(e);
         }
     }
 
     render() { 
         return ( 
-            <ScrollView style={styles.container}>
-                <Header style={styles.header} title='Team Selection'/>
-                <Pitch
-                update={this.submitTeam}
-                budget={this.state.budget}
-                team={this.state.team}
-                subs={false}
-                clickFcn={this.clickFcn}
-                captain={false}
-                vCaptain={false}
-                type='transfers'
-                />
-                <PlayersList
-                allSelectedPlayerIds={allSelectedPlayerIds(this.state.team)}
-                clickFcn={this.clickFcn}
-                />
-            </ScrollView>
+            <View style={screenContainer}>
+                <ScrollView style={pitchContainer}>
+                    {/* <Header style={styles.header} title='Team Selection'/> */}
+                    <Pitch
+                    update={this.submitTeam}
+                    clickFcn={this.transfer}
+                    type='transfers'
+                    modalType="playerProfile"
+                    team={this.props.teamPlayers}
+                    />
+                    <PlayersList
+                    clickFcn={this.transfer}
+                    modalType="playerProfile"
+                    />
+                </ScrollView>
+            </View>
         );
     }
 }
 
 const mapStateToProps = state => {
     return {
-        clubPlayers: state.players.clubPlayers,
-        user: state.endUser.user
+        user: state.endUser.user,
+        teamPlayers: state.players.transferring.starters.concat(state.players.transferring.subs),
+        budget: state.players.transferring.budget
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         nts2Login: (user, starters, subs, puJoiners) => dispatch(nts2Login(user, starters, subs, puJoiners)),
-        setTeamPlayers: players => dispatch(setTeamPlayers(players))
+        transferOut: player => dispatch(transferOut(player)),
+        transferIn: player => dispatch(transferIn(player)),
+        addSpinner: () => dispatch(addSpinner()),
+        removeSpinner: () => dispatch(removeSpinner()),
+        setTransferringBackToLatest: () => dispatch(setTransferringBackToLatest()),
+        setLatestToTransferring: () => dispatch(setLatestToTransferring())
     }
 }
  
 export default connect(mapStateToProps, mapDispatchToProps)(ntsScreen2);
-
-const styles = StyleSheet.create({
-    
-})

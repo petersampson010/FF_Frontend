@@ -62,13 +62,6 @@ export const setUser = user => {
     }
 }
 
-export const setTeamPlayers = players => {
-    return {
-        type: 'SETTEAMPLAYERS',
-        players
-    }
-}
-
 export const addSub = player => {
     return {
         type: 'ADDSUB',

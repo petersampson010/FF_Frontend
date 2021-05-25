@@ -131,6 +131,10 @@ const rootReducer = (state = initialState, action) => {
                     latest: {
                         starters: action.starters,
                         subs: action.subs
+                    },
+                    transferring: {
+                        starters: action.starters,
+                        subs: action.subs
                     }
                 },
                 joiners: {
@@ -158,11 +162,19 @@ const rootReducer = (state = initialState, action) => {
                 }
             };
         case 'SETUSER':
+            console.log(action.user);
             return {
                 ...state, 
                 endUser: {
                     ...state.endUser, 
                     user: action.user
+                },
+                players: {
+                    ...state.players,
+                    transferring: {
+                        ...state.players.transferring,
+                        budget: action.user.budget
+                    }
                 }
             };
         case 'RESETTEAMPLAYERS':
@@ -277,7 +289,7 @@ const rootReducer = (state = initialState, action) => {
                     transferring: {
                         ...state.players.transferring,
                         starters: [...state.players.transferring.starters, action.player],
-                        budget: state.player.transferring.budget-action.player.price
+                        budget: state.players.transferring.budget-action.player.price
                     }
                 }
             }
@@ -290,7 +302,7 @@ const rootReducer = (state = initialState, action) => {
                         ...state.players.transferring,
                         starters: state.players.transferring.starters.filter(x=>x!==action.player),
                         subs: state.players.transferring.subs.filter(x=>x!==action.player),
-                        budget: state.player.transferring.budget+action.player.price
+                        budget: state.players.transferring.budget+action.player.price
                     }
                 }
             }
