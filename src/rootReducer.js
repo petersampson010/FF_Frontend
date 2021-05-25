@@ -1,3 +1,4 @@
+import { ActivityIndicator } from "react-native";
 import { playersObjToArray } from "./functions/reusable";
 
 const initialState = {
@@ -22,7 +23,8 @@ const initialState = {
             starters: [],
             subs: [],
             captain: null,
-            vCaptain: null
+            vCaptain: null,
+            budget: null
         },
         lastGw: {
             starters: [],
@@ -51,6 +53,7 @@ const initialState = {
 
 
 const rootReducer = (state = initialState, action) => {
+    console.log(action.type);
     switch (action.type) {
         case 'LOGINUSER':
             return {
@@ -71,6 +74,7 @@ const rootReducer = (state = initialState, action) => {
                     transferring: {
                         starters: action.latestStarters,
                         subs: action.latestSubs, 
+                        budget: action.user.budget
                     },
                     lastGw: {
                         starters: action.lastGwStarters,
@@ -229,21 +233,6 @@ const rootReducer = (state = initialState, action) => {
                     }
                 }
             };
-        case 'XX':
-            console.log('update budget');
-            console.log(action.budget);
-            console.log(state.endUser);
-            console.log('dont like iit');
-            return {
-                ...state, 
-                endUser: {
-                    ...state.endUser,
-                    user: {
-                        ...state.endUser.user,
-                        budget: action.budget
-                    }
-                }
-            }
         case 'ADDSPINNER':
             return {
                 ...state, 
@@ -287,14 +276,12 @@ const rootReducer = (state = initialState, action) => {
                     ...state.players,
                     transferring: {
                         ...state.players.transferring,
-                        starters: [...state.players.transferring.starters, action.player]
+                        starters: [...state.players.transferring.starters, action.player],
+                        budget: state.player.transferring.budget-action.player.price
                     }
                 }
             }
         case "TRANSFEROUT":
-            console.log('yaas hittty');
-            console.log(action.player)
-
             return {
                 ...state,
                 players: {
@@ -302,7 +289,8 @@ const rootReducer = (state = initialState, action) => {
                     transferring: {
                         ...state.players.transferring,
                         starters: state.players.transferring.starters.filter(x=>x!==action.player),
-                        subs: state.players.transferring.subs.filter(x=>x!==action.player)
+                        subs: state.players.transferring.subs.filter(x=>x!==action.player),
+                        budget: state.player.transferring.budget+action.player.price
                     }
                 }
             }
@@ -330,15 +318,25 @@ const rootReducer = (state = initialState, action) => {
             }
         case "SETTRANSFERRINGBACKTOLATEST":
             return {
-                ...state, 
+                ...state,
                 players: {
                     ...state.players,
-                    transferring: state.players.latest
+                    transferring: {
+                        ...state.players.latest,
+                        budget: state.endUser.user.budget
+                    }
                 }
-            }
+            };
         case "SETLATESTTOTRANSFERRING":
             return {
                 ...state, 
+                endUser: {
+                    ...state.endUser,
+                    user: {
+                        ...state.user,
+                        budget: state.players.transferring.budget
+                    }
+                },
                 players: {
                     ...state.players,
                     latest: state.players.transferring

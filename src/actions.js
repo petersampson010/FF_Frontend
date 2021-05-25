@@ -135,13 +135,6 @@ export const setTransfers = team => {
     }
 }
 
-export const updateBudget = budget => {
-    return {
-        type: 'XX'
-        // budget
-    }
-}
-
 export  const addSpinner = () => {
     return {
         type: 'ADDSPINNER'

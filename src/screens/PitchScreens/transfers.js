@@ -15,7 +15,7 @@ import pitch from '../../components/Pitch/pitch.js';
 import _, { remove } from 'lodash';
 import { deletePlayerUserJoiner, fetchAllPlayerUserJoinersByUserId, fetchPlayerUserJoinerByUserIdAndPlayerId, patchUserBUDGET, postPlayerUserJoiner, postPlayerUserJoinerTRANSFER } from '../../functions/APIcalls';
 import { TouchableHighlightBase } from 'react-native';
-import { addSpinner, removeSpinner, setLatestToTransferring, setTransferringBackToLatest, transferIn, transferOut, updateBudget } from '../../actions';
+import { addSpinner, removeSpinner, setLatestToTransferring, setTransferringBackToLatest, transferIn, transferOut } from '../../actions';
 import SpinnerOverlay from '../../components/spinner/spinner';
 
 
@@ -40,9 +40,7 @@ class TransfersScreen extends Component {
         const { transferOut, transferIn, user, teamPlayers } = this.props;
         if (this.playerSelected(player)) {
             console.log('hit, transfer ouot');
-            console.log(user.budget);
             transferOut(player);
-            updateBudget(user.budget+price)
         } else {
             if (teamPlayers.filter(x=>x.position===position).length>2) {
                 showMessage({
@@ -51,7 +49,6 @@ class TransfersScreen extends Component {
                 })
             } else {
                 transferIn(player);
-                updateBudget(user.budget-price);
             }
         }
     } 
@@ -59,9 +56,9 @@ class TransfersScreen extends Component {
     playerSelected = player => playerIds(this.props.teamPlayers).includes(player.player_id);
 
     confirmUpdates = async() => {
-        const { teamPlayers, addSpinner, removeSpinner, originalPlayers, user, setLatestToTransferring, setTransferringBackToLatest, updateBudget } = this.props;
+        const { teamPlayers, addSpinner, removeSpinner, originalPlayers, user, setLatestToTransferring, setTransferringBackToLatest, budget } = this.props;
         try {
-            if (validateTransfers(user.budget, playersArrayToObj(teamPlayers))) {
+            if (validateTransfers(budget, playersArrayToObj(teamPlayers))) {
                 addSpinner()
                 let count = 0;
                 let captain = false;
@@ -97,13 +94,9 @@ class TransfersScreen extends Component {
                     }
                 }
                 // update budget
-                await patchUserBUDGET(user);
-                updateBudget(user.budget);
-                // 
-                // persist in root app state
-                // let allPuJ = await fetchAllPlayerUserJoinersByUserId(this.props.user.user_id);
-                // this.props.setTransfers(addSubAttributeToPlayersArray(playersObjToArray(this.state.team), allPuJ, count));
-                // setLatestToTransferring();
+                await patchUserBUDGET({...user, budget: budget});
+                // persist budget update in root state
+                setLatestToTransferring();
                 removeSpinner();
                 showMessage({
                     type: 'success',
@@ -150,6 +143,7 @@ const mapStateToProps = state => {
         teamPlayers: state.players.transferring.starters.concat(state.players.transferring.subs),
         clubPlayers: state.players.clubPlayers,
         user: state.endUser.user,
+        budget: state.players.transferring.budget,
         originalPlayers: state.players.latest.starters.concat(state.players.latest.subs)
     }
 }
@@ -158,7 +152,6 @@ export const mapDispatchToProps = dispatch => {
     return {
         transferOut: player => dispatch(transferOut(player)),
         transferIn: player => dispatch(transferIn(player)),
-        updateBudget: budget => dispatch(updateBudget(budget)),
         addSpinner: () => dispatch(addSpinner()),
         removeSpinner: () => dispatch(removeSpinner()),
         setTransferringBackToLatest: () => dispatch(setTransferringBackToLatest()),
