@@ -11,6 +11,8 @@ import { screenContainer } from '../../styles/global';
 import { pitchContainer } from '../PitchScreens/style';
 import { nts2Login, addSpinner, removeSpinner, setLatestToTransferring, setTransferringBackToLatest, transferIn, transferOut } from '../../actions';
 import { addSubAttributeToPlayersArray, playerIds, fullName, getPuId, playersArrayToObj, playersObjToArray, positionString } from '../../functions/reusable';
+import { popToStack } from '../../Navigation';
+import { StackActions } from '@react-navigation/routers';
 
 
 
@@ -118,7 +120,7 @@ class ntsScreen2 extends Component {
                         let returnUser = await patchUserBUDGET(
                             budget, user.user_id);
                         nts2Login(returnUser, teamPlayers.slice(0,6), teamPlayers.slice(-2), puJoiners);
-                        navigation.navigate('Home');
+                        navigation.dispatch(StackActions.pop(0));
                     } else {
                         showMessage({
                             message: "You need 1 Goalkeeper selected",

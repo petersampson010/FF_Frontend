@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import OpenerScreen from './screens/opener/opener';
 import LoginScreen from './screens/login/login';
@@ -18,6 +18,10 @@ import AdminPlayerEditScreen from './screens/adminPlayerEdit';
 import { $darkBlue } from './styles/global';
 
 const Stack = createStackNavigator();
+
+export const resetStackAndGoHome = () => {
+  StackActions.popToTop();
+}
 
 function Navigation() {
   return (
