@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { NavigationContainer, StackActions } from '@react-navigation/native';
+import { NavigationContainer, CommonActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import OpenerScreen from './screens/opener/opener';
 import LoginScreen from './screens/login/login';
@@ -19,8 +19,11 @@ import { $darkBlue } from './styles/global';
 
 const Stack = createStackNavigator();
 
-export const resetStackAndGoHome = () => {
-  StackActions.popToTop();
+export const updateStack = (navigation, stackIndex, page) => {
+  navigation.dispatch(CommonActions.reset({
+    index: stackIndex,
+    routes: [ { name: page } ]
+  }));
 }
 
 function Navigation() {

@@ -134,7 +134,8 @@ const rootReducer = (state = initialState, action) => {
                     },
                     transferring: {
                         starters: action.starters,
-                        subs: action.subs
+                        subs: action.subs,
+                        budget: action.user.budget
                     }
                 },
                 joiners: {

@@ -11,8 +11,9 @@ import { screenContainer } from '../../styles/global';
 import { pitchContainer } from '../PitchScreens/style';
 import { nts2Login, addSpinner, removeSpinner, setLatestToTransferring, setTransferringBackToLatest, transferIn, transferOut } from '../../actions';
 import { addSubAttributeToPlayersArray, playerIds, fullName, getPuId, playersArrayToObj, playersObjToArray, positionString } from '../../functions/reusable';
-import { popToStack } from '../../Navigation';
-import { StackActions } from '@react-navigation/routers';
+import { popToStack, resetStackAndGoHome, updateStack } from '../../Navigation';
+import { StackActions, NavigationAction } from '@react-navigation/routers';
+import { CommonActions } from '@react-navigation/native';
 
 
 
@@ -117,10 +118,12 @@ class ntsScreen2 extends Component {
                             let puJoiner = await postPlayerUserJoiner(teamPlayers[i], user.user_id, i);
                             puJoiners.push(puJoiner);
                         }
+                        console.log(user);
                         let returnUser = await patchUserBUDGET(
-                            budget, user.user_id);
+                        budget, user.user_id);
+                        console.log(returnUser);
                         nts2Login(returnUser, teamPlayers.slice(0,6), teamPlayers.slice(-2), puJoiners);
-                        navigation.dispatch(StackActions.pop(0));
+                        updateStack(navigation, 0, 'Home');
                     } else {
                         showMessage({
                             message: "You need 1 Goalkeeper selected",
@@ -144,6 +147,10 @@ class ntsScreen2 extends Component {
             removeSpinner()
             console.warn(e);
         }
+    }
+
+    componentDidUpdate() {
+        console.log(this.props.budget);
     }
 
     render() { 
