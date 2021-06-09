@@ -10,6 +10,7 @@ import { fetchUserByEmail, fetchAdminUserByEmail, fetchAllPlayersByAdminUserId,
 import { screenContainer } from '../../styles/global';
 import { loginHead, switchText, textLabel } from './style';
 import { input, inputFieldLarge, inputFieldContainerCenter } from '../../styles/input';
+import { updateStack } from '../../Navigation';
 
 
 class LoginScreen extends Component {
@@ -112,7 +113,7 @@ class LoginScreen extends Component {
         } else {
           await this.props.loginUser(user, aUser, clubPlayers, latestStarters, latestSubs, null, null, puJoiners, league, null, [], [], null, null, null);
         }
-        this.props.navigation.navigate('Home');
+        updateStack(this.props.navigation, 0, 'Home');
       } else {
         // this.setState({email: 'A',
         // password: 'A'});
@@ -133,7 +134,7 @@ class LoginScreen extends Component {
         let allUsers = await fetchAllUsersByAdminUserId(aUser.admin_user_id);
         let games = await fetchAllGamesByAdminUserId(aUser.admin_user_id);
         await this.props.loginAdminUser(aUser, clubPlayers, allUsers, games);
-        this.props.navigation.navigate('AdminHome');
+        updateStack(this.props.navigation, 0, 'AdminHome');
       } else {
         // this.setState({email: 'A',
         // password: 'A'});

@@ -14,11 +14,20 @@ export const modal  = {
 }
 
 export const buttons = {
+    position: 'absolute',
     flexDirection: 'row',
+    bottom: vh(6),
+    height: vh(6),
+    width: vw(70),
+    paddingTop: vh(1.5),
+    borderTopColor: $zaGreen,
+    borderTopWidth: 1,
+    alignItems: 'center'
 }
 
 export const button = {
-    width: vw(30)
+    width: vw(35),
+    textAlign: 'center'
 }
 
 export const modalTextContainer = {
@@ -27,9 +36,10 @@ export const modalTextContainer = {
 
 export const closeModalContainer = {
     position: 'absolute',
-    bottom: vh(2),
+    bottom: vh(0),
     width: vw(70),
-    paddingTop: 20,
+    height: vh(6),
+    paddingTop: vh(1.5),
     borderTopColor: $zaGreen,
     borderTopWidth: 1,
     alignItems: 'center'

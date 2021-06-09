@@ -110,7 +110,7 @@ class ntsScreen2 extends Component {
         const teamPlayersObj = playersArrayToObj(teamPlayers);
         try {
             addSpinner();
-            if (teamPlayers.length===8) {
+            if (teamPlayers.length===9) {
                 if (budget>=0) {
                     if (teamPlayersObj['1'].length===1) {
                         let puJoiners = [];
@@ -138,7 +138,7 @@ class ntsScreen2 extends Component {
                 }
             } else {
                 showMessage({
-                    message: "You need 8 players in your team!",
+                    message: "You need 9 players in your team!",
                     type: "danger"
                 });
             }

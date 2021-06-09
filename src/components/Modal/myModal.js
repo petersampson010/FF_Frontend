@@ -42,46 +42,48 @@ class MyModal extends Component {
     }
 
     modalJSX = () => {
-        const { modalType, entry } = this.props;
-        let player;
-        switch(modalType) {
-            case 'userProfile':
-                const { user, ug } = entry;
-                return <View style={modalTextContainer}>
-                    <Text style={standardText}>{user.teamname}</Text>
-                    <Text style={standardText}>GW Points: {ug.total_points}</Text>
-                    {/* <Text style={standardText}>Total Points: {totalPoints}</Text> */}
-                    <Text style={standardText}>maybe total score</Text>
-                </View>
-            case 'playerProfile':
-                player = entry.pg ? entry.player : entry;
-                return <View style={modalTextContainer}>
-                    <Text style={standardText}>{fullName(player)}</Text>
-                    <Text style={standardText}>{positionString(player.position)}</Text>
-                    <Text style={standardText}>£{player.price}</Text>
-                    <Text style={standardText}>MAYBE SOME STATS AT SOME POINT</Text>
-                </View>
-            case 'pickTeam':
-                player = entry.pg ? entry.player : entry;
-                const sub = getPuJ(player, this.props.puJoiners).sub;
-                return <View style={modalTextContainer}>
-                    <Text style={standardText}>{fullName(player)}</Text>
-                    <Text style={standardText}>{positionString(player.position)}</Text>
-                    <Text style={standardText}>£{player.price}m</Text>
-                    <Text style={standardText}>MAYBE SOME STATS AT SOME POINT</Text>
-                    {(!sub) ?
-                    <View>
-                        <TouchableOpacity style={this.props.captain===player ? {...captainBox, backgroundColor: $zaGreen} : {...captainBox, backgroundColor: $standardWhite}} onPress={()=>this.setCaptain(player)}>
-                            <Text style={this.props.captain===player ? {...checkBox, color: $arylideYellow} : {...checkBox, color: $chocolateBlack}}>Captain</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={this.props.vCaptain===player ? {...captainBox, backgroundColor: $zaGreen} : {...captainBox, backgroundColor: $standardWhite}} onPress={()=>this.setVCaptain(player)}>
-                            <Text style={this.props.vCaptain===player ? {...checkBox, color: $arylideYellow} : {...checkBox, color: $chocolateBlack}}>Vice Captain</Text>
-                        </TouchableOpacity>
+        if (this.props.jsx) {
+            return this.props.jsx
+        } else {
+            const { modalType, entry } = this.props;
+            let player;
+            switch(modalType) {
+                case 'userProfile':
+                    const { user, ug } = entry;
+                    return <View style={modalTextContainer}>
+                        <Text style={standardText}>{user.teamname}</Text>
+                        <Text style={standardText}>GW Points: {ug.total_points}</Text>
+                        {/* <Text style={standardText}>Total Points: {totalPoints}</Text> */}
+                        <Text style={standardText}>maybe total score</Text>
                     </View>
-                    : null}
-                </View>
-            default: 
-                return <View></View>
+                case 'playerProfile':
+                    player = entry.pg ? entry.player : entry;
+                    return <View style={modalTextContainer}>
+                        <Text style={standardText}>{fullName(player)}</Text>
+                        <Text style={standardText}>{positionString(player.position)}</Text>
+                        <Text style={standardText}>£{player.price}</Text>
+                        <Text style={standardText}>MAYBE SOME STATS AT SOME POINT</Text>
+                    </View>
+                case 'pickTeam':
+                    player = entry.pg ? entry.player : entry;
+                    const sub = getPuJ(player, this.props.puJoiners).sub;
+                    return <View style={modalTextContainer}>
+                        <Text style={standardText}>{fullName(player)}</Text>
+                        <Text style={standardText}>{positionString(player.position)}</Text>
+                        <Text style={standardText}>£{player.price}m</Text>
+                        <Text style={standardText}>MAYBE SOME STATS AT SOME POINT</Text>
+                        {(!sub) ?
+                        <View>
+                            <TouchableOpacity style={this.props.captain===player ? {...captainBox, backgroundColor: $zaGreen} : {...captainBox, backgroundColor: $standardWhite}} onPress={()=>this.setCaptain(player)}>
+                                <Text style={this.props.captain===player ? {...checkBox, color: $arylideYellow} : {...checkBox, color: $chocolateBlack}}>Captain</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={this.props.vCaptain===player ? {...captainBox, backgroundColor: $zaGreen} : {...captainBox, backgroundColor: $standardWhite}} onPress={()=>this.setVCaptain(player)}>
+                                <Text style={this.props.vCaptain===player ? {...checkBox, color: $arylideYellow} : {...checkBox, color: $chocolateBlack}}>Vice Captain</Text>
+                            </TouchableOpacity>
+                        </View>
+                        : null}
+                    </View>
+            }
         }
     }
     render() { 
@@ -96,7 +98,7 @@ class MyModal extends Component {
                         {this.renderButtons()}
                     </View>
                     <TouchableOpacity style={closeModalContainer} onPress={this.props.closeModalFcn}>
-                        <Text style={standardText}>Close</Text>
+                        <Text style={labelText}>Close</Text>
                     </TouchableOpacity>
                 </View>
             </Modal>
