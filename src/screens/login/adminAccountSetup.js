@@ -6,7 +6,8 @@ import { setAdminUser } from '../../actions';
 import { fetchAllAdminUsers, postAdminUser } from '../../functions/APIcalls'; 
 import { showMessage } from "react-native-flash-message";
 import { screenContainer } from '../../styles/global';
-import { input, inputField, inputFieldsContainer, loginHead, switchText, textLabel } from './style';
+import { loginHead, switchText, textLabel } from './style';
+import { inputFieldContainerCenter, inputFieldLarge, input } from '../../styles/input';
 
 class AdminAccountSetupScreen extends Component {
 
@@ -34,7 +35,11 @@ class AdminAccountSetupScreen extends Component {
   
   toggleSwitch = () => {
     this.setState({
-      ...this.state, aUserObj: {...this.state.aUserObj, terms: !this.state.terms}
+      ...this.state, 
+      aUserObj: {
+        ...this.state.aUserObj, 
+        terms: !this.state.aUserObj.terms
+      }
     })
   }
 
@@ -103,10 +108,10 @@ class AdminAccountSetupScreen extends Component {
   render() {
     return (
       <View style={screenContainer}>
-            <View style={inputFieldsContainer}>
+            <View style={inputFieldContainerCenter}>
               <Text style={loginHead}>Admin Account Setup</Text>
               <Text style={textLabel}>Enter your email address</Text>
-              <View style={inputField}>
+              <View style={inputFieldLarge}>
                 <TextInput style={input}
                 value={this.state.aUserObj.email} 
                 onChangeText={value => this.formChange('email', value)}
@@ -116,7 +121,7 @@ class AdminAccountSetupScreen extends Component {
                 />
               </View>
               <Text style={textLabel}>Enter your club name</Text>
-              <View style={inputField}>
+              <View style={inputFieldLarge}>
                 <TextInput style={input}
                 value={this.state.aUserObj.teamName} 
                 onChangeText={value => this.formChange('teamName', value)}
@@ -125,7 +130,7 @@ class AdminAccountSetupScreen extends Component {
                 />
               </View>
               <Text style={textLabel}>Enter your password</Text>
-              <View style={inputField}>
+              <View style={inputFieldLarge}>
                 <TextInput style={input}
                 value={this.state.aUserObj.password} 
                 onChangeText={value => this.formChange('password', value)}
@@ -136,7 +141,7 @@ class AdminAccountSetupScreen extends Component {
                 />
               </View>
               <Text style={textLabel}>Re-enter your password</Text>
-              <View style={inputField}>
+              <View style={inputFieldLarge}>
                 <TextInput style={input}
                 value={this.state.aUserObj.rePassword} 
                 onChangeText={value => this.formChange('rePassword', value)}
