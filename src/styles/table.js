@@ -5,9 +5,7 @@ export const tableRow = {
     flexDirection: "row",
     borderBottomWidth: 1,
     borderColor: $electricBlueHighlight,
-    justifyContent: 'space-evenly',
-    paddingTop: vh(1),
-    paddingBottom: vh(1)
+    padding: vh(1)
 }
 
 export const tableRowHead = {
@@ -20,8 +18,10 @@ export const tableRowHead = {
 
 export const tableElement3 = {
     width: vw(30),
-    color: $standardWhite,
-    // textAlign: 'center'
+}
+
+export const tableElement4 = {
+    width: vw(8),
 }
 
 export const tableElement9 = {

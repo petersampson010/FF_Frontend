@@ -96,10 +96,10 @@ class MyModal extends Component {
                     </View>
                     <View style={buttons}>
                         {this.renderButtons()}
+                        <TouchableOpacity style={button} onPress={this.props.closeModalFcn}>
+                            <Text style={{...labelText, textAlign: 'center'}}>Close</Text>
+                        </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={closeModalContainer} onPress={this.props.closeModalFcn}>
-                        <Text style={labelText}>Close</Text>
-                    </TouchableOpacity>
                 </View>
             </Modal>
          );

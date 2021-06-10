@@ -18,6 +18,8 @@ export const $coral = '#FF8552';
 export const $skobeloff = '#297373';
 export const $arylideYellow = '#E9D758';
 
+// export const 
+
 
 export const $darkBlue = '#152032';
 export const $darkBlueOpacity = 'rgba(21, 32, 50, 0.8)';

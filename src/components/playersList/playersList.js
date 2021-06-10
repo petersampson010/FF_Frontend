@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { connect } from 'react-redux';
 import { fullName, positionString, playerIds } from '../../functions/reusable';
 import {vw, vh} from 'react-native-expo-viewport-units';
-import { filter, itemPositionPicker, pickerItem, playersListContainer, positionPicker, slidable, tableHead, tableText } from './style';
+import { filter, itemPositionPicker, pickerItem, playersListContainer, positionPicker, slidable, tableHead, tableText, tick } from './style';
 import { TouchableOpacity } from 'react-native';
 import { labelText, standardText } from '../../styles/textStyle';
-import { tableElement3, tableRow } from '../../styles/table';
+import { tableElement3, tableElement4, tableRow } from '../../styles/table';
 import MyModal from '../Modal/myModal';
+import { subImage } from '../PlayerGraphic/style';
 
 
 
@@ -27,6 +28,16 @@ class PlayersList extends Component {
                 admin_user_id: 1
             }
         }
+    }
+
+    openModal = player => {
+        this.setState({
+            ...this.state,
+            modal: {
+                active: true,
+                player
+            }
+        })
     }
 
     table = () => {
@@ -48,15 +59,22 @@ class PlayersList extends Component {
 
     playerSelected = player => playerIds(this.props.teamPlayers).includes(player.player_id);
 
-    tableRow = (player, key) => 
-    <TouchableOpacity key={key}
-    style={this.playerSelected(player) ? {...tableRow, opacity: 0.3} : {...tableRow, opacity: 1}}
-    onPress={this.playerSelected(player) ? null : ()=>this.props.clickFcn(player)}
-    onLongPress={()=>this.setState({...this.state, modal: {active: true, player}})}>
-        <Text style={{...tableElement3, ...standardText}}>{fullName(player)}</Text>
-        <Text style={{...tableElement3, ...standardText}}>{positionString(player.position)}</Text>
-        <Text style={{...tableElement3, ...standardText}}>£{player.price}m</Text>
-    </TouchableOpacity>
+    tableRow = (player, key) => {
+        const subImg = require('../../images/subIcon.png');
+        const icon = this.playerSelected(player) ? null : <Image source={subImg} imageStyle={{resizeMode: 'cover'}} style={subImage}/>
+        const { clickFcn } = this.props;
+        return <TouchableOpacity key={key}
+        style={tableRow}
+        onPress={()=>this.openModal(player)}
+        onLongPress={()=>this.setState({...this.state, modal: {active: true, player}})}>
+            <Text style={{...tableElement3, ...standardText}}>{fullName(player)}</Text>
+            <Text style={{...tableElement3, ...standardText}}>{positionString(player.position)}</Text>
+            <Text style={{...tableElement3, ...standardText}}>£{player.price}m</Text>
+            <TouchableOpacity style={tableElement4} onPress={()=>clickFcn(player)}>
+                {icon}
+            </TouchableOpacity>
+        </TouchableOpacity>;
+    }
 
     render() { 
         return ( 

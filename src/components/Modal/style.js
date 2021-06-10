@@ -15,34 +15,20 @@ export const modal  = {
 
 export const buttons = {
     position: 'absolute',
-    flexDirection: 'row',
-    bottom: vh(6),
-    height: vh(6),
+    bottom: vh(0),
     width: vw(70),
-    paddingTop: vh(1.5),
-    borderTopColor: $zaGreen,
-    borderTopWidth: 1,
     alignItems: 'center'
 }
 
 export const button = {
-    width: vw(35),
-    textAlign: 'center'
+    width: vw(60),
+    padding: vh(1.5),
+    borderTopColor: $zaGreen,
+    borderTopWidth: 1,
 }
 
 export const modalTextContainer = {
     alignItems: 'center', 
-}
-
-export const closeModalContainer = {
-    position: 'absolute',
-    bottom: vh(0),
-    width: vw(70),
-    height: vh(6),
-    paddingTop: vh(1.5),
-    borderTopColor: $zaGreen,
-    borderTopWidth: 1,
-    alignItems: 'center'
 }
 
 export const captainBox = {
