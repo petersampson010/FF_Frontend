@@ -19,30 +19,6 @@ import NoScoreGW from '../../components/noScoreGW/noScoreGW';
 class HomeScreen extends Component {
     state = {  }
 
-    componentDidMount() {
-        // console.log('****** HOME PAGE REACHED, USER LOGGED IN *******');
-
-        // console.log('***** user:');
-        // console.log(this.props.user);
-
-        // console.log('***** latest gw');
-        // console.log(this.props.gwLatest);
-
-        // console.log('***** latest starters:');
-        // console.log(this.props.latestStaters);
-
-        // console.log('***** latest subs');
-        // console.log(this.props.latestSubs);
-
-        // console.log('***** last gw starters');
-        // console.log(this.props.lastGwStaters);
-
-        // console.log('***** last gw subs');
-        // console.log(this.props.lastGwSubs);
-
-        // console.log('***** END OF LOGS ******');
-    }
-
     renderRows = () => {
         return this.props.league.sort((a,b)=>b.total_points-a.total_points).map((team, i)=>
         <TouchableOpacity key={i}

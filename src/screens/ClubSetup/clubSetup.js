@@ -12,6 +12,11 @@ import { headerTextBox, picker, pickerItemStyle, textBox, textInput, topBar } fr
 import { screenContainer } from '../../styles/global';
 import { vh, vw } from 'react-native-expo-viewport-units';
 import { inputFieldLarge, inputFieldSmall } from '../../styles/input';
+import { updateStack } from '../../Navigation';
+import { addSpinner, removeSpinner } from '../../actions';
+import { TouchableHighlightBase } from 'react-native';
+import { TouchableNativeFeedbackBase } from 'react-native';
+import SpinnerOverlay from '../../components/spinner/spinner';
 
 
 class ClubSetupScreen extends Component {
@@ -116,6 +121,7 @@ class ClubSetupScreen extends Component {
     }
 
     postPlayers = async() => {
+        this.props.addSpinner();
         try {
             for (let i=0;i<24;i++) {
                 let entry = this.state.players[i];
@@ -125,8 +131,10 @@ class ClubSetupScreen extends Component {
                     console.warn('invalid entry: ' + i);
                 }
             }
-            this.props.navigation.navigate('AdminHome');
+            this.props.removeSpinner();
+            updateStack(this.props.navigation, 0, 'AdminHome');
         } catch(e)  {
+            this.props.removeSpinner();
             console.warn(e);
         }
     }
@@ -145,6 +153,8 @@ class ClubSetupScreen extends Component {
     render() {
         return (
             <View style={screenContainer}>
+                {this.props.spinner ? <SpinnerOverlay/> :
+                <View>
                     <View style={topBar}>
                         <View>
                         <Text style={labelText}>Average Player Price: £{this.averagePrice()}m</Text>
@@ -159,10 +169,11 @@ class ClubSetupScreen extends Component {
                             <Text style={{...headerTextBox, width: vw(20)}}>Price (£0-99m)</Text>
                         </View>
                     </View>
-                <ScrollView contentContainerStyle={{paddingBottom: vh(20)}}>
-                        {this.renderRows()}
-                </ScrollView>
-
+                    <ScrollView contentContainerStyle={{paddingBottom: vh(20)}}>
+                            {this.renderRows()}
+                    </ScrollView>
+                </View>
+                }
             </View>
         );
     }
@@ -174,4 +185,11 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(ClubSetupScreen)
+const mapDispatchToProps = dispatch => {
+    return {
+        addSpinner: () => dispatch(addSpinner()),
+        removeSpinner: () => dispatch(removeSpinner())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ClubSetupScreen)

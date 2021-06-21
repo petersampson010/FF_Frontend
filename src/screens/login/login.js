@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Button, Switch, TouchableHighlightBase, TextInput } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { connect } from 'react-redux';
-import { loginUser, loginAdminUser, resetTeamPlayers } from '../../actions';
+import { loginUser, loginAdminUser, resetTeamPlayers, addSpinner } from '../../actions';
 import { fetchUserByEmail, fetchAdminUserByEmail, fetchAllPlayersByAdminUserId, 
   fetchLatestStartersByUserId, fetchLatestSubsByUserId, fetchGwStartersByUserId, fetchGwSubsByUserId, fetchAllPlayerUserJoinersByUserId, 
   fetchAllUsersByAdminUserId, fetchAllGamesByAdminUserId, fetchLeague, fetchLatestGameweekFromAdminUserId, fetchAllPGJoinersFromGameweekId, fetchUGJoiner, fetchUGJoiners, fetchPlayerById, fetchUserById, fetchAdminUserById } 

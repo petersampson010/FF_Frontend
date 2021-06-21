@@ -117,7 +117,7 @@ class TransfersScreen extends Component {
     render() { 
         return ( 
             <View style={screenContainer}>
-                {this.state.spinner ? <SpinnerOverlay/> : null}
+                {this.props.spinner ? <SpinnerOverlay/> : null}
                 <ScrollView style={pitchContainer}>
                     <Pitch 
                     type="transfers"
@@ -143,7 +143,8 @@ const mapStateToProps = state => {
         clubPlayers: state.players.clubPlayers,
         user: state.endUser.user,
         budget: state.players.transferring.budget,
-        originalPlayers: state.players.latest.starters.concat(state.players.latest.subs)
+        originalPlayers: state.players.latest.starters.concat(state.players.latest.subs),
+        spinner: this.state.spinner
     }
 }
 
