@@ -15,7 +15,7 @@ class OpenerScreen extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity style={optionContainer} onPress={()=>this.props.navigation.navigate('AdminAccountSetup')}>
                     <Text style={optionHead}>Account Setup</Text>
-                    <Text style={optionText}>Dont have an account for your club, set up a new admin account and team for your players to join</Text>
+                    <Text style={optionText}>Dont have an account for your club, set up a new admin account and team for your fans/players to join</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={optionContainer} onPress={()=>this.props.navigation.navigate('nts1')}>
                     <Text style={optionHead}>New Fantasy Team</Text>

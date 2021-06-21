@@ -6,6 +6,7 @@ import PlayersList from '../components/playersList/playersList';
 import {vw, vh} from 'react-native-expo-viewport-units';
 import { availability, fullName, positionString } from '../functions/reusable';
 import { patchPlayer } from '../functions/APIcalls';
+import { showMessage } from 'react-native-flash-message';
 
 class AdminPlayerEditScreen extends Component {
     state = { 
@@ -76,6 +77,10 @@ class AdminPlayerEditScreen extends Component {
                 "updated_at": "2020-11-23T13:03:11.328Z"
                 }}})
         } catch(e) {
+            showMessage({
+                message: "Fail: Network Issue, please try again later",
+                type: "danger"
+              });
             console.warn(e);
         }
     }

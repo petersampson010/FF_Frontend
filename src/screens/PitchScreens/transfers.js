@@ -109,7 +109,7 @@ class TransfersScreen extends Component {
             removeSpinner()
             showMessage({
                 type: 'danger',
-                message: "This update was not successful, please try again later"
+                message: "Fail: This update was not successful, please try again later"
             })
         }
     }

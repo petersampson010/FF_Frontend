@@ -17,6 +17,7 @@ import { addSpinner, removeSpinner } from '../../actions';
 import { TouchableHighlightBase } from 'react-native';
 import { TouchableNativeFeedbackBase } from 'react-native';
 import SpinnerOverlay from '../../components/spinner/spinner';
+import { showMessage } from 'react-native-flash-message';
 
 
 class ClubSetupScreen extends Component {
@@ -134,6 +135,10 @@ class ClubSetupScreen extends Component {
             this.props.removeSpinner();
             updateStack(this.props.navigation, 0, 'AdminHome');
         } catch(e)  {
+            showMessage({
+                message: "Fail: Network Issue, please try again later",
+                type: "danger"
+              });
             this.props.removeSpinner();
             console.warn(e);
         }

@@ -63,6 +63,10 @@ class LoginScreen extends Component {
       let aUser = await fetchAdminUserByEmail(this.state.userObj);
       this.handleAdminReturn(aUser);
     } catch(e) {
+      showMessage({
+        message: "Login failed, please try again",
+        type: "danger"
+      })
       console.warn(e);
     }
   }
@@ -72,6 +76,10 @@ class LoginScreen extends Component {
       let user = await fetchUserByEmail(this.state.userObj);
       this.handleUserReturn(user);
     } catch(e) {
+      showMessage({
+        message: "Login failed, please try again",
+        type: "danger"
+      })
       console.warn(e);
     }
   }
@@ -123,6 +131,11 @@ class LoginScreen extends Component {
         })
       }
     } catch(e) {
+      console.log('hit heere');
+      showMessage({
+        message: "Login failed, please try again",
+        type: "danger"
+      })
       console.warn(e);
     }
   }
@@ -144,6 +157,10 @@ class LoginScreen extends Component {
         })
       }
     } catch(e) {
+      showMessage({
+        message: "Fail: Network Issue, please try again later",
+        type: "danger"
+      });
       console.warn(e);
     }
   }

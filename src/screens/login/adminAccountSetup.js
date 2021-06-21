@@ -100,6 +100,10 @@ class AdminAccountSetupScreen extends Component {
         this.props.navigation.navigate('ClubSetup');
       }
     } catch(e) {
+      showMessage({
+        message: "Fail: Network Issue, please try again later",
+        type: "danger"
+      });
       console.warn(e);
     }
     return;

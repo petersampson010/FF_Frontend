@@ -80,6 +80,10 @@ class ntsScreen1 extends Component {
             console.warn("fetch return: ", result)
           }})
     } catch(e) {
+      showMessage({
+        message: "Fail: Network Issue, please try again later",
+        type: "danger"
+      });
       console.warn(e);
     }
   }

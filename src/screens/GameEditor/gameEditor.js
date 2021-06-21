@@ -152,6 +152,10 @@ class GameEditorScreen extends Component {
             this.props.completeGameState(this.props.gwSelect.gameweek_id);
             this.props.navigation.navigate('AdminHome');
         } catch(e) {
+            showMessage({
+                message: "Fail: Network Issue, please try again later",
+                type: "danger"
+              });
             console.warn(e);
         }
     }

@@ -1,5 +1,7 @@
 // USER
 
+import { showMessage } from "react-native-flash-message";
+
 export const fetchAllUsers = () => {
     return fetch('http://localhost:3000/users')
     .then(res=>res.json());
@@ -372,6 +374,10 @@ export const postPGJoiner = async(joiner) => {
         return fetch(`http://localhost:3000/player_gameweek_joiners`, configObj)
         .then(res=>res.json());
     } catch(e) {
+        showMessage({
+            message: "Fail: Network Issue, please try again later",
+            type: "danger"
+          });
         console.warn(e);
     }
 }

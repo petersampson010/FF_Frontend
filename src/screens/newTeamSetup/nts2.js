@@ -142,9 +142,13 @@ class ntsScreen2 extends Component {
                     type: "danger"
                 });
             }
-            removeSpinner()
+            removeSpinner();
         } catch(e) {
-            removeSpinner()
+            showMessage({
+                message: "Fail: Network Issue, please try again later",
+                type: "danger"
+              });
+            removeSpinner();
             console.warn(e);
         }
     }

@@ -85,6 +85,10 @@ class AdminHomeScreen extends Component {
                 })
             }
         } catch(e) {
+            showMessage({
+                message: "Fail: Network Issue, please try again later",
+                type: "danger"
+              });
             console.warn(e);
         }
     }   
@@ -108,6 +112,10 @@ class AdminHomeScreen extends Component {
                 })
             }
         } catch(e) {
+            showMessage({
+                message: "Fail: Network Issue, please try again later",
+                type: "danger"
+              });
             console.warn(e);
         }
     }
