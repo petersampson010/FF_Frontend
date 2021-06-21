@@ -106,7 +106,7 @@ class TransfersScreen extends Component {
         } catch(e) {
             console.warn(e);
             setTransferringBackToLatest();
-            removeSpinner()
+            removeSpinner();
             showMessage({
                 type: 'danger',
                 message: "Fail: This update was not successful, please try again later"

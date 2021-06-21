@@ -190,7 +190,7 @@ class LoginScreen extends Component {
                 placeholder="Password"
                 placeholderTextColor='#d1d2d6'
                 autoCapitalize="none"
-                secureTextEntry={true}
+                secureTextEntry
                 />
               </View>
               

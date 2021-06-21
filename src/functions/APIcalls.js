@@ -432,3 +432,21 @@ export const fetchUGJoiners = (auId, gameweekId) => {
 }
 
 
+// MESSAGES
+
+export const postMessage = (name, email, msg) => {
+    let configObj = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            name,
+            email,
+            msg
+        })
+    };
+    return fetch('http://localhost:3000/messages', configObj)
+    .then(res=>res.json())
+}

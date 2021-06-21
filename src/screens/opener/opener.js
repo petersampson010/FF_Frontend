@@ -21,7 +21,7 @@ class OpenerScreen extends Component {
                     <Text style={optionHead}>New Fantasy Team</Text>
                     <Text style={optionText}>Does your club already have an account with us, but you dont have a team. Set one up here</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={optionUsContainer}>
+                <TouchableOpacity style={optionUsContainer} onPress={()=>this.props.navigation.navigate('ContactUs')}>
                     <Text style={optionHead}>Contact Us</Text>
                     <Text style={optionText}>Please get in touch, we want to here from you</Text>
                 </TouchableOpacity>

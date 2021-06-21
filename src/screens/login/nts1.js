@@ -9,6 +9,7 @@ import { showMessage } from 'react-native-flash-message';
 import { screenContainer } from '../../styles/global';
 import { inputField, inputFieldsContainer, loginHead, switchText, textLabel } from './style';
 import { inputFieldContainerCenter, inputFieldLarge, input } from '../../styles/input';
+import { updateStack } from '../../Navigation';
 
 
 
@@ -75,7 +76,7 @@ class ntsScreen1 extends Component {
             this.props.setAdminUser(aUser);
             fetchAllPlayersByAdminUserId(aUser.admin_user_id)
             .then(players => this.props.setClubPlayers(players))
-            .then(() => this.props.navigation.navigate('nts2'));
+            .then(() => updateStack(this.props.navigation, 0, 'nts2'));
           } else {
             console.warn("fetch return: ", result)
           }})
@@ -120,7 +121,7 @@ class ntsScreen1 extends Component {
                 placeholder="Password"
                 placeholderTextColor='#d1d2d6'
                 autoCapitalize="none"
-                secureTextEntry={true}
+                secureTextEntry
                 />
               </View>
               <Text style={textLabel}>Re-enter your password</Text>
@@ -131,7 +132,7 @@ class ntsScreen1 extends Component {
                 placeholder="Password"
                 placeholderTextColor='#d1d2d6'
                 autoCapitalize="none"
-                secureTextEntry={true}
+                secureTextEntry
                 />
               </View>
               <Text style={textLabel}>Club ID</Text>

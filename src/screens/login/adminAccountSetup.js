@@ -8,6 +8,7 @@ import { showMessage } from "react-native-flash-message";
 import { screenContainer } from '../../styles/global';
 import { loginHead, switchText, textLabel } from './style';
 import { inputFieldContainerCenter, inputFieldLarge, input } from '../../styles/input';
+import { updateStack } from '../../Navigation';
 
 class AdminAccountSetupScreen extends Component {
 
@@ -97,7 +98,7 @@ class AdminAccountSetupScreen extends Component {
       if (validAccount) {
         let adminUser = await postAdminUser(this.state.aUserObj);
         this.props.setAdminUser(adminUser);
-        this.props.navigation.navigate('ClubSetup');
+        updateStack(this.props.navigation, 0, 'ClubSetup');
       }
     } catch(e) {
       showMessage({
@@ -162,36 +163,6 @@ class AdminAccountSetupScreen extends Component {
               <Button title="Sign up" onPress={this.handleSubmit}/>
             </View>
           </View>
-      // <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      //       <Text>Admin Account Setup Screen</Text>
-      //       <View>
-      //         <Text>Email</Text>
-      //         <TextInput 
-      //         value={this.state.aUserObj.email} 
-      //         onChange={el => this.formChange('email', el.nativeEvent.text)}
-      //         autoCapitalize = 'words'/>
-      //         <Text>Password</Text>
-      //         <TextInput 
-      //         value={this.state.aUserObj.password} 
-      //         onChange={el => this.formChange('password', el.nativeEvent.text)}
-      //         autoCapitalize = 'words'/>
-      //         <Text>Re-enter Password</Text>
-      //         <TextInput 
-      //         value={this.state.aUserObj.rePassword} 
-      //         onChange={el => this.formChange('rePassword', el.nativeEvent.text)}
-      //         autoCapitalize = 'words'/>
-      //         <Text>Club Name</Text>
-      //         <TextInput 
-      //         value={this.state.aUserObj.clubName} 
-      //         onChange={el => this.formChange('clubName', el.nativeEvent.text)}
-      //         autoCapitalize = 'words'/>
-      //         <Switch 
-      //         value={this.state.aUserObj.terms} 
-      //         onValueChange={this.toggleSwitch}/>
-      //       </View>
-      //       <Button title="Sign in" onPress={this.handleSubmit}/>
-      //     </View>
-    
     );
   }
 }

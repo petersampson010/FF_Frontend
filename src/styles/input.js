@@ -2,6 +2,16 @@ import { vh, vw } from "react-native-expo-viewport-units"
 import { $arylideYellow, $inputBlue, $luminousGreen, $skobeloff } from "./global"
 import { headers, labelText, standardText } from "./textStyle"
 
+export const inputFieldVeryLarge = {
+    borderWidth: 1,
+    borderColor: 'white',
+    borderRadius: 8,
+    backgroundColor: $inputBlue,
+    height: vh(36), 
+    width: vw(70),
+    marginBottom: vh(3)
+}
+
 export const inputFieldLarge = {
     justifyContent: 'center',
     borderWidth: 1,
