@@ -10,7 +10,7 @@ import ContactUsScreen from './screens/contactUs';
 import HomeScreen from './screens/home/home';
 import TransfersScreen from './screens/PitchScreens/transfers.js';
 import PointsScreen from './screens/PitchScreens/points';
-import ClubSetupScreen from './screens/clubSetup';
+import ClubSetupScreen from './screens/ClubSetup/clubSetup';
 import PickTeamScreen from './screens/PitchScreens/pickTeam';
 import AdminHomeScreen from './screens/AdminHome/adminHome';
 import GameEditorScreen from './screens/GameEditor/gameEditor';

@@ -19,9 +19,9 @@ export const inputFieldSmall = {
     borderColor: 'white',
     borderRadius: 8,
     backgroundColor: $inputBlue,
-    height: vh(3), 
-    width: vw(12),
-    marginBottom: vh(1)
+    // height: vh(3), 
+    // width: vw(12),
+    marginVertical: vh(0.5)
 }
 
 export const inputFieldContainerCenter = {
