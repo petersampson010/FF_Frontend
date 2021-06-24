@@ -14,8 +14,15 @@ export const modal  = {
 }
 
 export const buttons = {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: vh(2)
+}
+
+export const closeButton = {
     position: 'absolute',
     bottom: vh(1),
+    alignItems: 'center',
 }
 
 export const modalTextContainer = {

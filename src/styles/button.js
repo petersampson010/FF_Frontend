@@ -3,7 +3,7 @@ import { $arylideYellow, $zaGreen } from "./global";
 
 export const buttonText = {
     color: $arylideYellow,
-    fontSize: 20,
+    fontSize: 14,
     fontFamily: 'Avenir Next',
     textAlign: 'center'
 }

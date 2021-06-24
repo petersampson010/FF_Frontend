@@ -427,6 +427,8 @@ export const fetchUGJoiner = (userId, gameweekId) => {
 }
 
 export const fetchUGJoiners = (auId, gameweekId) => {
+    console.log(auId);
+    console.log(gameweekId);
     return fetch(`http://localhost:3000/admin_users/ug_joiners/${auId}/${gameweekId}`)
     .then(res=>res.json())
 }

@@ -172,10 +172,17 @@ class AdminHomeScreen extends Component {
                     <View>
                         <Text style={standardText}>Edit game or update stats</Text><Text style={standardText}>Remember... when entering player stats and completing a game, all changes are final so be sure to double check your entries!</Text>
                     </View>}
-                buttonOptions={this.state.modal2.game.complete ? [] : [{text: 'Submit Game Stats', fcn: ()=>{this.setState({...this.state, modal2: {...this.state.modal2, active: false}});this.props.navigation.navigate('GameEditor')}},
-                {text: 'Edit Game', fcn: ()=>this.setState({...this.state, modal: {active: true, update: true,
-                    game: this.state.modal2.game}, modal2: {...this.state.modal2, active: false}})}]}
-                    />
+                buttonOptions={this.state.modal2.game.complete ? [] : [
+                    {
+                        text: 'Submit Game Stats', 
+                        fcn: ()=>{this.setState({...this.state, modal2: {...this.state.modal2, active: false}});this.props.navigation.navigate('GameEditor')}
+                    },
+                    {
+                        text: 'Edit Game', 
+                        fcn: ()=>this.setState({...this.state, modal: {active: true, update: true, game: this.state.modal2.game}, modal2: {...this.state.modal2, active: false}})
+                    }
+                ]}
+                />
             </ScrollView>
          );
     }

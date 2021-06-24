@@ -9,17 +9,14 @@ import { $arylideYellow, $chocolateBlack, $standardWhite, $zaGreen } from '../..
 import { checkBox, labelText, standardText } from '../../styles/textStyle';
 import Button from '../button';
 import { playerImage, playerImageLarge } from '../PlayerGraphic/style';
-import { button, buttons, captainBox, closeModalContainer, modal, modalSplitContainer, modalTextContainer } from './style';
+import { button, buttons, captainBox, closeButton, closeModalContainer, modal, modalSplitContainer, modalTextContainer } from './style';
 
 
 class MyModal extends Component {
     state = {  }
 
     renderButtons = () => {
-        return this.props.buttonOptions.map((x,i)=>{
-        return <TouchableOpacity key={i} onPress={x.fcn} style={button}>
-            <Text style={buttonText}>{x.text}</Text>
-        </TouchableOpacity>})
+        return this.props.buttonOptions.map((x,i)=><Button key={i} text={x.text} func={x.fcn} width={vw(35)}/>)
     }
 
     setCaptain = player => {
@@ -101,9 +98,11 @@ class MyModal extends Component {
             transparent={true}>
                 <View style={{...modal, height:this.props.height, width:this.props.width, left:(vw(100)-(this.props.width))/2}}>
                     {this.modalJSX()}
-                    <View style={buttons}>
-                        {this.renderButtons()}
-                        <Button text='close' func={this.props.closeModalFcn} width={vw(30)}/>
+                    <View style={closeButton}>
+                        <View style={buttons}>
+                            {this.renderButtons()}
+                        </View>
+                        <Button text='Close' func={this.props.closeModalFcn} width={vw(35)}/>
                     </View>
                 </View>
             </Modal>

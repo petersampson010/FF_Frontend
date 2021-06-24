@@ -111,7 +111,9 @@ class LoginScreen extends Component {
               pg,
               player: await fetchPlayerById(pg.player_id)
             };
+            console.log(ugJoiners[0]);
             let ug = ugJoiners.sort((a,b)=>b.total_points-a.total_points)[0];
+            console.log(ug);
             let topUser = {
               ug,
               user: await fetchUserById(ug.user_id)
