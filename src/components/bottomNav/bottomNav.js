@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Button, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { navContainer, navButton } from './style';
+import { View } from 'react-native';
+import { navContainer } from './style';
 import NavSection from './navSection';
 
 class BottomNav extends Component {

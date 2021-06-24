@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import PlayerGraphic from '../PlayerGraphic/playerGraphic';
-import { View, Text, StyleSheet, Button, TouchableHighlightBase, ScrollView, ImageBackground } from 'react-native';
+import { View, ImageBackground } from 'react-native';
 import {vw, vh} from 'react-native-expo-viewport-units';
-import { CheckBox } from 'react-native-elements';
 import MyModal from '../Modal/myModal';
 import { connect } from 'react-redux';
 import PitchHead from '../PitchHead/pitchHead';
 import { pitch, pitchContainer, starters, subs, positionRow, pitchImage, pitchClassContainer } from './style';
 import { fullName, getPuJ, playersArrayToObj, positionString } from '../../functions/reusable';
-import { captainBox, modalTextContainer, nonCaptainBox } from '../Modal/style';
-import { checkBox, headers, labelText, standardText } from '../../styles/textStyle';
-import { TouchableOpacity } from 'react-native';
-import { $arylideYellow, $chocolateBlack, $standardWhite, $zaGreen } from '../../styles/global';
+
 
 
 
@@ -94,12 +90,12 @@ class Pitch extends Component {
         const pitchImg = require('../../images/kisspng-ball-game-football-pitch-corner-kick-football-stadium-5ac96cf3827065.1735532915231500675343.png');
         const team = this.team();
         return (
-            <View style={pitchClassContainer}>
-                <PitchHead
+            <View>
+                {/* <PitchHead
                 type={this.props.type}
                 update={this.props.update}
-                />
-                <View style={pitchContainer}>
+                /> */}
+                <View>
                         <ImageBackground source={pitchImg} imageStyle={{resizeMode: 'stretch'}} style={pitchImage}>
                             <View style={{flex: 1, flexDirection: 'row'}}>
                                 <View style={pitch}>

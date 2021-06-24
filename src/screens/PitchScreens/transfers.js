@@ -17,6 +17,7 @@ import { deletePlayerUserJoiner, fetchAllPlayerUserJoinersByUserId, fetchPlayerU
 import { TouchableHighlightBase } from 'react-native';
 import { addSpinner, removeSpinner, setLatestToTransferring, setTransferringBackToLatest, transferIn, transferOut } from '../../actions';
 import SpinnerOverlay from '../../components/spinner/spinner';
+import PitchHead from '../../components/PitchHead/pitchHead';
 
 
 class TransfersScreen extends Component {
@@ -118,6 +119,7 @@ class TransfersScreen extends Component {
         return ( 
             <View style={screenContainer}>
                 {this.props.spinner ? <SpinnerOverlay/> : null}
+                <PitchHead type="transfers" update={this.confirmUpdates}/>
                 <ScrollView style={pitchContainer}>
                     <Pitch 
                     type="transfers"

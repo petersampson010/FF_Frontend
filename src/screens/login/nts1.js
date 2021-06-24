@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { View, Text, Switch, Button, StyleSheet, TextInput } from 'react-native';
+import { View, Text, Switch, Button, StyleSheet, TextInput, processColor } from 'react-native';
 import { fetchAdminUserById, fetchAllAdminUsers, fetchAllPlayersByAdminUserId, fetchAllUsers, postUser } from '../../functions/APIcalls';
 import { validateUser } from '../../functions/validity';
 import Header from '../../components/header/header';
@@ -10,6 +10,7 @@ import { screenContainer } from '../../styles/global';
 import { inputField, inputFieldsContainer, loginHead, switchText, textLabel } from './style';
 import { inputFieldContainerCenter, inputFieldLarge, input } from '../../styles/input';
 import { updateStack } from '../../Navigation';
+import globalConfig from '../../config/globalConfig.json';
 
 
 
@@ -23,7 +24,7 @@ class ntsScreen1 extends Component {
       rePassword: '',
       clubId: '',
       terms: '',
-      budget: 100
+      budget: globalConfig.startBudget
     },
     signedUp: false,
   }

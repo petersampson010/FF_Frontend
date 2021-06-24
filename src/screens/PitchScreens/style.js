@@ -3,5 +3,5 @@ import { $darkBlue } from "../../styles/global"
 
 
 export const pitchContainer = {
-    height: vh(350)
+    // height: vh(350)
 }

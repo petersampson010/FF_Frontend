@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import { Modal, TouchableOpacity, View, Text } from 'react-native';
+import { Modal, TouchableOpacity, View, Text, Image } from 'react-native';
 import {vw, vh} from 'react-native-expo-viewport-units';
 import { connect } from 'react-redux';
 import { setCaptain } from '../../actions';
 import { fullName, getPuJ, positionString } from '../../functions/reusable';
+import { buttonText, buttonContainerFullWidth } from '../../styles/button';
 import { $arylideYellow, $chocolateBlack, $standardWhite, $zaGreen } from '../../styles/global';
 import { checkBox, labelText, standardText } from '../../styles/textStyle';
-import { button, buttons, captainBox, closeModalContainer, modal, modalTextContainer } from './style';
+import Button from '../button';
+import { playerImage, playerImageLarge } from '../PlayerGraphic/style';
+import { button, buttons, captainBox, closeModalContainer, modal, modalSplitContainer, modalTextContainer } from './style';
 
 
 class MyModal extends Component {
@@ -15,7 +18,7 @@ class MyModal extends Component {
     renderButtons = () => {
         return this.props.buttonOptions.map((x,i)=>{
         return <TouchableOpacity key={i} onPress={x.fcn} style={button}>
-            <Text style={{...labelText, textAlign: 'center'}}>{x.text}</Text>
+            <Text style={buttonText}>{x.text}</Text>
         </TouchableOpacity>})
     }
 
@@ -42,6 +45,7 @@ class MyModal extends Component {
     }
 
     modalJSX = () => {
+        const playerImg = require('../../images/profile.jpg');
         if (this.props.jsx) {
             return this.props.jsx
         } else {
@@ -58,11 +62,16 @@ class MyModal extends Component {
                     </View>
                 case 'playerProfile':
                     player = entry.pg ? entry.player : entry;
-                    return <View style={modalTextContainer}>
-                        <Text style={standardText}>{fullName(player)}</Text>
-                        <Text style={standardText}>{positionString(player.position)}</Text>
-                        <Text style={standardText}>£{player.price}</Text>
-                        <Text style={standardText}>MAYBE SOME STATS AT SOME POINT</Text>
+                    return <View style={{...modalSplitContainer, width:this.props.width}}>
+                        <View style={{padding: vh(1)}}>
+                            <Text style={standardText}>{fullName(player)}</Text>
+                            <Text style={standardText}>{positionString(player.position)}</Text>
+                            <Text style={standardText}>£{player.price}</Text>
+                            {/* <Text style={standardText}>MAYBE SOME STATS AT SOME POINT</Text> */}
+                        </View>
+                        <View style={{padding: vh(1)}}>
+                            <Image source={playerImg} imageStyle={{resizeMode: 'cover'}} style={playerImageLarge}/>
+                        </View>
                     </View>
                 case 'pickTeam':
                     player = entry.pg ? entry.player : entry;
@@ -91,14 +100,10 @@ class MyModal extends Component {
             <Modal visible={this.props.visible} 
             transparent={true}>
                 <View style={{...modal, height:this.props.height, width:this.props.width, left:(vw(100)-(this.props.width))/2}}>
-                    <View>
-                        {this.modalJSX()}
-                    </View>
+                    {this.modalJSX()}
                     <View style={buttons}>
                         {this.renderButtons()}
-                        <TouchableOpacity style={button} onPress={this.props.closeModalFcn}>
-                            <Text style={{...labelText, textAlign: 'center'}}>Close</Text>
-                        </TouchableOpacity>
+                        <Button text='close' func={this.props.closeModalFcn} width={vw(30)}/>
                     </View>
                 </View>
             </Modal>

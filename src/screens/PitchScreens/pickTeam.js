@@ -11,10 +11,19 @@ import { showMessage } from 'react-native-flash-message';
 import Pitch from '../../components/Pitch/pitch';
 import BottomNav from '../../components/bottomNav/bottomNav';
 import { screenContainer } from '../../styles/global';
+import PitchHead from '../../components/PitchHead/pitchHead';
 
 
 
 class PickTeamScreen extends Component {
+
+    componentDidMount() {
+        console.log(this.props.subs);
+        console.log(this.props.starters);
+        console.log(this.props.originalSubs);
+        console.log(this.props.originalStarters);
+
+    }
 
     transfer = player => {
         const { subs, subIn, subOut } = this.props;
@@ -77,16 +86,19 @@ class PickTeamScreen extends Component {
 
         
     render() { 
-        return ( 
+        return (
             <View style={screenContainer}>
-                <Pitch
-                type="pickTeam"
-                modalType="pickTeam"
-                update={this.validateTeam}
-                clickFcn={this.transfer}
-                team={this.props.starters}
-                subs={this.props.subs}
-                />
+                <PitchHead type='pickTeam' update={this.validateTeam}/>
+                <ScrollView>
+                    <Pitch
+                    type="pickTeam"
+                    modalType="pickTeam"
+                    update={this.validateTeam}
+                    clickFcn={this.transfer}
+                    team={this.props.starters}
+                    subs={this.props.subs}
+                    />
+                </ScrollView>
                 <BottomNav navigation={this.props.navigation}/>
             </View>
          );

@@ -1,21 +1,17 @@
 import {vw, vh} from 'react-native-expo-viewport-units';
 import { $darkBlue, $pitchGreen, $standardWhite } from '../../styles/global';
 
-export const pitchClassContainer = {
-    height: vh(65)
-}
-
 export const subHead= {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between'
 }
 
-export const pitchContainer = {
-    flexDirection: 'row',
-    width: vw(100),
-    backgroundColor: $darkBlue
-}
+// export const pitchContainer = {
+//     flexDirection: 'row',
+//     width: vw(100),
+//     backgroundColor: $darkBlue
+// }
 
 export const subs = {
     width: vw(100),

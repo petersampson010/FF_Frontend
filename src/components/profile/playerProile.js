@@ -22,7 +22,6 @@ class PlayerProfile extends Component {
                 <View style={buttons}>
                     <Button title="Remove/Sub"/>
                     <Button title="Close"/>
-                    {/* <Button/> */}
                 </View>
             </View>
          );

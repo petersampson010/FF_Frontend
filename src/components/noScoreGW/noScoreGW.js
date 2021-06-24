@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Image, View, Text } from 'react-native';
+import { View, Text } from 'react-native';
 import { headers } from '../../styles/textStyle';
 import GwScore from '../gwScore/gwScore';
 

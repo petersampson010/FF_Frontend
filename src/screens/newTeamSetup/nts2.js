@@ -14,6 +14,9 @@ import { addSubAttributeToPlayersArray, playerIds, fullName, getPuId, playersArr
 import { popToStack, resetStackAndGoHome, updateStack } from '../../Navigation';
 import { StackActions, NavigationAction } from '@react-navigation/routers';
 import { CommonActions } from '@react-navigation/native';
+import PitchHead from '../../components/PitchHead/pitchHead';
+import { validateTransfers } from '../../functions/validity';
+import globalConfig from '../../config/globalConfig.json';
 
 
 
@@ -110,11 +113,11 @@ class ntsScreen2 extends Component {
         const teamPlayersObj = playersArrayToObj(teamPlayers);
         try {
             addSpinner();
-            if (teamPlayers.length===9) {
+            if (validateTransfers(budget, teamPlayersObj)) {
                 if (budget>=0) {
                     if (teamPlayersObj['1'].length===1) {
                         let puJoiners = [];
-                        for (let i=0;i<8;i++) {
+                        for (let i=0;i<globalConfig.numberOfPlayers;i++) {
                             let puJoiner = await postPlayerUserJoiner(teamPlayers[i], user.user_id, i);
                             puJoiners.push(puJoiner);
                         }
@@ -122,7 +125,7 @@ class ntsScreen2 extends Component {
                         let returnUser = await patchUserBUDGET(
                         budget, user.user_id);
                         console.log(returnUser);
-                        nts2Login(returnUser, teamPlayers.slice(0,6), teamPlayers.slice(-2), puJoiners);
+                        nts2Login(returnUser, teamPlayers.slice(0,globalConfig.numberOfStarters), teamPlayers.slice(globalConfig.numberOfStarters-globalConfig.numberOfPlayers), puJoiners);
                         updateStack(navigation, 0, 'Home');
                     } else {
                         showMessage({
@@ -138,7 +141,7 @@ class ntsScreen2 extends Component {
                 }
             } else {
                 showMessage({
-                    message: "You need 9 players in your team!",
+                    message: `You need ${globalConfig.numberOfPlayers} players in your team!`,
                     type: "danger"
                 });
             }
@@ -160,6 +163,7 @@ class ntsScreen2 extends Component {
     render() { 
         return ( 
             <View style={screenContainer}>
+                <PitchHead type='transfers' update={this.submitTeam}/>
                 <ScrollView style={pitchContainer}>
                     {/* <Header style={styles.header} title='Team Selection'/> */}
                     <Pitch

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, ScrollView, View, Text } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 import { Input } from 'react-native-elements';  
 import { connect } from 'react-redux';
 import {vw, vh} from 'react-native-expo-viewport-units';
@@ -14,7 +14,9 @@ import MyModal from '../../components/Modal/myModal';
 import { TouchableOpacity } from 'react-native';
 import { gameContainer, gameScore } from './style';
 import { headers, standardText } from '../../styles/textStyle';
-import { $arylideYellow, $chocolateBlack, $darkBlue, screenContainer } from '../../styles/global';
+import { $arylideYellow, $chocolateBlack, $darkBlue, $luminousGreen, $zaGreen, screenContainer } from '../../styles/global';
+import { buttonSplit } from '../../styles/button';
+import Button from '../../components/button';
 
 class AdminHomeScreen extends Component {
     state = { 
@@ -123,8 +125,10 @@ class AdminHomeScreen extends Component {
     render() { 
         return ( 
             <ScrollView style={screenContainer}>
-                <Button title="Add Event/Game" onPress={()=>this.setState({...this.state, modal: {...this.state.modal, active: true}})}/>
-                <Button title="Add/Remove/Edit Player(s)" onPress={()=>this.props.navigation.navigate('AdminPlayerEdit')} />
+                <View style={buttonSplit}>
+                    <Button text='Add Event/Game' func={()=>this.setState({...this.state, modal: {...this.state.modal, active: true}})} width={vw(40)} />
+                    <Button text='Edit Player(s)' func={()=>this.props.navigation.navigate('AdminPlayerEdit')} width={vw(40)} />
+                </View>
                 <ScrollView>
                     {this.renderGames()}
                 </ScrollView>

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { TouchableHighlightBase } from 'react-native';
-import { View, Text, StyleSheet, Modal, Button } from 'react-native';
+import { View, Text, StyleSheet, Modal } from 'react-native';
 import { vh, vw } from 'react-native-expo-viewport-units';
 import { connect } from 'react-redux';
 import { labelText, standardText } from '../../styles/textStyle';
+import Button from '../button';
 import { pitchHead } from './style';
 
 
@@ -32,9 +32,9 @@ class PitchHead extends Component {
             case 'points': 
                 return <Text style={labelText}>Points: {this.props.latestUG.total_points}</Text>;
             case 'transfers':
-                return <Button title="Confirm" onPress={this.props.update}/>
+                return <Button text='Confirm' func={this.props.update} width={vw(30)}/>
             case 'pickTeam':
-                return <Button title="Confirm" onPress={this.props.update}/>
+                return <Button text='Confirm' func={this.props.update} width={vw(30)}/>
             default: 
                 return;
         }

@@ -20,6 +20,12 @@ export const playerImage = {
     borderRadius: 50
 }
 
+export const playerImageLarge = {
+    height: vh(18),
+    width: vw(36),
+    borderRadius: 500
+}
+
 export const subImage = {
     height: vh(2),
     width: vw(5),

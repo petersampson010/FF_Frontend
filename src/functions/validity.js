@@ -1,6 +1,7 @@
 import { showMessage } from "react-native-flash-message";
 import { fetchAllUsers } from "./APIcalls";
 import { playersObjToArray } from "./reusable";
+import globalConfig from '../config/globalConfig.json';
 
 
 export const validatePlayer = player => {
@@ -34,11 +35,11 @@ export const validateUser = (allUsers, aUser, user) => {
 }
 
 export const validatePickTeam = (team) => {
-    if (playersObjToArray(team).length===6) {
+    if (playersObjToArray(team).length===globalConfig.numberOfStarters) {
         return true;
     } else {
         showMessage({
-            message: "You need 6 starting players",
+            message: `You need ${globalConfig.numberOfStarters} starting players`,
             type: "danger"
         });
         return false;
@@ -64,13 +65,14 @@ export const validatePlayerScore = playerScore => {
 }
 
 export const validateTransfers = (budget, team) => {
+    console.log(playersObjToArray(team).length);
     if (budget>=0) {
-        if (playersObjToArray(team).length===9) {
+        if (playersObjToArray(team).length===globalConfig.numberOfPlayers) {
             return true;
         } else {
             showMessage({
                 type: 'warning',
-                message: "you need 9 players on your team"
+                message: `you need ${globalConfig.numberOfPlayers} players on your team`
             });
             return false;
         }

@@ -12,5 +12,5 @@ export const filter = {
 }
  
 export const playersListContainer = {
-    height: vh(150)
+    paddingBottom: vh(22)
 }
