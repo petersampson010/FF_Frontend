@@ -144,7 +144,7 @@ const mapStateToProps = state => {
         user: state.endUser.user,
         budget: state.players.transferring.budget,
         originalPlayers: state.players.latest.starters.concat(state.players.latest.subs),
-        spinner: this.state.spinner
+        spinner: state.spinner
     }
 }
 
