@@ -15,18 +15,11 @@ import { vh, vw } from 'react-native-expo-viewport-units';
 
 class UserGWProfile extends Component {
 
-    state = { 
-        modal: {
-            active: false,
-
-        }
-     }
-
     render() { 
         const { user } = this.props;
         return ( 
             <TouchableOpacity style={profileContainer}
-            onPress={() => this.setState({modal: {active: true}})}>
+            onPress={() => this.props.openModal('topUser')}>
                 <Text style={title}>Club</Text>
                 <Text style={standardText}>{user.user.teamname ? user.user.teamname : ''}</Text>
                 <View style={centerHorizontally}>
@@ -36,10 +29,10 @@ class UserGWProfile extends Component {
                 </View>
                 <Text style={standardText}>Total Points: {user.ug.total_points}</Text>
                 <MyModal 
-                        visible={this.state.modal.active}
+                        visible={this.props.topUserModal}
                         height={vh(33)}
                         width={vw(80)}
-                        closeModalFcn={()=>this.setState({modal: {...this.state.modal, active: false}})}
+                        closeModalFcn={()=>this.props.closeModal('topUser')}
                         modalType="userProfile"
                         entry={user}
                         buttonOptions={[]}

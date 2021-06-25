@@ -318,6 +318,8 @@ export const fetchLatestGameweekFromAdminUserId = auId => {
 // PLAYER-GAMEWEEK-JOINERS
 
 export const postPGJoiner = async(joiner) => {
+    console.log('post pgJoiner');
+    console.log(joiner);
     try{
         let newObj = {}
         for (let key in joiner) {
@@ -396,15 +398,22 @@ export const fetchAllPGJoinersFromGameweekId = (gameweekId) => {
 // USER-GAMEWEEK JOINERS
 
 export const postUGJoiner = async(userId, gameweekId) => {
-
     let PGJoiners = await fetchPGJoinersFromUserIdAndGameweekId(userId, gameweekId);
+    let playerIds = PGJoiners.map(pg=>pg.player_id);
     let score = 0;
     for (let i=0;i<PGJoiners.length;i++) {
         let pu_joiner = await fetchPlayerUserJoinerByUserIdAndPlayerId(userId, PGJoiners[i].player_id)
         if (!pu_joiner.sub) {
             score += PGJoiners[i].total_points
+            console.log(score);
         }
     }
+    console.log({
+        total_points: score,
+            user_id: userId,
+            gameweek_id: gameweekId,
+            player_ids: playerIds
+    });
     let configObj = {
         method: "POST",
         headers: {
@@ -414,7 +423,8 @@ export const postUGJoiner = async(userId, gameweekId) => {
         body: JSON.stringify({
             total_points: score,
             user_id: userId,
-            gameweek_id: gameweekId
+            gameweek_id: gameweekId,
+            player_ids: playerIds
         })
     };
     await fetch(`http://localhost:3000/user_gameweek_joiners`, configObj)
@@ -427,8 +437,6 @@ export const fetchUGJoiner = (userId, gameweekId) => {
 }
 
 export const fetchUGJoiners = (auId, gameweekId) => {
-    console.log(auId);
-    console.log(gameweekId);
     return fetch(`http://localhost:3000/admin_users/ug_joiners/${auId}/${gameweekId}`)
     .then(res=>res.json())
 }

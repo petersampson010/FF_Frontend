@@ -17,7 +17,12 @@ import NoScoreGW from '../../components/noScoreGW/noScoreGW';
 
 
 class HomeScreen extends Component {
-    state = {  }
+    state = { 
+        modal: {
+            topPlayer: false,
+            topUser: false
+        }
+     }
 
     renderRows = () => {
         return this.props.league.sort((a,b)=>b.total_points-a.total_points).map((team, i)=>
@@ -29,30 +34,49 @@ class HomeScreen extends Component {
         </TouchableOpacity>);
     }
 
+    closeModal = type => {
+        this.setState({
+            modal: {
+                ...this.state.modal,
+                [type]: false
+            }
+        })
+    }
+
+    openModal = type => {
+        this.setState({
+            modal: {
+                ...this.state.modal,
+                [type]: true
+            }
+        })
+    }
+
 
     render() { 
         const { user, topPlayer } = this.props
         const gwLatest = this.props.gwLatest ? this.props.gwLatest : false;
+        const opacity = this.state.modal.topPlayer || this.state.modal.topUser ? 0.1 : 1;
         return ( 
-            <View style={screenContainer}>
+            <View style={{...screenContainer, opacity}}>
                 {gwLatest && topPlayer ? 
                 <View style={gwInfo}>
                     <GwScore />
                     <Text style={{...sidenote, textAlign: 'right'}}>{displayDate(gwLatest.date)}</Text>
                     <View style={topPerformers}>
                         <View style={topPlayer}>
-                            <PlayerGWProfile player={this.props.topPlayer}/>
+                            <PlayerGWProfile player={this.props.topPlayer} topPlayerModal={this.state.modal.topPlayer} closeModal={this.closeModal} openModal={this.openModal}/>
                         </View>
                         <View style={topPlayerStyle}>
-                            <UserGWProfile user={this.props.topUser}/>
+                            <UserGWProfile user={this.props.topUser} topUserModal={this.state.modal.topUser} closeModal={this.closeModal} openModal={this.openModal}/>
                         </View>
                     </View>
                 </View> : <NoScoreGW/>}
                 <View style={tableRowHead}>
                     <Text style={{...tableElement3, ...standardText}}>Team</Text>
-                    <Text style={{...tableElement3, ...standardText}}>Total Points</Text>
+                    <Text style={{...tableElement3, ...standardText}}>Total</Text>
                     {gwLatest ? 
-                    <Text style={{...tableElement3, ...standardText}}>{gwLatest.opponent} Points</Text>
+                    <Text style={{...tableElement3, ...standardText}}>{gwLatest.opponent}</Text>
                     : null}
                 </View>
                 <ScrollView style={''}>

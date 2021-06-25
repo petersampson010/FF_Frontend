@@ -27,29 +27,6 @@ class Pitch extends Component {
         }
     }
 
-    componentDidMount() {
-        // console.log(`****** ${this.props.type} PITCH REACHED *******`);
-
-        // console.log('***** team:');
-        // console.log(this.props.team);
-
-        // console.log('***** subs');
-        // console.log(this.props.subs);
-
-        // console.log('***** latest starters:');
-        // console.log(this.props.latestStaters);
-
-        // console.log('***** latest subs');
-        // console.log(this.props.latestSubs);
-
-        // console.log('***** last gw starters');
-        // console.log(this.props.lastGwStaters);
-
-        // console.log('***** last gw subs');
-        // console.log(this.props.lastGwSubs);
-
-        console.log('***** END OF LOGS ******');
-    }
 
     playerPG = (playerId) => this.props.type==="points" ? this.props.pgJoiners.filter(pg=>pg.player_id===playerId)[0] : false;
 

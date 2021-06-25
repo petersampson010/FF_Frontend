@@ -54,7 +54,6 @@ class MyModal extends Component {
                     return <View style={modalTextContainer}>
                         <Text style={standardText}>{user.teamname}</Text>
                         <Text style={standardText}>GW Points: {ug.total_points}</Text>
-                        {/* <Text style={standardText}>Total Points: {totalPoints}</Text> */}
                         <Text style={standardText}>maybe total score</Text>
                     </View>
                 case 'playerProfile':

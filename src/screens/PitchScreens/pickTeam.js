@@ -17,13 +17,6 @@ import PitchHead from '../../components/PitchHead/pitchHead';
 
 class PickTeamScreen extends Component {
 
-    componentDidMount() {
-        console.log(this.props.subs);
-        console.log(this.props.starters);
-        console.log(this.props.originalSubs);
-        console.log(this.props.originalStarters);
-
-    }
 
     transfer = player => {
         const { subs, subIn, subOut } = this.props;

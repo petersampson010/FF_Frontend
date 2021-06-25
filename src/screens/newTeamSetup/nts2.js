@@ -121,10 +121,8 @@ class ntsScreen2 extends Component {
                             let puJoiner = await postPlayerUserJoiner(teamPlayers[i], user.user_id, i);
                             puJoiners.push(puJoiner);
                         }
-                        console.log(user);
                         let returnUser = await patchUserBUDGET(
                         budget, user.user_id);
-                        console.log(returnUser);
                         nts2Login(returnUser, teamPlayers.slice(0,globalConfig.numberOfStarters), teamPlayers.slice(globalConfig.numberOfStarters-globalConfig.numberOfPlayers), puJoiners);
                         updateStack(navigation, 0, 'Home');
                     } else {
@@ -154,10 +152,6 @@ class ntsScreen2 extends Component {
             removeSpinner();
             console.warn(e);
         }
-    }
-
-    componentDidUpdate() {
-        console.log(this.props.budget);
     }
 
     render() { 

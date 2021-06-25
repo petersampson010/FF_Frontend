@@ -40,7 +40,6 @@ class TransfersScreen extends Component {
         let { position, price } = player;
         const { transferOut, transferIn, user, teamPlayers } = this.props;
         if (this.playerSelected(player)) {
-            console.log('hit, transfer ouot');
             transferOut(player);
         } else {
             if (teamPlayers.filter(x=>x.position===position).length>2) {

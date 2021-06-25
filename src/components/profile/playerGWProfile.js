@@ -13,13 +13,6 @@ import { profile, profileContainer, title } from './style';
 
 class PlayerGWProfile extends Component {
 
-    state = { 
-        modal: {
-            active: false
-
-        }
-     }
-
     renderPointsBreakdown = () => {
         return Object.keys(this.props.player.pg).map(score=>{
             let att = this.props.player.pg[score];
@@ -35,9 +28,7 @@ class PlayerGWProfile extends Component {
         const { player } = this.props;
         return ( 
             <TouchableOpacity style={profileContainer}
-            onPress={() => this.setState({modal: {
-                active: true
-            }})}>
+            onPress={() => this.props.openModal('topPlayer')}>
                 <Text style={title}>Player</Text>
                 <Text style={standardText}>{player.player.first_name} {player.player.last_name}</Text>
                 <View style={centerHorizontally}>
@@ -48,10 +39,10 @@ class PlayerGWProfile extends Component {
                 <Text style={standardText}>Total Points: {player.pg.total_points}</Text>
                 {this.renderPointsBreakdown()}
                 <MyModal 
-                        visible={this.state.modal.active}
+                        visible={this.props.topPlayerModal}
                         height={vh(33)}
                         width={vw(80)}
-                        closeModalFcn={()=>this.setState({modal: {...this.state.modal, active: false}})}
+                        closeModalFcn={()=>this.setState(this.props.closeModal('topPlayer'))}
                         modalType="playerProfile"
                         entry={player}
                         buttonOptions={[]}

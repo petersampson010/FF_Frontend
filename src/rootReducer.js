@@ -163,7 +163,6 @@ const rootReducer = (state = initialState, action) => {
                 }
             };
         case 'SETUSER':
-            console.log(action.user);
             return {
                 ...state, 
                 endUser: {
@@ -257,8 +256,6 @@ const rootReducer = (state = initialState, action) => {
                 spinner: false
             }
         case "SUBIN":
-            console.log('hit');
-            console.log(action.player);
             return {
                 ...state,
                 players: {
