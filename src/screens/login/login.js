@@ -98,6 +98,7 @@ class LoginScreen extends Component {
         if (gameweek) {
           const { gameweek_id } = gameweek;
           let lastGwStarters = await fetchGwStartersByUserId(user_id, gameweek_id);
+          
           let lastGwSubs = await fetchGwSubsByUserId(user_id, gameweek_id);
           let pgJoiners = await fetchAllPGJoinersFromGameweekId(gameweek_id);
           if (pgJoiners.length<1) {

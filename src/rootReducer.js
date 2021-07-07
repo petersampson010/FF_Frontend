@@ -13,12 +13,14 @@ const initialState = {
     },
     players: {
         clubPlayers: [],
+        // latest info, changes that havent been 'confirmed' will not be displayed here
         latest: {
             starters: [],
             subs: [],
             captain: null,
             vCaptain: null
         }, 
+        // if any subs or transfers are being made, this is where it will be reflected
         transferring: {
             starters: [],
             subs: [],
@@ -26,6 +28,7 @@ const initialState = {
             vCaptain: null,
             budget: null
         },
+        // last gw's players
         lastGw: {
             starters: [],
             subs: [],
@@ -56,6 +59,7 @@ const rootReducer = (state = initialState, action) => {
     console.log(action.type);
     switch (action.type) {
         case 'LOGINUSER':
+            console.log(action.lastGwStarters);
             return {
                 ...state,
                 endUser: {

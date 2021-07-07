@@ -52,39 +52,46 @@ class HomeScreen extends Component {
         })
     }
 
+    componentDidMount() {
+        // console.log(this.props.lastGwStarters);
+    }
+
 
     render() { 
         const { user, topPlayer } = this.props
         const gwLatest = this.props.gwLatest ? this.props.gwLatest : false;
         const opacity = this.state.modal.topPlayer || this.state.modal.topUser ? 0.1 : 1;
         return ( 
-            <View style={{...screenContainer, opacity}}>
-                {gwLatest && topPlayer ? 
-                <View style={gwInfo}>
-                    <GwScore />
-                    <Text style={{...sidenote, textAlign: 'right'}}>{displayDate(gwLatest.date)}</Text>
-                    <View style={topPerformers}>
-                        <View style={topPlayer}>
-                            <PlayerGWProfile player={this.props.topPlayer} topPlayerModal={this.state.modal.topPlayer} closeModal={this.closeModal} openModal={this.openModal}/>
+            <View style={screenContainer}>
+                <View style={{opacity}}>
+                    {gwLatest && topPlayer ? 
+                    <View style={gwInfo}>
+                        <GwScore />
+                        <Text style={{...sidenote, textAlign: 'right'}}>{displayDate(gwLatest.date)}</Text>
+                        <View style={topPerformers}>
+                            <View style={topPlayer}>
+                                <PlayerGWProfile player={this.props.topPlayer} topPlayerModal={this.state.modal.topPlayer} closeModal={this.closeModal} openModal={this.openModal}/>
+                            </View>
+                            <View style={topPlayerStyle}>
+                                <UserGWProfile user={this.props.topUser} topUserModal={this.state.modal.topUser} closeModal={this.closeModal} openModal={this.openModal}/>
+                            </View>
                         </View>
-                        <View style={topPlayerStyle}>
-                            <UserGWProfile user={this.props.topUser} topUserModal={this.state.modal.topUser} closeModal={this.closeModal} openModal={this.openModal}/>
-                        </View>
+                    </View> : <NoScoreGW/>}
+                    <View style={tableRowHead}>
+                        <Text style={{...tableElement3, ...standardText}}>Team</Text>
+                        <Text style={{...tableElement3, ...standardText}}>Total</Text>
+                        {gwLatest ? 
+                        <Text style={{...tableElement3, ...standardText}}>{gwLatest.opponent}</Text>
+                        : null}
                     </View>
-                </View> : <NoScoreGW/>}
-                <View style={tableRowHead}>
-                    <Text style={{...tableElement3, ...standardText}}>Team</Text>
-                    <Text style={{...tableElement3, ...standardText}}>Total</Text>
-                    {gwLatest ? 
-                    <Text style={{...tableElement3, ...standardText}}>{gwLatest.opponent}</Text>
-                    : null}
+                    <ScrollView style={''}>
+                        <View style={{paddingBottom: vh(20)}}>
+                            {this.renderRows()}
+                        </View>
+                    </ScrollView>
+                    <BottomNav navigation={this.props.navigation}/>
+
                 </View>
-                <ScrollView style={''}>
-                    <View style={{paddingBottom: vh(20)}}>
-                        {this.renderRows()}
-                    </View>
-                </ScrollView>
-                <BottomNav navigation={this.props.navigation}/>
             </View>
          );
     }
@@ -99,7 +106,7 @@ const mapStateToProps = state => {
         gwLatest: state.gameweek.gwLatest,
         latestStaters: state.players.latest.starters,
         latestSubs: state.players.latest.subs,
-        lastGwStaters: state.players.lastGw.starters,
+        lastGwStarters: state.players.lastGw.starters,
         lastGwSubs: state.players.lastGw.subs,
 
     }

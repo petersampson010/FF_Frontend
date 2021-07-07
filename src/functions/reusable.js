@@ -58,8 +58,12 @@ export const playersObjToArray = obj => {
 }
 
 export const getCaptain = (players, puJoiners) => {
+    console.log(players);
+    // console.log(puJoiners);
     let playerId = puJoiners.find(x=>x.captain===true).player_id;
+    // console.log('player id: ' + playerId);
     let player = players.find(x=>x.player_id===playerId);
+    // console.log(player);
     return player;
 }
 

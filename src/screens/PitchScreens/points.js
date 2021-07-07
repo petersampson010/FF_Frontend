@@ -10,9 +10,14 @@ import { screenContainer } from '../../styles/global';
 
 
 class PointsScreen extends Component {
+
     state = {  }
 
     getNavState = () => this.props.navigation.dangerouslyGetState();
+
+    componentDidMount() {
+        // console.log(this.props.puJoiners);
+    }
 
     render() { 
         return ( 
