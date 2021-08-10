@@ -134,6 +134,7 @@ class GameEditorScreen extends Component {
         this.setState({...updatedState, dialog: {active: false}});
         if (outcome) {
             this.postPGJoiners(postArr);
+            this.postRecords(postArr);
         } else {
             showMessage({
                 message: "Please update minutes",
@@ -144,11 +145,11 @@ class GameEditorScreen extends Component {
     
     postPGJoiners = async(postArr) => {
         try{
-            await completeGame(this.props.gwSelect.gameweek_id, this.state.score);
             for (let i=0;i<postArr.length;i++) {
                 await postPGJoiner(postArr[i]);
             }
             await this.postUGJoiners()
+            await completeGame(this.props.gwSelect.gameweek_id, this.state.score);
             this.props.completeGameState(this.props.gwSelect.gameweek_id);
             this.props.navigation.navigate('AdminHome');
         } catch(e) {

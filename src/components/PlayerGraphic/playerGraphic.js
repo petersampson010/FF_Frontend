@@ -115,7 +115,7 @@ class PlayerGraphic extends Component {
 
 const mapStateToProps = state => {
     return {
-        puJoiners: state.joiners.puJoiners,
+        records: state.joiners.records,
         latestCaptain: state.players.latest.captain,
         latestVCaptain: state.players.latest.vCaptain,
         lastGwVCaptain: state.players.lastGw.vCaptain,

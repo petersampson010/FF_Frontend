@@ -57,48 +57,48 @@ export const playersObjToArray = obj => {
     return Object.values(obj).flat(Infinity);
 }
 
-export const getCaptain = (players, puJoiners) => {
+export const getCaptain = (players, records) => {
     console.log(players);
-    // console.log(puJoiners);
-    let playerId = puJoiners.find(x=>x.captain===true).player_id;
+    // console.log(records);
+    let playerId = records.find(x=>x.captain===true).playerecord_id;
     // console.log('player id: ' + playerId);
-    let player = players.find(x=>x.player_id===playerId);
+    let player = players.find(x=>x.playerecord_id===playerId);
     // console.log(player);
     return player;
 }
 
-export const getVCaptain = (players, puJoiners) => {
-    let playerId = puJoiners.find(x=>x.vice_captain===true).player_id;
-    let player = players.find(x=>x.player_id===playerId);
+export const getVCaptain = (players, records) => {
+    let playerId = records.find(x=>x.vice_captain===true).playerecord_id;
+    let player = players.find(x=>x.playerecord_id===playerId);
     return player;
 }
 
-export const isCaptain = (player, puJoiners) => {
-    let puJoiner = puJoiners.find(x=>x.player_id===player.player_id);
-    return puJoiner.captain;
+export const isCaptain = (player, records) => {
+    let record = records.find(x=>x.playerecord_id===player.playerecord_id);
+    return record.captain;
 }
 
-export const isVCaptain = (player, puJoiners) => {
-    let puJoiner = puJoiners.find(x=>x.player_id===player.player_id);
-    return puJoiner.vice_captain;
+export const isVCaptain = (player, records) => {
+    let record = records.find(x=>x.playerecord_id===player.playerecord_id);
+    return record.vice_captain;
 }
 
-export const getPuJ = (player, puJoiners) => {
-    let puJoiner = puJoiners.find(x=>x.player_id===player.player_id);
-    return puJoiner;
+export const getrecord = (player, records) => {
+    let record = records.find(x=>x.playerecord_id===player.playerecord_id);
+    return record;
 }
 
-export const getPuId = (player, puJoiners) => {
-    let puJoiner = puJoiners.find(x=>x.player_id===player.player_id);
-    return puJoiner.pu_id;
+export const getPuId = (player, records) => {
+    let record = records.find(x=>x.playerecord_id===player.playerecord_id);
+    return record.record_id;
 }
 
-export const addSubAttributeToPlayersArray = (team, allPuJ, count) => {
+export const addSubAttributeToPlayersArray = (team, allRecords, count) => {
     return team.map(player => { 
         let sub;
-        let puJ = getPuJ(player, allPuJ);
-        if (puJ) {
-            sub = puJ.sub
+        let record = getrecord(player, allRecords);
+        if (record) {
+            sub = record.sub
         } else {
             sub = count>0 ? false : true;
             count--;
@@ -106,7 +106,7 @@ export const addSubAttributeToPlayersArray = (team, allPuJ, count) => {
         return {...player, sub}})
 }
 
-export const playerIds = players => players.map(x=>x.player_id);
+export const playerIds = players => players.map(x=>x.playerecord_id);
 
 export const displayDate = date => {
     let options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Header from '../../components/header/header';
 import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
-import { patchUserBUDGET, postPlayerUserJoiner } from '../../functions/APIcalls';
+import { patchUserBUDGET, postRecord } from '../../functions/APIcalls';
 import Pitch from '../../components/Pitch/pitch';
 import PlayersList from '../../components/playersList/playersList';
 import { showMessage } from 'react-native-flash-message';
@@ -116,14 +116,14 @@ class ntsScreen2 extends Component {
             if (validateTransfers(budget, teamPlayersObj)) {
                 if (budget>=0) {
                     if (teamPlayersObj['1'].length===1) {
-                        let puJoiners = [];
+                        let records = [];
                         for (let i=0;i<globalConfig.numberOfPlayers;i++) {
-                            let puJoiner = await postPlayerUserJoiner(teamPlayers[i], user.user_id, i);
-                            puJoiners.push(puJoiner);
+                            let record = await postRecord(teamPlayers[i], user.user_id, 0, i);
+                            records.push(record);
                         }
                         let returnUser = await patchUserBUDGET(
                         budget, user.user_id);
-                        nts2Login(returnUser, teamPlayers.slice(0,globalConfig.numberOfStarters), teamPlayers.slice(globalConfig.numberOfStarters-globalConfig.numberOfPlayers), puJoiners);
+                        nts2Login(returnUser, teamPlayers.slice(0,globalConfig.numberOfStarters), teamPlayers.slice(globalConfig.numberOfStarters-globalConfig.numberOfPlayers), records);
                         updateStack(navigation, 0, 'Home');
                     } else {
                         showMessage({
@@ -187,7 +187,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        nts2Login: (user, starters, subs, puJoiners) => dispatch(nts2Login(user, starters, subs, puJoiners)),
+        nts2Login: (user, starters, subs, records) => dispatch(nts2Login(user, starters, subs, records)),
         transferOut: player => dispatch(transferOut(player)),
         transferIn: player => dispatch(transferIn(player)),
         addSpinner: () => dispatch(addSpinner()),

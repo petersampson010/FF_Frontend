@@ -16,7 +16,7 @@ class PointsScreen extends Component {
     getNavState = () => this.props.navigation.dangerouslyGetState();
 
     componentDidMount() {
-        // console.log(this.props.puJoiners);
+        // console.log(this.props.records);
     }
 
     render() { 
@@ -29,8 +29,8 @@ class PointsScreen extends Component {
                     modalType="playerProfile"
                     update={()=>console.log('do nothing')}
                     clickFcn={()=>console.log('do nothing')}
-                    captain={getCaptain(this.props.starters, this.props.puJoiners)}
-                    vCaptain={getVCaptain(this.props.starters, this.props.puJoiners)}
+                    captain={getCaptain(this.props.starters, this.props.records)}
+                    vCaptain={getVCaptain(this.props.starters, this.props.records)}
                     /> : <Text>No Games played yet, come back soon!</Text>}
                 </ScrollView>
                 <BottomNav navigation={this.props.navigation}/>
@@ -44,7 +44,7 @@ const mapStateToProps = state => {
         gwLatest: state.gameweek.gwLatest,
         subs: state.players.lastGw.subs,
         starters: state.players.lastGw.starters,
-        puJoiners: state.joiners.puJoiners,
+        records: state.joiners.records,
         league: state.homeGraphics.league
     }
 }

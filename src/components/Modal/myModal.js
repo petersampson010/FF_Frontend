@@ -71,7 +71,7 @@ class MyModal extends Component {
                     </View>
                 case 'pickTeam':
                     player = entry.pg ? entry.player : entry;
-                    const sub = getPuJ(player, this.props.puJoiners).sub;
+                    const sub = getRecord(player, this.props.records).sub;
                     return <View style={modalTextContainer}>
                         <Text style={standardText}>{fullName(player)}</Text>
                         <Text style={standardText}>{positionString(player.position)}</Text>
@@ -111,7 +111,7 @@ class MyModal extends Component {
  
 const mapStateToProps = state => {
     return {
-        puJoiners: state.joiners.puJoiners,
+        records: state.joiners.records,
         captain: state.players.latest.captain,
         vCaptain: state.players.latest.vCaptain
     }

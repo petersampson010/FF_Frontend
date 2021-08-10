@@ -34,22 +34,22 @@ class PickTeamScreen extends Component {
     }
         
     updateTeam = async() => {
-        const { starters, subs, originalStarters, originalSubs, puJoiners, captain, vCaptain, originalCaptain, originalVCaptain, addSpinner, removeSpinner, setLatestToTransferring, setTransferringBackToLatest } = this.props;
+        const { starters, subs, originalStarters, originalSubs, records, captain, vCaptain, originalCaptain, originalVCaptain, addSpinner, removeSpinner, setLatestToTransferring, setTransferringBackToLatest } = this.props;
         let startToSub = _.difference(originalStarters, starters)
         let subToStart = _.difference(originalSubs, subs);
         try {
             addSpinner();
             for (let i=0;i<startToSub.length;i++) {
-                await patchPlayerUserJoinerSUBS(true, getPuId(startToSub[i], puJoiners));
-                await patchPlayerUserJoinerSUBS(false, getPuId(subToStart[i], puJoiners));
+                await patchPlayerUserJoinerSUBS(true, getPuId(startToSub[i], records));
+                await patchPlayerUserJoinerSUBS(false, getPuId(subToStart[i], records));
             }
             if (originalCaptain!==captain) {
-                await patchPlayerUserJoinerCAPTAINS(true, false, getPuId(captain, puJoiners));
-                await patchPlayerUserJoinerCAPTAINS(false, false, getPuId(originalCaptain, puJoiners));
+                await patchPlayerUserJoinerCAPTAINS(true, false, getPuId(captain, records));
+                await patchPlayerUserJoinerCAPTAINS(false, false, getPuId(originalCaptain, records));
             } 
             if (originalVCaptain!==vCaptain) {
-                await patchPlayerUserJoinerCAPTAINS(false, true, getPuId(vCaptain, puJoiners));
-                await patchPlayerUserJoinerCAPTAINS(false, false, getPuId(originalVCaptain, puJoiners));
+                await patchPlayerUserJoinerCAPTAINS(false, true, getPuId(vCaptain, records));
+                await patchPlayerUserJoinerCAPTAINS(false, false, getPuId(originalVCaptain, records));
             }
             setLatestToTransferring();
             removeSpinner();
@@ -69,10 +69,10 @@ class PickTeamScreen extends Component {
     }
 
     teamChange = () => {
-        const { subs, originalStarters, originalSubs, puJoiners, captain, vCaptain,} = this.props;
+        const { subs, originalStarters, originalSubs, records, captain, vCaptain,} = this.props;
         return (originalSubs===subs && 
-        getCaptain(originalStarters, puJoiners)===captain &&
-        getVCaptain(originalStarters, puJoiners)===vCaptain
+        getCaptain(originalStarters, records)===captain &&
+        getVCaptain(originalStarters, records)===vCaptain
         ) ?
         false : true;
     }
@@ -104,7 +104,7 @@ const mapStateToProps = state => {
         starters: state.players.transferring.starters,
         originalSubs: state.players.latest.subs,
         originalStarters: state.players.latest.starters,
-        puJoiners: state.joiners.puJoiners,
+        records: state.joiners.records,
         captain: state.players.transferring.captain,
         vCaptain: state.players.transferring.captain,
         originalCaptain: state.players.latest.captain,

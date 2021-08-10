@@ -37,7 +37,7 @@ const initialState = {
         }
     },
     joiners: {
-        puJoiners: [],
+        records: [],
         pgJoiners: [],
         latestUG: null,
     },
@@ -59,7 +59,6 @@ const rootReducer = (state = initialState, action) => {
     console.log(action.type);
     switch (action.type) {
         case 'LOGINUSER':
-            console.log(action.lastGwStarters);
             return {
                 ...state,
                 endUser: {
@@ -86,7 +85,7 @@ const rootReducer = (state = initialState, action) => {
                     }
                 },
                 joiners: {
-                    puJoiners: action.puJoiners,
+                    records: action.records,
                     pgJoiners: action.pgJoiners,
                     ugJoiners: action.ugJoiners,
                     latestUG: action.latestUG,
@@ -144,7 +143,7 @@ const rootReducer = (state = initialState, action) => {
                 },
                 joiners: {
                     ...state.joiners,
-                    puJoiners: action.puJoiners
+                    records: action.records
                 }
             };
         case 'SETADMINUSER':

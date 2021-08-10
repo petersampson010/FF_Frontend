@@ -12,7 +12,7 @@ export const fetchUserById = id => {
 }
 export const fetchAllUsersByAdminUserId = id => {
     return fetchAllUsers()
-    .then(x=>x.filter(x=>x.admin_user_id===id))
+    .then(x=>x.filter(x=>x.admin_userecord_id===id))
 }
 export const fetchUserByEmail = userObj => {
     return fetchAllUsers()
@@ -31,7 +31,7 @@ export const postUser = (userObj) => {
             password: userObj.password,
             transfers: 0,
             budget: userObj.budget,
-            admin_user_id: userObj.clubId
+            admin_userecord_id: userObj.clubId
         })
     };
     return fetch('http://localhost:3000/users', configObj)
@@ -139,7 +139,7 @@ export const postPlayer = (player, aUserId) => {
             position: player.position,
             price: (player.price),
             availability: 'a',
-            admin_user_id: aUserId
+            admin_userecord_id: aUserId
         })
     };
     return fetch('http://localhost:3000/players', configObj)
@@ -160,22 +160,26 @@ export const patchPlayer = player => {
             availability: player.availability
         })
     }
-    fetch(`http://localhost:3000/players/${player.admin_user_id}`, configObj) 
+    fetch(`http://localhost:3000/players/${player.admin_userecord_id}`, configObj) 
     .then(res=>res.json())
 }
 
-//PLAYER_USER_JOINER
+//RECORDS
 
-export const fetchAllPlayerUserJoinersByUserId = id => {
-    return fetch(`http://localhost:3000/users/${id}/player_user_joiners`)
+export const fetchAllRecordsByUserId = id => {
+    return fetch(`http://localhost:3000/records/userecord_id/${userecord_id}`)
     .then(res=>res.json())
 }
-export const fetchPlayerUserJoinerByUserIdAndPlayerId = (userId, playerId) => {
-    return fetchAllPlayerUserJoinersByUserId(userId)
-    .then(data=>data.filter(x=>x.player_id===playerId))
+export const fetchRecordsByIdAndPlayerId = (userId, playerId) => {
+    return fetchAllRecordsByUserId(userId)
+    .then(data=>data.filter(x=>x.record_id===playerId))
     .then(data=>data[0]);
 }
-export const postPlayerUserJoiner = (player, userId, count) => {
+export const postRecord = (player, userId, gameweekId, count) => {
+    console.log(player);
+    console.log(userId);
+    console.log(gameweekId);
+    console.log(count);
     let configObj = {
         method: "POST",
         headers: {
@@ -186,14 +190,16 @@ export const postPlayerUserJoiner = (player, userId, count) => {
             sub: count>5 ? true : false,
             captain: count===2 ? true : false,
             vice_captain: count===5 ? true : false,
-            player_id: player.player_id,
-            user_id: userId
+            userecord_id: userId,
+            record_id: player.record_id,
+            gameweek_id: gameweekId
         })
     };
-    return fetch('http://localhost:3000/player_user_joiners', configObj)
+    return fetch('http://localhost:3000/records', configObj)
     .then(res=>res.json())
+    .then(data=>console.log(data))
 }
-export const postPlayerUserJoinerTRANSFER = (player, userId, count, captain, vice_captain) => {
+export const postRecordTRANSFER = (player, userId, count, captain, vice_captain) => {
     let configObj = {
         method: "POST",
         headers: {
@@ -204,15 +210,15 @@ export const postPlayerUserJoinerTRANSFER = (player, userId, count, captain, vic
             sub: count>0 ? true : false,
             captain,
             vice_captain,
-            player_id: player.player_id,
-            user_id: userId
+            record_id: player.record_id,
+            userecord_id: userId
         })
     };
-    return fetch('http://localhost:3000/player_user_joiners', configObj)
+    return fetch('http://localhost:3000/records', configObj)
     .then(res=>res.json())
 }
 
-export const patchPlayerUserJoinerSUBS = (sub, pu_id) => {
+export const patchRecordSUBS = (sub, record_id) => {
     let configObj = {
         method: "PATCH",
         headers: {
@@ -223,11 +229,11 @@ export const patchPlayerUserJoinerSUBS = (sub, pu_id) => {
             sub,
         })
     };
-    return fetch(`http://localhost:3000/player_user_joiners/${pu_id}`, configObj)
+    return fetch(`http://localhost:3000/records/${record_id}`, configObj)
     .then(res=>res.json())
 }
 
-export const patchPlayerUserJoinerCAPTAINS = (captain, vice_captain, pu_id) => {
+export const patchRecordCAPTAINS = (captain, vice_captain, record_id) => {
     let configObj = {
         method: "PATCH",
         headers: {
@@ -239,15 +245,15 @@ export const patchPlayerUserJoinerCAPTAINS = (captain, vice_captain, pu_id) => {
             vice_captain
         })
     };
-    return fetch(`http://localhost:3000/player_user_joiners/${pu_id}`, configObj)
+    return fetch(`http://localhost:3000/records/${record_id}`, configObj)
     .then(res=>res.json())
 }
 
-export const deletePlayerUserJoiner = (pu_id) => {
+export const deleteRecord = (record_id) => {
     let configObj = {
         method: "DELETE"
     };
-    fetch(`http://localhost:3000/player_user_joiners/${pu_id}`, configObj)
+    fetch(`http://localhost:3000/records/${record_id}`, configObj)
 }
 
 
@@ -272,7 +278,7 @@ export const postGame = (game, aUserID) => {
             date: game.date,
             opponent: game.opponent,
             complete: false,
-            admin_user_id: aUserID
+            admin_userecord_id: aUserID
         })
     };
     return fetch(`http://localhost:3000/gameweeks`, configObj)
@@ -332,7 +338,7 @@ export const postPGJoiner = async(joiner) => {
             }
         }
         let { minutes, assists, goals, own_goals, y_cards, r_cards, bonus, penalty_miss, goals_conceded } = newObj
-        let player = await fetchPlayerById(joiner.player_id);
+        let player = await fetchPlayerById(joiner.record_id);
         let score;
         switch(player.position) {
             case '4': 
@@ -371,7 +377,7 @@ export const postPGJoiner = async(joiner) => {
                 penalty_miss: joiner.penalty_miss,
                 goals_conceded: joiner.goals_conceded,
                 total_points: score,
-                player_id: joiner.player_id,
+                record_id: joiner.record_id,
                 gameweek_id: joiner.gameweek_id
             })
         };
@@ -402,22 +408,16 @@ export const fetchAllPGJoinersFromGameweekId = (gameweekId) => {
 export const postUGJoiner = async(userId, gameweekId) => {
     console.log('posting user gameweek  joiner');
     let PGJoiners = await fetchPGJoinersFromUserIdAndGameweekId(userId, gameweekId);
-    let playerIds = PGJoiners.map(pg=>pg.player_id);
+    let playerIds = PGJoiners.map(pg=>pg.record_id);
     console.log(playerIds);
     let score = 0;
     for (let i=0;i<PGJoiners.length;i++) {
-        let pu_joiner = await fetchPlayerUserJoinerByUserIdAndPlayerId(userId, PGJoiners[i].player_id)
-        if (!pu_joiner.sub) {
+        let record = await fetchPlayerUserJoinerByUserIdAndPlayerId(userId, PGJoiners[i].record_id)
+        if (!record.sub) {
             score += PGJoiners[i].total_points
             console.log(score);
         }
     }
-    console.log({
-        total_points: score,
-            user_id: userId,
-            gameweek_id: gameweekId,
-            player_ids: playerIds
-    });
     let configObj = {
         method: "POST",
         headers: {
@@ -426,9 +426,9 @@ export const postUGJoiner = async(userId, gameweekId) => {
         },
         body: JSON.stringify({
             total_points: score,
-            user_id: userId,
+            userecord_id: userId,
             gameweek_id: gameweekId,
-            ff_player_ids: playerIds
+            ff_record_ids: playerIds
         })
     };
     await fetch(`http://localhost:3000/user_gameweek_joiners`, configObj)
@@ -464,3 +464,6 @@ export const postMessage = (name, email, msg) => {
     return fetch('http://localhost:3000/messages', configObj)
     .then(res=>res.json())
 }
+
+
+

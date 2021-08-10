@@ -13,7 +13,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { validateTransfers } from '../../functions/validity';
 import pitch from '../../components/Pitch/pitch.js';
 import _, { remove } from 'lodash';
-import { deletePlayerUserJoiner, fetchAllPlayerUserJoinersByUserId, fetchPlayerUserJoinerByUserIdAndPlayerId, patchUserBUDGET, postPlayerUserJoiner, postPlayerUserJoinerTRANSFER } from '../../functions/APIcalls';
+import { deletePlayerUserJoiner, fetchAllPlayerUserJoinersByUserId, fetchRecordsByUserIdAndPlayerId, patchUserBUDGET, postPlayerUserJoiner, postPlayerUserJoinerTRANSFER } from '../../functions/APIcalls';
 import { TouchableHighlightBase } from 'react-native';
 import { addSpinner, removeSpinner, setLatestToTransferring, setTransferringBackToLatest, transferIn, transferOut } from '../../actions';
 import SpinnerOverlay from '../../components/spinner/spinner';
@@ -66,17 +66,17 @@ class TransfersScreen extends Component {
                 // players transferred out
                 const playersOut = _.difference(originalPlayers, teamPlayers);
                 for (let i=0;i<playersOut.length;i++) {
-                  let puJ = await fetchPlayerUserJoinerByUserIdAndPlayerId(user.user_id, playersOut[i].player_id);
-                  if (puJ.sub) {
+                  let record = await fetchRecordsByUserIdAndPlayerId(user.user_id, playersOut[i].player_id);
+                  if (record.sub) {
                       count++;
                   }
-                  if (puJ.captain) {
+                  if (record.captain) {
                       captain = true;
                   }
-                  if (puJ.vice_captain) {
+                  if (record.vice_captain) {
                       vice_captain = true;
                   }
-                  deletePlayerUserJoiner(puJ.pu_id);
+                  deletePlayerUserJoiner(record.pu_id);
                 }
                 // players transferred in
                 const playersIn = _.difference(teamPlayers, originalPlayers);
