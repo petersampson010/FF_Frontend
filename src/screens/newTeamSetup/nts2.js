@@ -114,7 +114,6 @@ class ntsScreen2 extends Component {
         try {
             addSpinner();
             if (validateTransfers(budget, teamPlayersObj)) {
-                if (budget>=0) {
                     if (teamPlayersObj['1'].length===1) {
                         let records = [];
                         for (let i=0;i<globalConfig.numberOfPlayers;i++) {
@@ -131,17 +130,6 @@ class ntsScreen2 extends Component {
                             type: "danger"
                         });
                     }
-                } else {
-                    showMessage({
-                        message: "Not enough funds",
-                        type: "danger"
-                    });
-                }
-            } else {
-                showMessage({
-                    message: `You need ${globalConfig.numberOfPlayers} players in your team!`,
-                    type: "danger"
-                });
             }
             removeSpinner();
         } catch(e) {

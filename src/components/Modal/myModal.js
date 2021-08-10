@@ -47,6 +47,8 @@ class MyModal extends Component {
             return this.props.jsx
         } else {
             const { modalType, entry } = this.props;
+            console.log(entry);
+            console.log('above');
             let player;
             switch(modalType) {
                 case 'userProfile':
@@ -70,8 +72,11 @@ class MyModal extends Component {
                         </View>
                     </View>
                 case 'pickTeam':
+                    console.log('recr');
+                    console.log(this.props.records);
                     player = entry.pg ? entry.player : entry;
-                    const sub = getRecord(player, this.props.records).sub;
+                    const rec = getRecord(player, this.props.records);
+                    const sub = rec ? rec.sub : true;
                     return <View style={modalTextContainer}>
                         <Text style={standardText}>{fullName(player)}</Text>
                         <Text style={standardText}>{positionString(player.position)}</Text>

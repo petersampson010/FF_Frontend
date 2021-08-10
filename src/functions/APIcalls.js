@@ -338,7 +338,8 @@ export const postPGJoiner = async(joiner) => {
             }
         }
         let { minutes, assists, goals, own_goals, y_cards, r_cards, bonus, penalty_miss, goals_conceded } = newObj
-        let player = await fetchPlayerById(joiner.record_id);
+        let player = await fetchPlayerById(joiner.player_id);
+        console.log(player);
         let score;
         switch(player.position) {
             case '4': 
@@ -393,6 +394,8 @@ export const postPGJoiner = async(joiner) => {
 }
 
 export const fetchPGJoinersFromUserIdAndGameweekId = (userId, gameweekId) => {
+    console.log(userId);
+    console.log(gameweekId);
     return fetch(`http://localhost:3000/users/${userId}/${gameweekId}/pg_joiners`)
     .then(res=>res.json())
 }

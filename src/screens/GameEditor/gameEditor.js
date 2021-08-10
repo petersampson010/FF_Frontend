@@ -134,7 +134,6 @@ class GameEditorScreen extends Component {
         this.setState({...updatedState, dialog: {active: false}});
         if (outcome) {
             this.postPGJoiners(postArr);
-            this.postRecords(postArr);
         } else {
             showMessage({
                 message: "Please update minutes",

@@ -83,6 +83,7 @@ export const isVCaptain = (player, records) => {
 export const getRecord = (player, records) => {
     console.log(records[0]);
     let record = records.find(x=>x.player_id===player.player_id);
+    console.log(record);
     return record;
 }
 
