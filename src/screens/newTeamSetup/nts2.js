@@ -10,7 +10,7 @@ import { PlayerIds, allSelectedPlayers } from '../../functions/reusable';
 import { screenContainer } from '../../styles/global';
 import { pitchContainer } from '../PitchScreens/style';
 import { nts2Login, addSpinner, removeSpinner, setLatestToTransferring, setTransferringBackToLatest, transferIn, transferOut } from '../../actions';
-import { addSubAttributeToPlayersArray, playerIds, fullName, getPuId, playersArrayToObj, playersObjToArray, positionString } from '../../functions/reusable';
+import { addSubAttributeToPlayersArray, playerIds, fullName, getRecordId, playersArrayToObj, playersObjToArray, positionString } from '../../functions/reusable';
 import { popToStack, resetStackAndGoHome, updateStack } from '../../Navigation';
 import { StackActions, NavigationAction } from '@react-navigation/routers';
 import { CommonActions } from '@react-navigation/native';

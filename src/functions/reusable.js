@@ -41,6 +41,7 @@ export const availability = avail => {
 }
 
 export const playersArrayToObj = arr => {
+    console.log(arr);
     let obj = {
         '1': [],
         '2': [],
@@ -58,45 +59,42 @@ export const playersObjToArray = obj => {
 }
 
 export const getCaptain = (players, records) => {
-    console.log(players);
-    // console.log(records);
-    let playerId = records.find(x=>x.captain===true).playerecord_id;
-    // console.log('player id: ' + playerId);
-    let player = players.find(x=>x.playerecord_id===playerId);
-    // console.log(player);
+    let playerId = records.find(x=>x.captain===true).player_id;
+    let player = players.find(x=>x.player_id===playerId);
     return player;
 }
 
 export const getVCaptain = (players, records) => {
-    let playerId = records.find(x=>x.vice_captain===true).playerecord_id;
-    let player = players.find(x=>x.playerecord_id===playerId);
+    let playerId = records.find(x=>x.vice_captain===true).player_id;
+    let player = players.find(x=>x.player_id===playerId);
     return player;
 }
 
 export const isCaptain = (player, records) => {
-    let record = records.find(x=>x.playerecord_id===player.playerecord_id);
+    let record = records.find(x=>x.player_id===player.player_id);
     return record.captain;
 }
 
 export const isVCaptain = (player, records) => {
-    let record = records.find(x=>x.playerecord_id===player.playerecord_id);
+    let record = records.find(x=>x.player_id===player.player_id);
     return record.vice_captain;
 }
 
-export const getrecord = (player, records) => {
-    let record = records.find(x=>x.playerecord_id===player.playerecord_id);
+export const getRecord = (player, records) => {
+    console.log(records[0]);
+    let record = records.find(x=>x.player_id===player.player_id);
     return record;
 }
 
-export const getPuId = (player, records) => {
-    let record = records.find(x=>x.playerecord_id===player.playerecord_id);
+export const getRecordId = (player, records) => {
+    let record = records.find(x=>x.player_id===player.player_id);
     return record.record_id;
 }
 
 export const addSubAttributeToPlayersArray = (team, allRecords, count) => {
     return team.map(player => { 
         let sub;
-        let record = getrecord(player, allRecords);
+        let record = getRecord(player, allRecords);
         if (record) {
             sub = record.sub
         } else {
@@ -106,7 +104,7 @@ export const addSubAttributeToPlayersArray = (team, allRecords, count) => {
         return {...player, sub}})
 }
 
-export const playerIds = players => players.map(x=>x.playerecord_id);
+export const playerIds = players => players.map(x=>x.player_id);
 
 export const displayDate = date => {
     let options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};

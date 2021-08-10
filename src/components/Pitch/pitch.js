@@ -6,7 +6,7 @@ import MyModal from '../Modal/myModal';
 import { connect } from 'react-redux';
 import PitchHead from '../PitchHead/pitchHead';
 import { pitch, pitchContainer, starters, subs, positionRow, pitchImage, pitchClassContainer } from './style';
-import { fullName, getPuJ, playersArrayToObj, positionString } from '../../functions/reusable';
+import { fullName, getRecord, playersArrayToObj, positionString } from '../../functions/reusable';
 
 
 
@@ -114,7 +114,7 @@ class Pitch extends Component {
 const mapStateToProps = state => {
     return {
         pgJoiners: state.joiners.pgJoiners,
-        records: state.joiners.records,
+        records: state.joiners.records
     }
 }
  

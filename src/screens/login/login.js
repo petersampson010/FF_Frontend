@@ -4,7 +4,7 @@ import { showMessage } from 'react-native-flash-message';
 import { connect } from 'react-redux';
 import { loginUser, loginAdminUser, resetTeamPlayers, addSpinner } from '../../actions';
 import { fetchUserByEmail, fetchAdminUserByEmail, fetchAllPlayersByAdminUserId, 
-  fetchLatestStartersByUserId, fetchLatestSubsByUserId, fetchGwStartersByUserId, fetchGwSubsByUserId, fetchAllPlayerUserJoinersByUserId, 
+  fetchLatestStartersByUserId, fetchLatestSubsByUserId, fetchGwStartersByUserId, fetchGwSubsByUserId, fetchAllRecordsByUserId, 
   fetchAllUsersByAdminUserId, fetchAllGamesByAdminUserId, fetchLeague, fetchLatestGameweekFromAdminUserId, fetchAllPGJoinersFromGameweekId, fetchUGJoiner, fetchUGJoiners, fetchPlayerById, fetchUserById, fetchAdminUserById } 
   from '../../functions/APIcalls'; 
 import { screenContainer } from '../../styles/global';
@@ -93,7 +93,9 @@ class LoginScreen extends Component {
         let aUser = await fetchAdminUserById(admin_user_id);
         let latestStarters = await fetchLatestStartersByUserId(user_id);
         let latestSubs = await fetchLatestSubsByUserId(user_id);
+        console.log(user_id);
         let records = await fetchAllRecordsByUserId(user_id);
+        console.log('this record: ' + records[0]);
         let league = await fetchLeague(admin_user_id);
         if (gameweek) {
           const { gameweek_id } = gameweek;

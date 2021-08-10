@@ -12,7 +12,7 @@ export const fetchUserById = id => {
 }
 export const fetchAllUsersByAdminUserId = id => {
     return fetchAllUsers()
-    .then(x=>x.filter(x=>x.admin_userecord_id===id))
+    .then(x=>x.filter(x=>x.admin_user_id===id))
 }
 export const fetchUserByEmail = userObj => {
     return fetchAllUsers()
@@ -31,7 +31,7 @@ export const postUser = (userObj) => {
             password: userObj.password,
             transfers: 0,
             budget: userObj.budget,
-            admin_userecord_id: userObj.clubId
+            admin_user_id: userObj.clubId
         })
     };
     return fetch('http://localhost:3000/users', configObj)
@@ -139,7 +139,7 @@ export const postPlayer = (player, aUserId) => {
             position: player.position,
             price: (player.price),
             availability: 'a',
-            admin_userecord_id: aUserId
+            admin_user_id: aUserId
         })
     };
     return fetch('http://localhost:3000/players', configObj)
@@ -160,22 +160,23 @@ export const patchPlayer = player => {
             availability: player.availability
         })
     }
-    fetch(`http://localhost:3000/players/${player.admin_userecord_id}`, configObj) 
+    fetch(`http://localhost:3000/players/${player.admin_user_id}`, configObj) 
     .then(res=>res.json())
 }
 
 //RECORDS
 
 export const fetchAllRecordsByUserId = id => {
-    return fetch(`http://localhost:3000/records/userecord_id/${userecord_id}`)
+    return fetch(`http://localhost:3000/records/user_id/${id}`)
     .then(res=>res.json())
 }
-export const fetchRecordsByIdAndPlayerId = (userId, playerId) => {
+export const fetchRecordsByUserIdAndPlayerId = (userId, playerId) => {
     return fetchAllRecordsByUserId(userId)
     .then(data=>data.filter(x=>x.record_id===playerId))
     .then(data=>data[0]);
 }
 export const postRecord = (player, userId, gameweekId, count) => {
+    console.log('POSTING RECORD...')
     console.log(player);
     console.log(userId);
     console.log(gameweekId);
@@ -190,14 +191,13 @@ export const postRecord = (player, userId, gameweekId, count) => {
             sub: count>5 ? true : false,
             captain: count===2 ? true : false,
             vice_captain: count===5 ? true : false,
-            userecord_id: userId,
-            record_id: player.record_id,
+            user_id: userId,
+            player_id: player.player_id,
             gameweek_id: gameweekId
         })
     };
     return fetch('http://localhost:3000/records', configObj)
     .then(res=>res.json())
-    .then(data=>console.log(data))
 }
 export const postRecordTRANSFER = (player, userId, count, captain, vice_captain) => {
     let configObj = {
@@ -211,7 +211,7 @@ export const postRecordTRANSFER = (player, userId, count, captain, vice_captain)
             captain,
             vice_captain,
             record_id: player.record_id,
-            userecord_id: userId
+            user_id: userId
         })
     };
     return fetch('http://localhost:3000/records', configObj)
@@ -278,7 +278,7 @@ export const postGame = (game, aUserID) => {
             date: game.date,
             opponent: game.opponent,
             complete: false,
-            admin_userecord_id: aUserID
+            admin_user_id: aUserID
         })
     };
     return fetch(`http://localhost:3000/gameweeks`, configObj)
@@ -426,7 +426,7 @@ export const postUGJoiner = async(userId, gameweekId) => {
         },
         body: JSON.stringify({
             total_points: score,
-            userecord_id: userId,
+            user_id: userId,
             gameweek_id: gameweekId,
             ff_record_ids: playerIds
         })

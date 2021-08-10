@@ -3,7 +3,7 @@ import { Modal, TouchableOpacity, View, Text, Image } from 'react-native';
 import {vw, vh} from 'react-native-expo-viewport-units';
 import { connect } from 'react-redux';
 import { setCaptain } from '../../actions';
-import { fullName, getPuJ, positionString } from '../../functions/reusable';
+import { fullName, getRecord, positionString } from '../../functions/reusable';
 import { buttonText, buttonContainerFullWidth } from '../../styles/button';
 import { $arylideYellow, $chocolateBlack, $standardWhite, $zaGreen } from '../../styles/global';
 import { checkBox, labelText, standardText } from '../../styles/textStyle';

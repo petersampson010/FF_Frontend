@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Text, Button } from 'react-native';
 import { connect } from 'react-redux';
-import { addSubAttributeToPlayersArray, playerIds, fullName, getPuId, playersArrayToObj, playersObjToArray, positionString } from '../../functions/reusable';
+import { addSubAttributeToPlayersArray, playerIds, fullName, getRecordId, playersArrayToObj, playersObjToArray, positionString } from '../../functions/reusable';
 import Pitch from '../../components/Pitch/pitch.js';
 import PlayersList from '../../components/playersList/playersList.js';
 import { showMessage } from 'react-native-flash-message';
@@ -13,7 +13,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { validateTransfers } from '../../functions/validity';
 import pitch from '../../components/Pitch/pitch.js';
 import _, { remove } from 'lodash';
-import { deletePlayerUserJoiner, fetchAllPlayerUserJoinersByUserId, fetchRecordsByUserIdAndPlayerId, patchUserBUDGET, postPlayerUserJoiner, postPlayerUserJoinerTRANSFER } from '../../functions/APIcalls';
+import { deleteRecord, fetchAllRecordsByUserIdAndPlayerId, fetchRecordsByUserIdAndPlayerId, patchUserBUDGET, postRecord, postRecordTRANSFER } from '../../functions/APIcalls';
 import { TouchableHighlightBase } from 'react-native';
 import { addSpinner, removeSpinner, setLatestToTransferring, setTransferringBackToLatest, transferIn, transferOut } from '../../actions';
 import SpinnerOverlay from '../../components/spinner/spinner';
@@ -76,19 +76,19 @@ class TransfersScreen extends Component {
                   if (record.vice_captain) {
                       vice_captain = true;
                   }
-                  deletePlayerUserJoiner(record.pu_id);
+                  deleteRecord(record.pu_id);
                 }
                 // players transferred in
                 const playersIn = _.difference(teamPlayers, originalPlayers);
                 for (let j=0;j<playersIn.length;j++) {
                     if (captain) {
-                        await postPlayerUserJoinerTRANSFER(playersIn[j], user.user_id, 0, captain, false);
+                        await postRecordTRANSFER(playersIn[j], user.user_id, 0, captain, false);
                         captain = false;
                     } else if (vice_captain) {
-                        await postPlayerUserJoinerTRANSFER(playersIn[j], user.user_id, 0, false, vice_captain);
+                        await postRecordTRANSFER(playersIn[j], user.user_id, 0, false, vice_captain);
                         vice_captain = false;
                     } else {
-                        await postPlayerUserJoinerTRANSFER(playersIn[j], user.user_id, count, false, false);
+                        await postRecordTRANSFER(playersIn[j], user.user_id, count, false, false);
                         vice_captain = false;
                         count--
                     }

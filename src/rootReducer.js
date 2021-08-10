@@ -59,6 +59,8 @@ const rootReducer = (state = initialState, action) => {
     console.log(action.type);
     switch (action.type) {
         case 'LOGINUSER':
+            console.log('here');
+            console.log(action.records[0]);
             return {
                 ...state,
                 endUser: {
