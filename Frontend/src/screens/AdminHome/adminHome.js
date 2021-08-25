@@ -72,6 +72,7 @@ class AdminHomeScreen extends Component {
             let res = await postGame(this.state.modal.game, this.props.aUser.admin_user_id);
             if (res.date) {
                 this.props.addGameState(res);
+                
                 this.setState({
                     modal: {
                         active: false,

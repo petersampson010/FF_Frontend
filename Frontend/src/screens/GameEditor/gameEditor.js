@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet, Button, ScrollView, TouchableHighlig
 import { showMessage } from 'react-native-flash-message';
 import Dialog, { DialogButton, DialogContent } from 'react-native-popup-dialog';
 import { connect } from 'react-redux';
-import { postPGJoiner, completeGame, postUGJoiner } from '../../functions/APIcalls';
+import { postPGJoiner, completeGame, postUGJoiner, fetchCurrentRecords, patchRecordGAMEWEEK, postRecordDUPLICATE } from '../../functions/APIcalls';
 import { validatePlayerScore } from '../../functions/validity';
 import { completeGameState } from '../../actions';
 import { $baseBlue, $darkBlue, $electricBlue, $inputBlue, screenContainer } from '../../styles/global';
@@ -147,7 +147,10 @@ class GameEditorScreen extends Component {
             for (let i=0;i<postArr.length;i++) {
                 await postPGJoiner(postArr[i]);
             }
-            await this.postUGJoiners()
+            await this.postUGJoiners();
+            let records = await fetchCurrentRecords();
+            patchCurrentRecords(records);
+            postNewRecords(records);
             await completeGame(this.props.gwSelect.gameweek_id, this.state.score);
             this.props.completeGameState(this.props.gwSelect.gameweek_id);
             this.props.navigation.navigate('AdminHome');
@@ -161,9 +164,21 @@ class GameEditorScreen extends Component {
     }
 
     postUGJoiners = async() => {
-        let { allUsers, gwSelect } = this.props
+        let { allUsers, gwSelect } = this.props;
         for (let i=0;i<allUsers.length;i++) {
             await postUGJoiner(allUsers[i].user_id, gwSelect.gameweek_id);
+        }
+    }
+
+    postNewRecords = async(records) => {
+        for (let i=0; i<records.length; i++) {
+            await postRecordDUPLICATE(record[i]);
+        }
+    }
+
+    patchCurrentRecords = async(records) => {
+        for (let i=0; i<records.length; i++) {
+            await patchRecordGAMEWEEK(records[i].record_id, this.props.gwSelect.gameweek_id);
         }
     }
     

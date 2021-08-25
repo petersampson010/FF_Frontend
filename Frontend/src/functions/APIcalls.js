@@ -165,7 +165,14 @@ export const patchPlayer = player => {
 }
 
 //RECORDS
-
+export const fetchAllRecords = () => {
+    return fetch('http://localhost:3000/records')
+    .then(res=>res.json());
+}
+export const fetchRecordByRecordId = recordId => {
+    return fetch(`http://localhost:3000/records/${recordId}`)
+    .then(res => res.json());
+}
 export const fetchAllRecordsByUserId = id => {
     return fetch(`http://localhost:3000/records/user_id/${id}`)
     .then(res=>res.json())
@@ -178,12 +185,21 @@ export const fetchRecordsByGwIdAndUserId = (userId, gwId) => {
     return fetchAllRecordsByUserId(userId)
     .then(data=>data.filter(x=>x.gameweek_id===gwId));
 }
-export const postRecord = (player, userId, gameweekId, count) => {
-    console.log('POSTING RECORD...')
-    console.log(player);
-    console.log(userId);
-    console.log(gameweekId);
-    console.log(count);
+export const fetchRecord = (userId, gwId, playerId) => {
+    return fetchAllRecordsByGwIdAndUserId(userId, gwId)
+    .then(data => data.filter(r => r.player_id === playerId))
+    .then(data => data[0]);
+}
+export const fetchCurrentRecordByUserIdAndPlayerId = (userId, playerId) => {
+    return fetchRecordsByUserIdAndPlayerId(userId, playerId)
+    .then(data => data.filter(r => !r.gameweek_id))
+    .then(data => data[0]);
+}
+export const fetchCurrentRecords = () => {
+    return fetchAllRecords()
+    .then(data => data.filter(r => !r.gameweek_id));
+}
+export const postRecord = (player, userId, count) => {
     let configObj = {
         method: "POST",
         headers: {
@@ -196,13 +212,39 @@ export const postRecord = (player, userId, gameweekId, count) => {
             vice_captain: count===5 ? true : false,
             user_id: userId,
             player_id: player.player_id,
-            gameweek_id: gameweekId
+            gameweek_id: null
         })
     };
     return fetch('http://localhost:3000/records', configObj)
     .then(res=>res.json())
 }
-export const postRecordTRANSFER = (player, userId, count, captain, vice_captain) => {
+export const postRecordDUPLICATE = (record) => {
+    let configObj = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(record)
+    };
+    return fetch('http://localhost:3000/records', configObj)
+    .then(res=>res.json())
+}
+export const patchRecordGAMEWEEK = (recordId, gwId) => {
+    let configObj = {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            gameweek_id: gwId
+        })
+    };
+    return fetch(`http://localhost:3000/records/${recordId}`, configObj)
+    .then(res=>res.json())
+}
+export const postRecordTRANSFER = (player, userId, gwId, count, captain, vice_captain) => {
     let configObj = {
         method: "POST",
         headers: {
@@ -214,7 +256,8 @@ export const postRecordTRANSFER = (player, userId, count, captain, vice_captain)
             captain,
             vice_captain,
             record_id: player.record_id,
-            user_id: userId
+            user_id: userId,
+            gameweek_id: gwId
         })
     };
     return fetch('http://localhost:3000/records', configObj)
@@ -252,11 +295,19 @@ export const patchRecordCAPTAINS = (captain, vice_captain, record_id) => {
     .then(res=>res.json())
 }
 
-export const deleteRecord = (record_id) => {
+export const deleteRecord = async(record_id) => {
     let configObj = {
         method: "DELETE"
     };
-    fetch(`http://localhost:3000/records/${record_id}`, configObj)
+    let record = fetchRecordByRecordId(record_id);
+    if (!record.gameweek_id) {
+        fetch(`http://localhost:3000/records/${record_id}`, configObj)
+    } else {
+        showMessage({
+            message: "Invalid Record Deletion: Operation stopped",
+            type: 'warning'
+        });
+    }
 }
 
 
@@ -448,7 +499,7 @@ export const fetchPGJoinersFromPlayerIdsAndGwId = (playerIds, gwId) => {
 
 export const postUGJoiner = async(userId, gameweekId) => {
     console.log('posting user gameweek  joiner');
-    let records = await fetchRecordsByGwIdAndUserId(userId, gameweekId);
+    let records = await fetchRecordsByGwIdAndUserId(userId, null);
     console.log(records);
     let userRecords = records.map(async(r) => {
         let pgJoiner = await fetchPGJoinerFromPlayerIdAndGwId(r.player_id, r.gameweek_id);
