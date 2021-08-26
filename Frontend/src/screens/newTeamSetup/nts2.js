@@ -117,7 +117,7 @@ class ntsScreen2 extends Component {
                     if (teamPlayersObj['1'].length===1) {
                         let records = [];
                         for (let i=0;i<globalConfig.numberOfPlayers;i++) {
-                            let record = await postRecord(teamPlayers[i], user.user_id, 0, i);
+                            let record = await postRecord(teamPlayers[i], user.user_id, i);
                             records.push(record);
                         }
                         let returnUser = await patchUserBUDGET(

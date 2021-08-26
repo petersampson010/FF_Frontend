@@ -212,13 +212,15 @@ export const postRecord = (player, userId, count) => {
             vice_captain: count===5 ? true : false,
             user_id: userId,
             player_id: player.player_id,
-            gameweek_id: null
+            gameweek_id: 0
         })
     };
     return fetch('http://localhost:3000/records', configObj)
     .then(res=>res.json())
 }
 export const postRecordDUPLICATE = (record) => {
+    console.log('********* POSTING NEW DUPLICATE RECORD *************');
+    delete record["record_id"];
     let configObj = {
         method: "POST",
         headers: {
@@ -231,6 +233,7 @@ export const postRecordDUPLICATE = (record) => {
     .then(res=>res.json())
 }
 export const patchRecordGAMEWEEK = (recordId, gwId) => {
+    console.log('******** PATCHING RECORD *************');
     let configObj = {
         method: "PATCH",
         headers: {
@@ -379,20 +382,16 @@ export const fetchLatestGameweekFromAdminUserId = auId => {
 
 // PLAYER-GAMEWEEK-JOINERS
 
-export const postRecord = async(joiner) => {
-    console.log('********** POSTING RECORD ***********');
-    console.log(joiner);
+export const postPGJ = async(joiner) => {
+    console.log('********** POSTING PGJ ***********');
     try{
         let newObj = {}
         for (const [key, value] of Object.entries(joiner)) {
-            console.log(key);
-            console.log(value);
             if (value==="" || !value) {
                 newObj[key] = 0
             } else {
                 newObj[key] = parseInt(joiner[key])
             }
-            console.log(newObj);
         }
         let mins = newObj['minutes'];
         let a = newObj['assists'];
@@ -403,10 +402,7 @@ export const postRecord = async(joiner) => {
         let b = newObj['bonus'];
         let pm = newObj['penalty_miss'];
         let gc = newObj['goals_conceded'];
-        console.log(typeof mins);
-        console.log(gc);
         let player = await fetchPlayerById(joiner.player_id);
-        console.log(player);
         let score;
         switch(player.position) {
             case '4': 
@@ -435,12 +431,6 @@ export const postRecord = async(joiner) => {
                 "Accept": "application/json"
             },
             body: JSON.stringify({
-                sub,
-                captain,
-                vice_captain,
-                user_id,
-                player_id,
-                gameweek_id,
                 minutes: mins,
                 assists: a,
                 goals: g,
@@ -466,15 +456,15 @@ export const postRecord = async(joiner) => {
         console.warn(e);
     }
 }
-export const fetchAllPGJoiners = async() => {
+export const fetchAllPGJoiners = () => {
     return fetch('http://localhost:3000/player_gameweek_joiners')
     .then(res => res.json())
 }
-export const fetchPGJoinerFromPlayerIdAndGwId = async(playerId, gwId) => {
-    return fetchAllPGJoiners()
-    .then(data => data.filter(pg => pg.player_id===playerId && pg.gameweek_id===gwId))
-    .then(data => data[0]);
-}
+// export const fetchPGJoinerFromPlayerIdAndGwId = async(playerId, gwId) => {
+//     return fetchAllPGJoiners()
+//     .then(data => data.filter(pg => pg.player_id===playerId && pg.gameweek_id===gwId))
+//     .then(data => data[0]);
+// }
 
 export const fetchPGJoinersFromUserIdAndGameweekId = (userId, gameweekId) => {
     console.log(userId);
@@ -488,35 +478,39 @@ export const fetchAllPGJoinersFromGameweekId = (gameweekId) => {
     .then(res=>res.json())
 }
 
-export const fetchPGJoinersFromPlayerIdsAndGwId = (playerIds, gwId) => {
-    return fetchAllPGJoiners()
-    .then(data => data.filter(pg => pg.gameweek_id === gwId))
-    .then(data => data.filter(pg => playerIds.includes(pg.player_id)));
+export const fetchPGJoinerFromPlayerIdAndGwId = (playerId, gwId) => {
+    return fetch(`http://localhost:3000/player_gameweek_joiners/find/${gwId}/${playerId}`)
+    .then(res => res.json());
 }
 
 
 // USER-GAMEWEEK JOINERS
 
-export const postUGJoiner = async(userId, gameweekId) => {
-    console.log('posting user gameweek  joiner');
-    let records = await fetchRecordsByGwIdAndUserId(userId, null);
-    console.log(records);
-    let userRecords = records.map(async(r) => {
-        let pgJoiner = await fetchPGJoinerFromPlayerIdAndGwId(r.player_id, r.gameweek_id);
-        return {
-            ...r,
-            ...pgJoiner
-        }
-    });
-    console.log(userRecords);
-    let score = 0;
-    for (let i=0;i<userRecords.length;i++) {
-        let ur = userRecords[i];
-        if (!ur.sub) {
-            score += ur.total_points
-            console.log(score);
+const calculateScore = async(records, gwId, i, score) => {
+    console.log('calculate score, loop: ' + i);
+    console.log(records[i]['player_id']);
+    console.log(gwId);
+    let pgJoiner = await fetchPGJoinerFromPlayerIdAndGwId(records[i]['player_id'], gwId);
+    console.log(pgJoiner);
+    if (pgJoiner) {
+        if (!pgJoiner.sub) {
+            score += pgJoiner["total_points"];
+            console.log('new score: ' + score);
         }
     }
+    if (i>records.length) {
+        console.log('returning score');
+        return score;
+    }
+    calculateScore(records, ++i, score);
+}
+
+export const postUGJoiner = async(userId, gameweekId) => {
+    console.log('posting user gameweek  joiner');
+    let records = await fetchRecordsByGwIdAndUserId(userId, 0);
+    console.log(records);
+    console.log('records  length: ' + records.length);
+    const score = await calculateScore(records, gameweekId, 0, 0);
     let configObj = {
         method: "POST",
         headers: {

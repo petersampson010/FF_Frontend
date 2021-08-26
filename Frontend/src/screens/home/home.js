@@ -52,28 +52,29 @@ class HomeScreen extends Component {
         })
     }
 
-    componentDidMount() {
+    componentDidCatch() {
+        console.log(this.props.topPlayer);
         // console.log(this.props.lastGwStarters);
     }
 
 
     render() { 
-        const { user, topPlayer } = this.props
+        const { user, topPlayer, topUser } = this.props;
         const gwLatest = this.props.gwLatest ? this.props.gwLatest : false;
         const opacity = this.state.modal.topPlayer || this.state.modal.topUser ? 0.1 : 1;
         return ( 
             <View style={screenContainer}>
                 <View style={{opacity}}>
-                    {gwLatest && topPlayer ? 
+                    {gwLatest && topPlayer && topUser ? 
                     <View style={gwInfo}>
                         <GwScore />
                         <Text style={{...sidenote, textAlign: 'right'}}>{displayDate(gwLatest.date)}</Text>
                         <View style={topPerformers}>
                             <View style={topPlayer}>
-                                <PlayerGWProfile player={this.props.topPlayer} topPlayerModal={this.state.modal.topPlayer} closeModal={this.closeModal} openModal={this.openModal}/>
+                                <PlayerGWProfile player={topPlayer} topPlayerModal={this.state.modal.topPlayer} closeModal={this.closeModal} openModal={this.openModal}/>
                             </View>
                             <View style={topPlayerStyle}>
-                                <UserGWProfile user={this.props.topUser} topUserModal={this.state.modal.topUser} closeModal={this.closeModal} openModal={this.openModal}/>
+                                <UserGWProfile user={topUser} topUserModal={this.state.modal.topUser} closeModal={this.closeModal} openModal={this.openModal}/>
                             </View>
                         </View>
                     </View> : <NoScoreGW/>}

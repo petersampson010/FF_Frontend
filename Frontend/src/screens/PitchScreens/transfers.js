@@ -82,13 +82,13 @@ class TransfersScreen extends Component {
                 const playersIn = _.difference(teamPlayers, originalPlayers);
                 for (let j=0;j<playersIn.length;j++) {
                     if (captain) {
-                        await postRecordTRANSFER(playersIn[j], user.user_id, null, 0, captain, false);
+                        await postRecordTRANSFER(playersIn[j], user.user_id, 0, 0, captain, false);
                         captain = false;
                     } else if (vice_captain) {
-                        await postRecordTRANSFER(playersIn[j], user.user_id, null, 0, false, vice_captain);
+                        await postRecordTRANSFER(playersIn[j], user.user_id, 0, 0, false, vice_captain);
                         vice_captain = false;
                     } else {
-                        await postRecordTRANSFER(playersIn[j], user.user_id, null, count, false, false);
+                        await postRecordTRANSFER(playersIn[j], user.user_id, 0, count, false, false);
                         vice_captain = false;
                         count--
                     }
