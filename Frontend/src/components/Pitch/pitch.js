@@ -53,6 +53,7 @@ class Pitch extends Component {
             type={this.props.type}
             clickFcn={this.props.clickFcn} 
             openModal={this.openModal}
+            playerPG={this.playerPG(player.player_id)}
             />)
 
     openModal = player => 

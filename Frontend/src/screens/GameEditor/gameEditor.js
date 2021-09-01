@@ -12,6 +12,7 @@ import { vh, vw } from 'react-native-expo-viewport-units';
 import { standardText } from '../../styles/textStyle';
 import { inputFieldSmall, input, inputFieldContainerInLine } from '../../styles/input';
 import { calculateScore } from '../../functions/reusable';
+import SpinnerOverlay from '../../components/spinner/spinner';
 
 class GameEditorScreen extends Component {
     state = { 
@@ -22,7 +23,8 @@ class GameEditorScreen extends Component {
         score: {
             team: '',
             oppo: ''
-        }
+        },
+        spinner: false
      }
 
     componentDidMount() {
@@ -112,6 +114,7 @@ class GameEditorScreen extends Component {
     }
 
     validatePlayerScores = () => {
+        this.setState({...this.state, spinner: true});
         let outcome = true;
         let postArr = [];
         let updatedState = this.state;
@@ -136,6 +139,7 @@ class GameEditorScreen extends Component {
         if (outcome) {
             this.postPGJoiners(postArr);
         } else {
+            this.setState({...this.state, spinner: false});
             showMessage({
                 message: "Please update minutes",
                 type: "warning"
@@ -149,14 +153,15 @@ class GameEditorScreen extends Component {
                 await postPGJ(postArr[i]);
             }
             await this.postUGJoiners();
-            console.log('should be finished posting ugJoiners');
             let records = await fetchCurrentRecords();
             await this.patchCurrentRecords(records);
             await this.postNewRecords(records);
             await completeGame(this.props.gwSelect.gameweek_id, this.state.score);
             this.props.completeGameState(this.props.gwSelect.gameweek_id);
+            this.setState({...this.state, spinner: false});
             this.props.navigation.navigate('AdminHome');
         } catch(e) {
+            this.setState({...this.state, spinner: false});
             showMessage({
                 message: "Fail: Network Issue, please try again later",
                 type: "danger"
@@ -169,20 +174,14 @@ class GameEditorScreen extends Component {
         let { allUsers, gwSelect } = this.props;
         for (let i=0; i<allUsers.length; i++) {
             const user = allUsers[i];
-            console.log('asking to fetch records');
             let records = await fetchRecordsByGwIdAndUserId(user.user_id, 0);
-            console.log(records);
-            console.log('asking to calc. score');
             const score = await calculateScore(records, gwSelect.gameweek_id);
-            console.log('score: ' + score);
             await postUGJoiner(user.user_id, gwSelect.gameweek_id, score);
         }
     }
 
     postNewRecords = async(records) => {
         for (let i=0; i<records.length; i++) {
-            console.log('posting null gameweek');
-
             await postRecordDUPLICATE(records[i]);
         }
     }
@@ -196,6 +195,7 @@ class GameEditorScreen extends Component {
     render() { 
         return (
             <View style={{backgroundColor: $darkBlue}}>
+                {this.state.spinner ? <SpinnerOverlay/> : null}
                 <Button title="Confirm" onPress={()=>this.setState({...this.state, dialog: {active: true}})}/>
                 <View style={inputFieldContainerInLine}>
                     <Text style={{...standardText, width: vw(20), textAlign: 'right'}}>{this.props.aUser.club_name}</Text>

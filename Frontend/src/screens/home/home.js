@@ -14,6 +14,8 @@ import { headers, sidenote, standardText } from '../../styles/textStyle';
 import { vh } from 'react-native-expo-viewport-units';
 import { headerText } from '../../components/header/style';
 import NoScoreGW from '../../components/noScoreGW/noScoreGW';
+import { fetchAllRecordsByUserId, fetchGwStartersByUserId, fetchGwSubsByUserId, fetchUGJoiner } from '../../functions/APIcalls';
+import { setOtherTeamPoints } from '../../actions';
 
 
 class HomeScreen extends Component {
@@ -27,11 +29,22 @@ class HomeScreen extends Component {
     renderRows = () => {
         return this.props.league.sort((a,b)=>b.total_points-a.total_points).map((team, i)=>
         <TouchableOpacity key={i}
-            style={tableRow}>
+            style={tableRow}
+            onPress={() => this.goToTeamPoints(team)}>
             <Text style={{...tableElement3, ...standardText}}>{team.team_name}</Text>
             <Text style={{...tableElement3, ...standardText}}>{team.total_points}</Text>
             {this.props.gwLatest ? <Text style={{...tableElement3, ...standardText}}>{team.gw_points}</Text> : null}
         </TouchableOpacity>);
+    }
+
+    goToTeamPoints = async(team) => {
+        const { gwLatest } = this.props;
+        let starters = await fetchGwStartersByUserId(team.user_id, gwLatest.gameweek_id);
+        let subs = await fetchGwSubsByUserId(team.user_id, gwLatest.gameweek_id);
+        let records = await fetchAllRecordsByUserId(team.user_id);
+        let ug = await fetchUGJoiner(team.user_id, gwLatest.gameweek_id);
+        this.props.setOtherTeamPoints(starters, subs, records, ug, team);
+        this.props.navigation.navigate('Points');
     }
 
     closeModal = type => {
@@ -51,12 +64,6 @@ class HomeScreen extends Component {
             }
         })
     }
-
-    componentDidCatch() {
-        console.log(this.props.topPlayer);
-        // console.log(this.props.lastGwStarters);
-    }
-
 
     render() { 
         const { user, topPlayer, topUser } = this.props;
@@ -82,7 +89,7 @@ class HomeScreen extends Component {
                         <Text style={{...tableElement3, ...standardText}}>Team</Text>
                         <Text style={{...tableElement3, ...standardText}}>Total</Text>
                         {gwLatest ? 
-                        <Text style={{...tableElement3, ...standardText}}>{gwLatest.opponent}</Text>
+                        <Text style={{...tableElement3, ...standardText}}>vs. {gwLatest.opponent}</Text>
                         : null}
                     </View>
                     <ScrollView style={''}>
@@ -115,7 +122,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        
+        setOtherTeamPoints: (starters, subs, records, ug, team) => dispatch(setOtherTeamPoints(starters, subs, records, ug, team))
     }
 }
  

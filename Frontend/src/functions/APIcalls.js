@@ -113,8 +113,6 @@ export const fetchLatestStartersByUserId = id => {
     .then(res => res.json())
 }
 export const fetchGwStartersByUserId = (id, gameweekId) => {
-    console.log(id);
-    console.log(gameweekId);
     return fetch(`http://localhost:3000/users/${id}/${gameweekId}/gw_starters`)
     .then(res => res.json())
 }
@@ -182,7 +180,6 @@ export const fetchRecordsByUserIdAndPlayerId = (userId, playerId) => {
     .then(data=>data.filter(x=>x.player_id===playerId));
 }
 export const fetchRecordsByGwIdAndUserId = (userId, gwId) => {
-    console.log('fetching records');
     return fetchAllRecordsByUserId(userId)
     .then(data=>data.filter(x=>x.gameweek_id===gwId));
 }
@@ -197,7 +194,6 @@ export const fetchCurrentRecordByUserIdAndPlayerId = (userId, playerId) => {
     .then(data => data[0]);
 }
 export const fetchCurrentRecords = () => {
-    console.log('fetching current records');
     return fetchAllRecords()
     .then(data => data.filter(r => !r.gameweek_id));
 }
@@ -221,7 +217,6 @@ export const postRecord = (player, userId, count) => {
     .then(res=>res.json())
 }
 export const postRecordDUPLICATE = (record) => {
-    console.log('********* POSTING NEW DUPLICATE RECORD *************');
     delete record["record_id"];
     let configObj = {
         method: "POST",
@@ -235,7 +230,6 @@ export const postRecordDUPLICATE = (record) => {
     .then(res=>res.json())
 }
 export const patchRecordGAMEWEEK = (recordId, gwId) => {
-    console.log('******** PATCHING RECORD *************');
     let configObj = {
         method: "PATCH",
         headers: {
@@ -385,7 +379,6 @@ export const fetchLatestGameweekFromAdminUserId = auId => {
 // PLAYER-GAMEWEEK-JOINERS
 
 export const postPGJ = async(joiner) => {
-    console.log('********** POSTING PGJ ***********');
     try{
         let newObj = {}
         for (const [key, value] of Object.entries(joiner)) {
@@ -406,25 +399,32 @@ export const postPGJ = async(joiner) => {
         let gc = newObj['goals_conceded'];
         let player = await fetchPlayerById(joiner.player_id);
         let score;
-        switch(player.position) {
-            case '4': 
-            // console.log((Math.floor(minutes/30)) + (assists*3) + (goals*4) + (own_goals*-3) + (y_cards*-1) + (r_cards*-3) + (bonus) + (penalty_miss*-3));
-                score = ((Math.floor(mins/30)) + (a*3) + (g*4) + (og*-3) + (yc*-1) + (rc*-3) + (b) + (pm*-3));
-                break;
-            case '3':
-                // console.log((Math.floor(minutes/30)) + (assists*3) + (goals*5) + (own_goals*-3) + (y_cards*-1) + (r_cards*-3) + (bonus) + (penalty_miss*-3));
-                score = ((Math.floor(mins/30)) + (a*3) + (g*5) + (og*-3) + (yc*-1) + (rc*-3) + (b) + (pm*-3));
-                break;
-            default:
-                if (gc===0 || gc===null) {
-                    // console.log((Math.floor(minutes/30)) + (assists*3) + (goals*5) + (own_goals*-3) + (y_cards*-1) + (r_cards*-3) + (bonus) + (penalty_miss*-3 + 5));
-                    score = ((Math.floor(mins/30)) + (a*3) + (g*5) + (og*-3) + (yc*-1) + (rc*-3) + (b) + (pm*-3 + 5));
+        if (mins>0) {
+            switch(player.position) {
+                case '4': 
+                // console.log((Math.floor(minutes/30)) + (assists*3) + (goals*4) + (own_goals*-3) + (y_cards*-1) + (r_cards*-3) + (bonus) + (penalty_miss*-3));
+                    score = ((Math.floor(mins/30)) + (a*3) + (g*4) + (og*-3) + (yc*-1) + (rc*-3) + (b) + (pm*-3));
                     break;
-                } else {
-                    // console.log((Math.floor(minutes/30)) + (assists*3) + (goals*5) + (own_goals*-3) + (y_cards*-1) + (r_cards*-3) + (bonus) + (penalty_miss*-3) + (Math.floor(goals_conceded*-0.5)));
-                    score = ((Math.floor(mins/30)) + (a*3) + (g*5) + (og*-3) + (yc*-1) + (rc*-3) + (b) + (pm*-3) + (Math.floor(gc*-0.5)));
+                case '3':
+                    // console.log((Math.floor(minutes/30)) + (assists*3) + (goals*5) + (own_goals*-3) + (y_cards*-1) + (r_cards*-3) + (bonus) + (penalty_miss*-3));
+                    score = ((Math.floor(mins/30)) + (a*3) + (g*5) + (og*-3) + (yc*-1) + (rc*-3) + (b) + (pm*-3));
                     break;
-                }
+                default:
+                    if (gc===0 || gc===null) {
+                        // console.log((Math.floor(minutes/30)) + (assists*3) + (goals*5) + (own_goals*-3) + (y_cards*-1) + (r_cards*-3) + (bonus) + (penalty_miss*-3 + 5));
+                        score = ((Math.floor(mins/30)) + (a*3) + (g*5) + (og*-3) + (yc*-1) + (rc*-3) + (b) + (pm*-3));
+                        if (mins > 34) {
+                            score += 5;
+                        }
+                        break;
+                    } else {
+                        // console.log((Math.floor(minutes/30)) + (assists*3) + (goals*5) + (own_goals*-3) + (y_cards*-1) + (r_cards*-3) + (bonus) + (penalty_miss*-3) + (Math.floor(goals_conceded*-0.5)));
+                        score = ((Math.floor(mins/30)) + (a*3) + (g*5) + (og*-3) + (yc*-1) + (rc*-3) + (b) + (pm*-3) + (Math.floor(gc*-0.5)));
+                        break;
+                    }
+            }
+        } else {
+            score = 0;
         }
         let configObj = {
             method: "POST",
@@ -447,7 +447,6 @@ export const postPGJ = async(joiner) => {
                 gameweek_id: joiner.gameweek_id
             })
         };
-        console.log(configObj);
         return fetch(`http://localhost:3000/player_gameweek_joiners`, configObj)
         .then(res=>res.json());
     } catch(e) {
@@ -469,8 +468,6 @@ export const fetchAllPGJoiners = () => {
 // }
 
 export const fetchPGJoinersFromUserIdAndGameweekId = (userId, gameweekId) => {
-    console.log(userId);
-    console.log(gameweekId);
     return fetch(`http://localhost:3000/users/${userId}/${gameweekId}/pg_joiners`)
     .then(res=>res.json())
 }
@@ -490,7 +487,6 @@ export const fetchPGJoinerFromPlayerIdAndGwId = (playerId, gwId) => {
 // USER-GAMEWEEK JOINERS
 
 export const postUGJoiner = async(userId, gameweekId, score) => {
-    console.log('posting user gameweek  joiner');
     let configObj = {
         method: "POST",
         headers: {

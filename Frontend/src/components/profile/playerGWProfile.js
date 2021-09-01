@@ -16,7 +16,7 @@ class PlayerGWProfile extends Component {
     renderPointsBreakdown = () => {
         return Object.keys(this.props.player.pg).map(score=>{
             let att = this.props.player.pg[score];
-            if (att==null || score=="pg_id" || score=="updated_at" || score=="created_at" || score=="player_id" || score=="gameweek_id" || score=="total_points") {
+            if (att==null || att=='0' || score=="pg_id" || score=="updated_at" || score=="created_at" || score=="player_id" || score=="gameweek_id" || score=="total_points") {
                 return;
             } else {
                 return <Text style={standardText}>{capitalize(score)}: {att}</Text>;

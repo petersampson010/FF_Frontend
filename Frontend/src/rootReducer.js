@@ -34,6 +34,15 @@ const initialState = {
             subs: [],
             captain: null,
             vCaptain: null
+        },
+        otherTeamPoints: {
+            starters: [],
+            subs: [],
+            records: [],
+            ug: null,
+            user: null, 
+            captain: null,
+            vCaptain: null
         }
     },
     joiners: {
@@ -56,11 +65,8 @@ const initialState = {
 
 
 const rootReducer = (state = initialState, action) => {
-    console.log(action.type);
     switch (action.type) {
         case 'LOGINUSER':
-            console.log('here');
-            console.log(action.records[0]);
             return {
                 ...state,
                 endUser: {
@@ -71,6 +77,7 @@ const rootReducer = (state = initialState, action) => {
                     user: action.user,
                 },
                 players: {
+                    ...state.players,
                     clubPlayers: action.clubPlayers,
                     latest: {
                         starters: action.latestStarters,
@@ -356,6 +363,21 @@ const rootReducer = (state = initialState, action) => {
                     ...state.players,
                     latest: state.players.transferring
                 }
+            };
+        case "SETOTHERTEAMPOINTS": 
+            return {
+                ...state, 
+                players: {
+                    ...state.players,
+                    otherTeamPoints: {
+                        starters: action.starters, 
+                        subs: action.subs,
+                        records: action.records,
+                        ug: action.ug,
+                        user: action.team
+                    }
+                }
+
             }
         default:
             return state;

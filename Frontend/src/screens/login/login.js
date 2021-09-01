@@ -93,14 +93,11 @@ class LoginScreen extends Component {
         let aUser = await fetchAdminUserById(admin_user_id);
         let latestStarters = await fetchLatestStartersByUserId(user_id);
         let latestSubs = await fetchLatestSubsByUserId(user_id);
-        console.log(user_id);
         let records = await fetchAllRecordsByUserId(user_id);
-        console.log('this record: ' + records[0]);
         let league = await fetchLeague(admin_user_id);
         if (gameweek) {
           const { gameweek_id } = gameweek;
           let lastGwStarters = await fetchGwStartersByUserId(user_id, gameweek_id);
-
           let lastGwSubs = await fetchGwSubsByUserId(user_id, gameweek_id);
           let pgJoiners = await fetchAllPGJoinersFromGameweekId(gameweek_id);
           if (pgJoiners.length<1) {

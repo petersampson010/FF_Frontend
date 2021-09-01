@@ -41,7 +41,6 @@ export const availability = avail => {
 }
 
 export const playersArrayToObj = arr => {
-    console.log(arr);
     let obj = {
         '1': [],
         '2': [],
@@ -81,9 +80,8 @@ export const isVCaptain = (player, records) => {
 }
 
 export const getRecord = (player, records) => {
-    console.log(records[0]);
+
     let record = records.find(x=>x.player_id===player.player_id);
-    console.log(record);
     return record;
 }
 
@@ -130,21 +128,12 @@ export const getNameOfNavPage = navState => navState.routes[navState.index].name
 export const calculateScore = async(records, gwId) => {
     let score = 0;
     for (let i=0; i<records.length; i++) {
-        console.log('calculate score, loop: ' + i);
-        console.log(records[i]['player_id']);
-        console.log(gwId);
         let pgJoiner = await fetchPGJoinerFromPlayerIdAndGwId(records[i]['player_id'], gwId);
-        console.log(pgJoiner);
         if (pgJoiner) {
-            if (!pgJoiner.sub) {
-                console.log(score);
-                console.log(typeof score);
-                console.log(typeof pgJoiner["total_points"]);
+            if (!records[i].sub) {
                 score += pgJoiner["total_points"];
-                console.log('new score: ' + score);
             }
         }
     }
-    console.log('returning score');
     return score;
 }

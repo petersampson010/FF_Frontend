@@ -1,3 +1,4 @@
+import { PointPropType } from "react-native";
 import { isCaptain, isVCaptain } from "./functions/reusable"
 
 export const loginUser = (user, aUser, clubPlayers, latestStarters, latestSubs, lastGwStarters, lastGwSubs, records, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser) => {
@@ -191,5 +192,18 @@ export const setTransferringBackToLatest = () => {
 export const setLatestToTransferring = () => {
     return {
         type: 'SETLATESTTOTRANSFERRING'
+    }
+}
+
+export const setOtherTeamPoints = (starters, subs, records, ug, team) => {
+    console.log(ug);
+    console.log(team);
+    return {
+        type: 'SETOTHERTEAMPOINTS',
+        starters, 
+        subs,
+        records,
+        ug, 
+        team
     }
 }
