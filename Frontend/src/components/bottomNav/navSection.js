@@ -10,7 +10,9 @@ import { navSectionBackground, navSectionContainer, navText } from './style';
 class NavSection extends Component {
     state = {  }
 
-    currentPage = page => getNameOfNavPage(this.props.navigation.dangerouslyGetState())===page
+    currentPage = page => {
+        return getNameOfNavPage(this.props.navigation.dangerouslyGetState())===page;
+    }
 
     navigate = () => {
         this.props.setTransferringBackToLatest();

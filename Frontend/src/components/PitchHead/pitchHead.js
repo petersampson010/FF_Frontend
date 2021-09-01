@@ -40,11 +40,26 @@ class PitchHead extends Component {
         }
     }
 
+    comp3 = () => {
+        switch(this.props.type) {
+            case 'points':
+                return <View>
+                    <Text onPress={}>Gw {}</Text>
+                    <Text onPress={}>GW {}</Text>
+                </View>
+            default:
+                return;
+        }
+    }
+
     render() { 
-        return ( 
-            <View style={pitchHead}>
-                {this.comp1()}
-                {this.comp2()}
+        return (
+            <View>
+                <View style={pitchHead}>
+                    {this.comp1()}
+                    {this.comp2()}
+                </View>
+                {this.comp3()}
             </View>
          );
     }
