@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet, Button, ScrollView, TouchableHighlig
 import { showMessage } from 'react-native-flash-message';
 import Dialog, { DialogButton, DialogContent } from 'react-native-popup-dialog';
 import { connect } from 'react-redux';
-import { postPGJoiner, completeGame, postUGJoiner, fetchCurrentRecords, patchRecordGAMEWEEK, postRecordDUPLICATE, postPGJ } from '../../functions/APIcalls';
+import { postPGJoiner, completeGame, postUGJoiner, fetchCurrentRecords, patchRecordGAMEWEEK, postRecordDUPLICATE, postPGJ, fetchRecordsByGwIdAndUserId } from '../../functions/APIcalls';
 import { validatePlayerScore } from '../../functions/validity';
 import { completeGameState } from '../../actions';
 import { $baseBlue, $darkBlue, $electricBlue, $inputBlue, screenContainer } from '../../styles/global';
@@ -11,6 +11,7 @@ import { tableElement1, tableElement9, tableRow } from '../../styles/table';
 import { vh, vw } from 'react-native-expo-viewport-units';
 import { standardText } from '../../styles/textStyle';
 import { inputFieldSmall, input, inputFieldContainerInLine } from '../../styles/input';
+import { calculateScore } from '../../functions/reusable';
 
 class GameEditorScreen extends Component {
     state = { 
@@ -34,7 +35,7 @@ class GameEditorScreen extends Component {
                     name: player.first_name + ' ' + player.last_name,
                     player_id: player.player_id,
                     gameweek_id: this.props.gwSelect.gameweek_id,
-                    minutes: '',
+                    minutes: '0',
                     assists: '',
                     goals: '',
                     own_goals: '',
@@ -148,6 +149,7 @@ class GameEditorScreen extends Component {
                 await postPGJ(postArr[i]);
             }
             await this.postUGJoiners();
+            console.log('should be finished posting ugJoiners');
             let records = await fetchCurrentRecords();
             await this.patchCurrentRecords(records);
             await this.postNewRecords(records);
@@ -165,8 +167,15 @@ class GameEditorScreen extends Component {
 
     postUGJoiners = async() => {
         let { allUsers, gwSelect } = this.props;
-        for (let i=0;i<allUsers.length;i++) {
-            await Promise.all(postUGJoiner(allUsers[i].user_id, gwSelect.gameweek_id));
+        for (let i=0; i<allUsers.length; i++) {
+            const user = allUsers[i];
+            console.log('asking to fetch records');
+            let records = await fetchRecordsByGwIdAndUserId(user.user_id, 0);
+            console.log(records);
+            console.log('asking to calc. score');
+            const score = await calculateScore(records, gwSelect.gameweek_id);
+            console.log('score: ' + score);
+            await postUGJoiner(user.user_id, gwSelect.gameweek_id, score);
         }
     }
 

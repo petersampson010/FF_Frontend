@@ -60,7 +60,7 @@ export const validatePlayerScore = playerScore => {
     } else if (totalScore>0) {
         return { result: false, post: false }
     } else {
-        return { result: true, post: false }
+        return { result: true, post: true }
     }
 }
 

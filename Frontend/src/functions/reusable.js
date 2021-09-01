@@ -1,4 +1,4 @@
-import { fetchPlayerById, fetchUserById } from "./APIcalls";
+import { fetchPGJoinerFromPlayerIdAndGwId, fetchPlayerById, fetchUserById } from "./APIcalls";
 
 export const positionString = (num) => {
     switch(num) {
@@ -126,3 +126,25 @@ export const subOrTransfer = type => {
 }
 
 export const getNameOfNavPage = navState => navState.routes[navState.index].name;
+
+export const calculateScore = async(records, gwId) => {
+    let score = 0;
+    for (let i=0; i<records.length; i++) {
+        console.log('calculate score, loop: ' + i);
+        console.log(records[i]['player_id']);
+        console.log(gwId);
+        let pgJoiner = await fetchPGJoinerFromPlayerIdAndGwId(records[i]['player_id'], gwId);
+        console.log(pgJoiner);
+        if (pgJoiner) {
+            if (!pgJoiner.sub) {
+                console.log(score);
+                console.log(typeof score);
+                console.log(typeof pgJoiner["total_points"]);
+                score += pgJoiner["total_points"];
+                console.log('new score: ' + score);
+            }
+        }
+    }
+    console.log('returning score');
+    return score;
+}

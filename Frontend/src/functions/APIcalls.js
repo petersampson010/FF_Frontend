@@ -182,6 +182,7 @@ export const fetchRecordsByUserIdAndPlayerId = (userId, playerId) => {
     .then(data=>data.filter(x=>x.player_id===playerId));
 }
 export const fetchRecordsByGwIdAndUserId = (userId, gwId) => {
+    console.log('fetching records');
     return fetchAllRecordsByUserId(userId)
     .then(data=>data.filter(x=>x.gameweek_id===gwId));
 }
@@ -196,6 +197,7 @@ export const fetchCurrentRecordByUserIdAndPlayerId = (userId, playerId) => {
     .then(data => data[0]);
 }
 export const fetchCurrentRecords = () => {
+    console.log('fetching current records');
     return fetchAllRecords()
     .then(data => data.filter(r => !r.gameweek_id));
 }
@@ -480,37 +482,15 @@ export const fetchAllPGJoinersFromGameweekId = (gameweekId) => {
 
 export const fetchPGJoinerFromPlayerIdAndGwId = (playerId, gwId) => {
     return fetch(`http://localhost:3000/player_gameweek_joiners/find/${gwId}/${playerId}`)
-    .then(res => res.json());
+    .then(res => res.json())
+    .then(data => data[0]);
 }
 
 
 // USER-GAMEWEEK JOINERS
 
-const calculateScore = async(records, gwId, i, score) => {
-    console.log('calculate score, loop: ' + i);
-    console.log(records[i]['player_id']);
-    console.log(gwId);
-    let pgJoiner = await fetchPGJoinerFromPlayerIdAndGwId(records[i]['player_id'], gwId);
-    console.log(pgJoiner);
-    if (pgJoiner) {
-        if (!pgJoiner.sub) {
-            score += pgJoiner["total_points"];
-            console.log('new score: ' + score);
-        }
-    }
-    if (i>records.length) {
-        console.log('returning score');
-        return score;
-    }
-    calculateScore(records, ++i, score);
-}
-
-export const postUGJoiner = async(userId, gameweekId) => {
+export const postUGJoiner = async(userId, gameweekId, score) => {
     console.log('posting user gameweek  joiner');
-    let records = await fetchRecordsByGwIdAndUserId(userId, 0);
-    console.log(records);
-    console.log('records  length: ' + records.length);
-    const score = await calculateScore(records, gameweekId, 0, 0);
     let configObj = {
         method: "POST",
         headers: {
