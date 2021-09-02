@@ -1,8 +1,8 @@
-import { ActivityIndicator } from "react-native";
 import { playersObjToArray } from "./functions/reusable";
 
 const initialState = {
     spinner: false,
+    otherTeam: false,
     endUser: {
         adminUser: {
             active: false,
@@ -29,18 +29,21 @@ const initialState = {
             budget: null
         },
         // last gw's players
-        lastGw: {
+        teamPoints: {
             starters: [],
             subs: [],
+            ug: null,
             captain: null,
             vCaptain: null
         },
+        // data for other teams the user is looking at
         otherTeamPoints: {
             starters: [],
             subs: [],
             records: [],
             ug: null,
             user: null, 
+            allPGJoiners: [],
             captain: null,
             vCaptain: null
         }
@@ -48,7 +51,7 @@ const initialState = {
     joiners: {
         records: [],
         pgJoiners: [],
-        latestUG: null,
+        allPGJoiners: []
     },
     gameweek: {
         games: [],
@@ -88,16 +91,16 @@ const rootReducer = (state = initialState, action) => {
                         subs: action.latestSubs, 
                         budget: action.user.budget
                     },
-                    lastGw: {
+                    teamPoints: {
                         starters: action.lastGwStarters,
                         subs: action.lastGwSubs, 
+                        ug: action.latestUG
                     }
                 },
                 joiners: {
                     records: action.records,
                     pgJoiners: action.pgJoiners,
-                    ugJoiners: action.ugJoiners,
-                    latestUG: action.latestUG,
+                    allPGJoiners: action.allPGJoiners
                 },
                 gameweek: {
                     ...state.gameweeks,
@@ -198,9 +201,10 @@ const rootReducer = (state = initialState, action) => {
                         starters: [],
                         subs: []
                     }, 
-                    lastGw: {
+                    teamPoints: {
                         starters: [],
-                        subs: []
+                        subs: [],
+                        ug: null
                     }
                 }
             };
@@ -341,6 +345,7 @@ const rootReducer = (state = initialState, action) => {
         case "SETTRANSFERRINGBACKTOLATEST":
             return {
                 ...state,
+                otherTeam: false,
                 players: {
                     ...state.players,
                     transferring: {
@@ -365,16 +370,35 @@ const rootReducer = (state = initialState, action) => {
                 }
             };
         case "SETOTHERTEAMPOINTS": 
+        console.log('hit');
+        console.log(action.allPGJoiners);
             return {
                 ...state, 
+                otherTeam: true,
                 players: {
                     ...state.players,
                     otherTeamPoints: {
                         starters: action.starters, 
                         subs: action.subs,
                         records: action.records,
-                        ug: action.ug,
+                        ug: action.ugj,
+                        allPGJoiners: action.allPGJoiners,
                         user: action.team
+                    }
+                }
+
+            }
+        case "SETTEAMPOINTS":
+            console.log('root reducer; setting team points');
+            return {
+                ...state, 
+                otherTeam: false,
+                players: {
+                    ...state.players,
+                    teamPoints: {
+                        starters: action.starters, 
+                        subs: action.subs,
+                        ug: action.ug
                     }
                 }
 

@@ -118,8 +118,8 @@ const mapStateToProps = state => {
         records: state.joiners.records,
         latestCaptain: state.players.latest.captain,
         latestVCaptain: state.players.latest.vCaptain,
-        lastGwVCaptain: state.players.lastGw.vCaptain,
-        lastGwCaptain: state.players.lastGw.captain,
+        lastGwVCaptain: state.players.teamPoints.vCaptain,
+        lastGwCaptain: state.players.teamPoints.captain,
     }
 }
  

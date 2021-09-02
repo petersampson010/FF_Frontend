@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ScrollView, TouchableOpacity, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import Header from '../../components/header/header';
-import { displayDate, topPlayer, topUser } from '../../functions/reusable';
+import { displayDate, getTeamPointsInfo, topPlayer, topUser } from '../../functions/reusable';
 import BottomNav from '../../components/bottomNav/bottomNav';
 import { $arylideYellow, screenContainer } from '../../styles/global';
 import { gwInfo, leagueTable, topPerformers, topPlayerStyle } from './style';
@@ -39,11 +39,9 @@ class HomeScreen extends Component {
 
     goToTeamPoints = async(team) => {
         const { gwLatest } = this.props;
-        let starters = await fetchGwStartersByUserId(team.user_id, gwLatest.gameweek_id);
-        let subs = await fetchGwSubsByUserId(team.user_id, gwLatest.gameweek_id);
-        let records = await fetchAllRecordsByUserId(team.user_id);
-        let ug = await fetchUGJoiner(team.user_id, gwLatest.gameweek_id);
-        this.props.setOtherTeamPoints(starters, subs, records, ug, team);
+        const { starters, subs, records, ugj, allPGJoiners } = await getTeamPointsInfo(team.user_id, gwLatest.gameweek_id, true);
+        this.props.setOtherTeamPoints(starters, subs, records, ugj, allPGJoiners, team);
+        console.log('should be after');
         this.props.navigation.navigate('Points');
     }
 
@@ -112,17 +110,12 @@ const mapStateToProps = state => {
         topPlayer: state.homeGraphics.topPlayer,
         topUser: state.homeGraphics.topUser,
         gwLatest: state.gameweek.gwLatest,
-        latestStaters: state.players.latest.starters,
-        latestSubs: state.players.latest.subs,
-        lastGwStarters: state.players.lastGw.starters,
-        lastGwSubs: state.players.lastGw.subs,
-
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        setOtherTeamPoints: (starters, subs, records, ug, team) => dispatch(setOtherTeamPoints(starters, subs, records, ug, team))
+        setOtherTeamPoints: (starters, subs, records, ugj, allPGJoiners, team) => dispatch(setOtherTeamPoints(starters, subs, records, ugj, allPGJoiners, team))
     }
 }
  

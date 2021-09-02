@@ -1,15 +1,16 @@
 import { PointPropType } from "react-native";
 import { isCaptain, isVCaptain } from "./functions/reusable"
 
-export const loginUser = (user, aUser, clubPlayers, latestStarters, latestSubs, lastGwStarters, lastGwSubs, records, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser) => {
+export const loginUser = (user, aUser, clubPlayers, latestStarters, latestSubs, lastGwStarters, lastGwSubs, records, league, gameweek, pgJoiners, ugJoiners, latestUG, topPlayer, topUser, allPGJoiners) => {
     let captain, vCaptain;
     for (let i=0;i<latestStarters.length;i++) {
         if (isCaptain(latestStarters[i], records)) {
             captain = latestStarters[i];
         } else if (isVCaptain(latestStarters[i], records)) {
-            vCapain = latestStarters[i];
+            vCaptain = latestStarters[i];
         }
     }
+    console.log(allPGJoiners);
     return {
         type: 'LOGINUSER',
         user,
@@ -28,7 +29,8 @@ export const loginUser = (user, aUser, clubPlayers, latestStarters, latestSubs, 
         ugJoiners,
         latestUG,
         topPlayer, 
-        topUser
+        topUser,
+        allPGJoiners
     }
 }
 
@@ -195,15 +197,23 @@ export const setLatestToTransferring = () => {
     }
 }
 
-export const setOtherTeamPoints = (starters, subs, records, ug, team) => {
-    console.log(ug);
-    console.log(team);
+export const setOtherTeamPoints = (starters, subs, records, ugj, allPGJoiners, team) => {
     return {
         type: 'SETOTHERTEAMPOINTS',
         starters, 
         subs,
         records,
-        ug, 
+        ugj, 
+        allPGJoiners,
         team
+    }
+}
+
+export const setTeamPoints = (starters, subs, ug) => {
+    return {
+        type: 'SETTEAMPOINTS',
+        starters,
+        subs,
+        ug
     }
 }

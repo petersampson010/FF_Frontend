@@ -28,11 +28,12 @@ class Pitch extends Component {
     }
 
 
-    playerPG = (playerId) => this.props.type==="points" ? this.props.pgJoiners.filter(pg=>pg.player_id===playerId)[0] : false;
+    playerPG = (playerId) => this.props.type==="points" ? this.props.allPGJoiners.filter(pg=>pg.player_id===playerId && pg.gameweek_id===this.props.ug.gameweek_id)[0] : false;
 
     team = () => playersArrayToObj(this.props.team);
 
     renderPlayers = (position) => {
+        console.log('**** rendering players ****');
         return this.team()[position].map((player, i) => 
         <PlayerGraphic 
         sub={false}
@@ -114,7 +115,7 @@ class Pitch extends Component {
 
 const mapStateToProps = state => {
     return {
-        pgJoiners: state.joiners.pgJoiners,
+        ug: state.players.teamPoints.ug,
         records: state.joiners.records
     }
 }

@@ -461,6 +461,10 @@ export const fetchAllPGJoiners = () => {
     return fetch('http://localhost:3000/player_gameweek_joiners')
     .then(res => res.json())
 }
+export const fetchAllPGJFromUserId = userId => {
+    return fetch(`http://localhost:3000/player_gameweek_joiners/by_user/${userId}`)
+    .then(res => res.json())
+}
 // export const fetchPGJoinerFromPlayerIdAndGwId = async(playerId, gwId) => {
 //     return fetchAllPGJoiners()
 //     .then(data => data.filter(pg => pg.player_id===playerId && pg.gameweek_id===gwId))

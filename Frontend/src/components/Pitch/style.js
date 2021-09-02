@@ -40,5 +40,5 @@ export const positionRow = {
 
 export const pitchImage = {
   flex: 14,
-  height: vh(50)
+  height: vh(52)
 }

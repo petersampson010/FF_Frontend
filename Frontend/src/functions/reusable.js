@@ -1,4 +1,4 @@
-import { fetchPGJoinerFromPlayerIdAndGwId, fetchPlayerById, fetchUserById } from "./APIcalls";
+import { fetchAllPGJFromUserId, fetchAllRecordsByUserId, fetchGwStartersByUserId, fetchGwSubsByUserId, fetchPGJoinerFromPlayerIdAndGwId, fetchPlayerById, fetchUGJoiner, fetchUserById } from "./APIcalls";
 
 export const positionString = (num) => {
     switch(num) {
@@ -136,4 +136,23 @@ export const calculateScore = async(records, gwId) => {
         }
     }
     return score;
+}
+
+export const getTeamPointsInfo = async(userId, gwId, otherUser) => {
+    console.log(userId);
+    console.log(gwId);
+    console.log('above');
+    if (otherUser) {
+        let ugj = await fetchUGJoiner(userId, gwId);
+        let starters = await fetchGwStartersByUserId(userId, gwId);
+        let subs = await fetchGwSubsByUserId(userId, gwId);
+        let records = await fetchAllRecordsByUserId(userId);
+        let allPGJoiners = await fetchAllPGJFromUserId(userId);
+        return { starters, subs, records, ugj, allPGJoiners };
+    } else {
+        let ugj = await fetchUGJoiner(userId, gwId);
+        let starters = await fetchGwStartersByUserId(userId, gwId);
+        let subs = await fetchGwSubsByUserId(userId, gwId);
+        return { starters, subs, ugj };
+    }
 }
