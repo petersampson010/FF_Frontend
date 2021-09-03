@@ -63,6 +63,8 @@ class MyModal extends Component {
                             <Text style={standardText}>{fullName(player)}</Text>
                             <Text style={standardText}>{positionString(player.position)}</Text>
                             <Text style={standardText}>£{player.price}</Text>
+                            <Text style={standardText}></Text>
+
                             {/* <Text style={standardText}>MAYBE SOME STATS AT SOME POINT</Text> */}
                         </View>
                         <View style={{padding: vh(1)}}>

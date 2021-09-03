@@ -57,13 +57,15 @@ class Pitch extends Component {
             playerPG={this.playerPG(player.player_id)}
             />)
 
-    openModal = player => 
+    openModal = async(player) => {
+        let playerStats = 
         this.setState({
             modal: {
                 active: true, 
                 player
             }
         });
+    }
 
     render() { 
         const pitchImg = require('../../images/kisspng-ball-game-football-pitch-corner-kick-football-stadium-5ac96cf3827065.1735532915231500675343.png');
