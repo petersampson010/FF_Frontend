@@ -157,6 +157,6 @@ export const getTeamPointsInfo = async(userId, gwId, otherUser) => {
     }
 }
 
-// export const getPlayerStats = asnyc(player) => {
-//     let 
-// }
+export const getPlayerStats = asnyc(player) => {
+    let 
+}
